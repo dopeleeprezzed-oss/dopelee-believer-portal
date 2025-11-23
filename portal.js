@@ -279,13 +279,34 @@ function createTimeline(status, submittedDate, shippedDate, deliveredDate) {
 /**
  * Create photo gallery
  */
+/**
+ * Create photo gallery
+ */
 function createPhotoGallery(photoUrl) {
+  console.log('Photo URL:', photoUrl); // Debug
+  
   let imageUrl = photoUrl;
   
+  // Handle different Google Drive URL formats
   if (photoUrl.includes('drive.google.com')) {
-    const match = photoUrl.match(/id=([^&]+)/);
-    if (match) {
-      imageUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+    // Extract ID from various formats
+    let driveId = null;
+    
+    // Format 1: /file/d/ID/view
+    const match1 = photoUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (match1) driveId = match1[1];
+    
+    // Format 2: ?id=ID
+    const match2 = photoUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (match2) driveId = match2[1];
+    
+    // Format 3: /open?id=ID
+    const match3 = photoUrl.match(/\/open\?id=([a-zA-Z0-9_-]+)/);
+    if (match3) driveId = match3[1];
+    
+    if (driveId) {
+      imageUrl = `https://drive.google.com/thumbnail?id=${driveId}&sz=w400`;
+      console.log('Converted to:', imageUrl); // Debug
     }
   }
   
@@ -294,9 +315,15 @@ function createPhotoGallery(photoUrl) {
       <h3>📸 Your Photo</h3>
       <div class="photo-container">
         <div class="photo-item">
-          <img src="${imageUrl}" alt="Uploaded photo" onerror="this.parentElement.innerHTML='<p style=\\"padding:2rem;text-align:center;\\">Photo unavailable</p>'">
+          <img src="${imageUrl}" 
+               alt="Uploaded photo" 
+               crossorigin="anonymous"
+               onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23121319%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23b8bac0%22 font-family=%22sans-serif%22 font-size=%2214%22%3EPhoto unavailable%3C/text%3E%3C/svg%3E';">
         </div>
       </div>
+      <p style="margin-top:1rem;font-size:0.9rem;color:#b8bac0;text-align:center;">
+        Photo not loading? <a href="${photoUrl}" target="_blank" style="color:#0a95a8;">View in Drive</a>
+      </p>
     </div>
   `;
 }
@@ -518,5 +545,6 @@ function contactUs(orderId) {
     }
   }, 100);
 }
+
 
 
