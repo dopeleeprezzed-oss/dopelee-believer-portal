@@ -54,30 +54,43 @@ async function handleLookup(e) {
 async function loadOrders(email) {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A:AI?key=${API_KEY}`;
   
-  const response = await fetch(url);
-  
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.status}`);
+  try {
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      console.error('API Error:', response.status, response.statusText);
+      throw new Error(`API returned status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    console.log('API Response:', data); // Debug log
+    
+    if (!data.values || data.values.length < 2) {
+      throw new Error('No data in sheet');
+    }
+    
+    // Filter orders by email (Column F, index 5)
+    const customerOrders = data.values.slice(1).filter(row => {
+      const rowEmail = row[5];
+      console.log('Checking row email:', rowEmail, 'against:', email); // Debug log
+      return rowEmail && rowEmail.toLowerCase().trim() === email.toLowerCase().trim();
+    });
+    
+    console.log('Found orders:', customerOrders.length); // Debug log
+    
+    if (customerOrders.length === 0) {
+      showError(`No orders found for ${email}. Please check your email address and try again.`);
+      return;
+    }
+    
+    allOrders = customerOrders;
+    displayOrderList();
+    
+  } catch (error) {
+    console.error('Error loading orders:', error);
+    showError(`Unable to load orders. Error: ${error.message}. Please try again or contact support.`);
   }
-  
-  const data = await response.json();
-  
-  if (!data.values || data.values.length < 2) {
-    throw new Error('No data found');
-  }
-  
-  // Filter orders by email (Column F, index 5)
-  const customerOrders = data.values.slice(1).filter(row => 
-    row[5] && row[5].toLowerCase() === email.toLowerCase()
-  );
-  
-  if (customerOrders.length === 0) {
-    showError(`No orders found for ${email}`);
-    return;
-  }
-  
-  allOrders = customerOrders;
-  displayOrderList();
 }
 
 /**
@@ -563,4 +576,5 @@ Your BRAIN should now have **35 columns (A-AI)**:
 5. Change name to: **dopelee-client-portal**
 6. Your portal is now live at:
 ```
-   https://dopelee-client-portal.netlify.app
+
+   https://dopeleeprezzed-oss.github.io/dopelee-believer-portal/?
