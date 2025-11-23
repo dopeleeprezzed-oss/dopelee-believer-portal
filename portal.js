@@ -496,5 +496,27 @@ function showError(message) {
   document.getElementById('errorMessage').textContent = message;
   showSection('error');
 }
+/**
+ * Contact Us via Email
+ */
+function contactUs(orderId) {
+  const subject = encodeURIComponent(`Order ${orderId} - Question`);
+  const body = encodeURIComponent(`Hello,\n\nI have a question about my order #${orderId}.\n\n`);
+  
+  // Try multiple methods to open email
+  const mailtoLink = `mailto:dopeleeprezzed@gmail.com?subject=${subject}&body=${body}`;
+  
+  // Method 1: Direct window.location
+  window.location.href = mailtoLink;
+  
+  // Method 2: Fallback - open in new window after short delay
+  setTimeout(() => {
+    const mailWindow = window.open(mailtoLink, '_blank');
+    if (!mailWindow) {
+      // Method 3: If blocked, show alert with email
+      alert('Please email us at: dopeleeprezzed@gmail.com\n\nSubject: Order ' + orderId + ' - Question');
+    }
+  }, 100);
+}
 
 
