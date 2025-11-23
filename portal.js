@@ -214,14 +214,13 @@ function showOrderDetails(index) {
     ${trackingSection}
     
     <div class="action-buttons">
-      <a href="mailto:dopeleeprezzed@gmail.com?subject=Order ${orderId} - Question" 
-         class="btn-secondary">
-        📧 Contact Us
-      </a>
-      <button onclick="downloadInvoice(${index})" class="btn-secondary">
-        📄 Download Invoice
-      </button>
-    </div>
+  <button onclick="contactUs('${orderId}')" class="btn-secondary">
+    📧 Contact Us
+  </button>
+  <button onclick="downloadInvoice(${index})" class="btn-secondary">
+    📄 Download Invoice
+  </button>
+</div>
   `;
   
   showSection('orderDetails');
@@ -497,4 +496,5 @@ function showError(message) {
   document.getElementById('errorMessage').textContent = message;
   showSection('error');
 }
+
 
