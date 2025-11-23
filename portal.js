@@ -17,7 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   if (emailParam) {
     document.getElementById('emailInput').value = emailParam;
-    document.getElementById('lookupForm').dispatchEvent(new Event('submit'));
+    // Trigger form submission programmatically
+    setTimeout(() => {
+      document.getElementById('lookupForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    }, 100);
   }
   
   // Form submission
@@ -64,7 +67,7 @@ async function loadOrders(email) {
     
     const data = await response.json();
     
-    console.log('API Response:', data); // Debug log
+    console.log('API Response received'); // Debug log
     
     if (!data.values || data.values.length < 2) {
       throw new Error('No data in sheet');
@@ -494,5 +497,4 @@ function showError(message) {
   document.getElementById('errorMessage').textContent = message;
   showSection('error');
 }
-
 
