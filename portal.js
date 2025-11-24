@@ -57,7 +57,7 @@ async function loadOrders(email) {
       throw new Error('No data in sheet');
     }
     const customerOrders = data.values.slice(1).filter(row => {
-      const rowEmail = row[5];
+      const rowEmail = row[6];
       return rowEmail && rowEmail.toLowerCase().trim() === email.toLowerCase().trim();
     });
     console.log('Found orders:', customerOrders.length);
@@ -269,4 +269,5 @@ function showError(msg) {
   document.getElementById('errorMessage').textContent = msg;
   showSection('error');
 }
+
 
