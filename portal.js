@@ -44,7 +44,7 @@ async function handleLookup(e) {
 }
 
 async function loadOrders(email) {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A:AI?key=${API_KEY}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!A:AJ?key=${API_KEY}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -269,5 +269,6 @@ function showError(msg) {
   document.getElementById('errorMessage').textContent = msg;
   showSection('error');
 }
+
 
 
