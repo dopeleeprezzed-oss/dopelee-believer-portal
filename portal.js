@@ -524,17 +524,19 @@ function showError(message) {
   showSection('error');
 }
 /**
+/**
  * Contact Us via Email
  */
 function contactUs(orderId) {
-  const subject = encodeURIComponent(`Order ${orderId} - Question`);
-  const body = encodeURIComponent(`Hello,\n\nI have a question about my order #${orderId}.\n\n`);
+  const subject = `Order ${orderId} - Question`;
+  const body = `Hello,\n\nI have a question about my order #${orderId}.\n\n`;
   
-  // Try multiple methods to open email
-  const mailtoLink = `mailto:dopeleeprezzed@gmail.com?subject=${subject}&body=${body}`;
+  // Create mailto link
+  const mailtoLink = `mailto:dopeleeprezzed@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   
-  // Method 1: Direct window.location
+  // Open email client
   window.location.href = mailtoLink;
+}
   
   // Method 2: Fallback - open in new window after short delay
   setTimeout(() => {
@@ -545,6 +547,7 @@ function contactUs(orderId) {
     }
   }, 100);
 }
+
 
 
 
