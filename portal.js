@@ -14,11 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
   
   if (emailParam) {
     document.getElementById('emailInput').value = emailParam;
-    setTimeout(() => {
-      document.getElementById('lookupForm').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-    }, 100);
+    window.onload = () => {
+  const emailInput = document.getElementById('emailInput');
+  if (emailInput.value.trim() !== '') {
+    document.getElementById('lookupForm').dispatchEvent(
+      new Event('submit', { bubbles: true, cancelable: true })
+    );
   }
-  
+};
+ 
   document.getElementById('lookupForm').addEventListener('submit', handleLookup);
 });
 
@@ -265,3 +269,4 @@ function showError(msg) {
   document.getElementById('errorMessage').textContent = msg;
   showSection('error');
 }
+
