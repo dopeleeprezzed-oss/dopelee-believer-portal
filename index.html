@@ -3,417 +3,879 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dopelee Prezzed by S™ | Your Smart Legacy Portal</title>
-
+  <title>Dopelee Prezzed by S™ | Order Personalization</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --black: #000;
-      --white: #fff;
-      --text-muted: #afafaf;
-      --gold: #D4AF37;
-    }
+:root {
+  --bg-dark: #050509;
+  --bg-card: #0f1018;
+  --bg-input: #1a1b26;
+  --text-main: #f5f5ff;
+  --text-muted: #b9bed8;
+  --text-dim: #7a7f9a;
+  --accent-gold: #e9ff60;
+  --accent-blue: #0a95a8;
+  --accent-pink: #fd26fd;
+  --accent-violet: #3461fa;
+  --accent-cyan: #0ff0b8;
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --shadow-heavy: 0 24px 60px rgba(0, 0, 0, 0.9);
+  --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.7);
+}
 
-    body {
-      margin: 0;
-      background: #000;
-      color: var(--white);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    /* ===============================
-        LUXURY GRADIENT HEADER BAR
-       =============================== */
-    .gradient-header {
-      width: 100%;
-      padding: 70px 20px 90px;
-      text-align: center;
-      background: linear-gradient(
-        90deg,
-        #5aa0a9,
-        #8beab3,
-        #f7f59c,
-        #f56cea,
-        #8c6cf7
-      );
-    }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at top, #181829 0%, #050509 40%, #000 100%);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 20px;
+}
 
-    .gradient-header img {
-      height: 150px;
-      margin-bottom: 15px;
-    }
+.brand-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+  margin-bottom: 25px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan), var(--accent-gold), var(--accent-pink), var(--accent-violet));
+  border-radius: 50px;
+  width: 90%;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: var(--shadow-card);
+}
 
-    .gradient-title {
-      font-size: 3rem;
-      font-weight: 900;
-      color: #000;
-      margin: 10px 0;
-    }
+.brand-logo-large {
+  width: 95px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  object-fit: contain;
+}
 
-    .gradient-sub {
-      font-size: 1.3rem;
-      color: #000;
-      opacity: 0.9;
-      font-style: italic;
-      margin-top: 8px;
-    }
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000000 !important;
+  text-align: center;
+  letter-spacing: 0.5px;
+  -webkit-text-fill-color: #000000 !important;
+  text-shadow: none;
+}
 
-    /* ===============================
-        MAIN CONTENT WRAPPER
-       =============================== */
-    .container {
-      width: 100%;
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-      flex: 1;
-    }
+.header {
+  max-width: 720px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
 
-    #content {
-      min-height: 300px;
-    }
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  background: linear-gradient(120deg, var(--accent-gold), var(--accent-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 10px;
+}
 
-    .loading {
-      text-align: center;
-      padding: 40px;
-      color: var(--text-muted);
-      font-size: 1.2rem;
-    }
+.subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 580px;
+  margin: 0 auto;
+}
 
-    /* FOOTER */
-    .footer {
-      text-align: center;
-      padding: 40px 20px;
-      background: #000;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      margin-top: 80px;
-    }
+.form-container {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-heavy);
+}
 
-    .footer a {
-      color: var(--gold);
-      text-decoration: none;
-      margin: 0 8px;
-    }
+.step {
+  display: none;
+}
 
-    .footer p {
-      margin: 6px 0;
-      color: var(--text-muted);
-    }
+.step.active {
+  display: block;
+}
+
+.step-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.step-description {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-input);
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+textarea {
+  min-height: 100px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+input[readonly] {
+  background: rgba(233, 255, 96, 0.05) !important;
+  border-color: var(--accent-gold) !important;
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.helper-text {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+}
+
+.option-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 18px 20px;
+  background: var(--bg-input);
+  border-radius: 12px;
+  border: 2px solid var(--border-soft);
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.option-card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-2px);
+}
+
+.option-card.selected {
+  border-color: var(--accent-gold);
+  background: rgba(233, 255, 96, 0.08);
+}
+
+.option-card input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--accent-gold);
+}
+
+.option-card span {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.template-card {
+  background: #1d1f27;
+  padding: 14px;
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.25s ease;
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+
+.template-card img, .template-thumb {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  display: block;
+}
+
+.template-title {
+  display: block;
+  margin-top: 10px;
+  color: #dcdcdc;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.template-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-blue);
+}
+
+.template-card.selected {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 20px rgba(233, 255, 96, 0.4);
+}
+
+.template-card.selected .template-title {
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.preview-wrapper {
+  background: rgba(233, 255, 96, 0.03);
+  padding: 24px;
+  border-radius: 16px;
+  border: 2px solid var(--accent-gold);
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.preview-container {
+  max-width: 420px;
+  margin: 0 auto;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#mockupCanvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.btn {
+  padding: 14px 24px;
+  flex: 1;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-cyan));
+  color: #000;
+  box-shadow: 0 4px 16px rgba(233, 255, 96, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(233, 255, 96, 0.4);
+}
+
+.btn-secondary {
+  background: var(--bg-input);
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.success-screen {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.success-screen h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  background: linear-gradient(120deg, var(--accent-gold), var(--accent-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 16px;
+}
+
+.success-screen p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+  .form-container {
+    padding: 28px 20px;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
+  .template-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .button-group {
+    flex-direction: column-reverse;
+  }
+  .btn {
+    width: 100%;
+  }
+}
   </style>
 </head>
-
 <body>
-
-  <!-- ===============================
-       LUXURY GRADIENT HEADER
-     =============================== -->
-  <header class="gradient-header">
-    <img src="logo.png" alt="Dopelee Prezzed by S™">
-    <div class="gradient-title">DOPELEE PREZZED BY S™</div>
-    <div class="gradient-sub">Luxury keepsakes. Timelessly crafted.</div>
+  <header class="header">
+    <div class="brand-header">
+      <img src="https://dopeleeprezzed-oss.github.io/dopelee-form/logo.png" alt="Dopelee Prezzed Logo" class="brand-logo-large">
+      <div class="brand-title">DOPELEE PREZZED BY S™</div>
+    </div>
+    <h1>Order Personalization</h1>
+    <p class="subtitle">Tell us about your project so we can create your custom keepsake, VIP experience, or legacy photo book.</p>
   </header>
 
-  <!-- ===============================
-       MAIN PORTAL CONTENT
-     =============================== -->
-  <div class="container">
-    <div id="content">
-      <div class="loading">Loading your portal…</div>
-    </div>
+  <div class="form-container">
+    <section id="step1" class="step active">
+      <h2 class="step-title">Step 1 — Basic Information</h2>
+      <div class="form-group">
+        <label>Your Full Name *</label>
+        <input id="fullName" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Email Address *</label>
+        <input id="email" type="email" />
+      </div>
+      <div class="form-group">
+        <label>Order Number (optional)</label>
+        <input id="orderNumber" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Select Project Type *</label>
+        <div class="options-grid">
+          <div class="option-card" onclick="selectProjectType('keepsake')">
+            <input type="radio" name="projectType" value="keepsake" />
+            <span>Keepsake Order</span>
+          </div>
+          <div class="option-card" onclick="selectProjectType('vip')">
+            <input type="radio" name="projectType" value="vip" />
+            <span>VIP Bulk Gift</span>
+          </div>
+          <div class="option-card" onclick="selectProjectType('photobook')">
+            <input type="radio" name="projectType" value="photobook" />
+            <span>Photo Book Project</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="validateStep1()">Continue →</button>
+    </section>
+
+    <section id="step2aKeepsake" class="step">
+      <h2 class="step-title">Step 2 — Who or What Are We Honoring?</h2>
+      <div class="form-group">
+        <label>Person or Pet *</label>
+        <div class="options-grid">
+          <div class="option-card" onclick="setPersonOrPet('human')">
+            <input type="radio" name="honorType" value="human" />
+            <span>Person</span>
+          </div>
+          <div class="option-card" onclick="setPersonOrPet('pet')">
+            <input type="radio" name="honorType" value="pet" />
+            <span>Pet</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Name *</label>
+        <input id="honoredName" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Dates (optional)</label>
+        <input id="dates" type="text" placeholder="e.g., 2010 - 2024" />
+      </div>
+      <div class="button-group">
+        <button class="btn btn-secondary" onclick="goToStep('step1')">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep('step3aKeepsake')">Continue →</button>
+      </div>
+    </section>
+
+    <section id="step3aKeepsake" class="step">
+      <h2 class="step-title">Step 3 — Select Template</h2>
+      <p class="step-description">Choose a design template for your keepsake</p>
+      <div id="templateGrid" class="template-grid"></div>
+      <div class="button-group">
+        <button class="btn btn-secondary" onclick="goToStep('step2aKeepsake')">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep('step4aKeepsake')">Continue →</button>
+      </div>
+    </section>
+
+    <section id="step4aKeepsake" class="step">
+      <h2 class="step-title">Step 4 — Upload Photo & Add Wording</h2>
+      <div id="selectedTemplatePreview" style="margin-bottom: 32px; padding: 20px; background: rgba(233, 255, 96, 0.03); border: 2px solid var(--accent-gold); border-radius: 16px; text-align: center;">
+        <p style="color: var(--accent-gold); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;">✨ Your Selected Template</p>
+        <img id="selectedTemplateImage" src="" alt="Selected Template" style="max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6);">
+        <p id="selectedTemplateName" style="color: var(--text-muted); margin-top: 12px; font-size: 0.9rem;"></p>
+      </div>
+      <div class="form-group">
+        <label>Upload Photo *</label>
+        <input id="fileInput" type="file" accept="image/*" onchange="handleImageUpload(event)" />
+      </div>
+      <div class="form-group">
+        <label>What do you want the keepsake to say? *</label>
+        <textarea id="customWording" placeholder="Type exactly what you want to appear..." oninput="updateMockup()"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Designer Notes (optional)</label>
+        <textarea id="designerNotes" placeholder="Any special instructions for your designer..."></textarea>
+      </div>
+      <div id="mockupPreviewSection" class="preview-wrapper" style="display:none;">
+        <h3 style="text-align: center; color: var(--accent-gold); margin-bottom: 16px;">✨ Live Preview</h3>
+        <div class="preview-container">
+          <canvas id="mockupCanvas" width="800" height="1000"></canvas>
+        </div>
+      </div>
+      <div class="button-group">
+        <button class="btn btn-secondary" onclick="goToStep('step3aKeepsake')">← Back</button>
+        <button class="btn btn-primary" onclick="submitForm()">Submit Design</button>
+      </div>
+    </section>
+
+    <section id="step2bVIP" class="step">
+      <h2 class="step-title">Step 2 — VIP Bulk Gift Details</h2>
+      <div class="form-group">
+        <label>Business / Organization Name</label>
+        <input id="vipBusinessName" type="text" />
+      </div>
+      <div class="form-group">
+        <label>Who are these gifts for? *</label>
+        <textarea id="vipGiftsFor" placeholder="e.g., Top real estate clients, Pet salon VIP members..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Estimated Quantity *</label>
+        <input id="vipQuantity" type="text" placeholder="e.g., 10-25, 50+" />
+      </div>
+      <div class="form-group">
+        <label>Ideal Delivery Date *</label>
+        <input id="vipDeliveryDate" type="date" />
+      </div>
+      <div class="form-group">
+        <label>Budget Range</label>
+        <select id="vipBudget">
+          <option value="">Select budget range...</option>
+          <option value="250-500">$250–$500</option>
+          <option value="500-1000">$500–$1,000</option>
+          <option value="1000-2500">$1,000–$2,500</option>
+          <option value="2500+">$2,500+</option>
+          <option value="not-sure">Not sure yet</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Additional Notes (optional)</label>
+        <textarea id="vipNotes" placeholder="Any other details we should know..."></textarea>
+      </div>
+      <div class="button-group">
+        <button class="btn btn-secondary" onclick="goToStep('step1')">← Back</button>
+        <button class="btn btn-primary" onclick="submitForm()">Submit VIP Request</button>
+      </div>
+    </section>
+
+    <section id="step2cPhotobook" class="step">
+      <h2 class="step-title">Step 2 — Photo Book Details</h2>
+      <div class="form-group">
+        <label>Order Link (Auto-filled) *</label>
+        <input id="photoBookOrderLink" type="text" readonly style="background: rgba(233, 255, 96, 0.05); border-color: var(--accent-gold);" />
+        <div class="helper-text" style="color: var(--text-muted); font-size: 0.85rem; margin-top: 6px;">This link is automatically filled from your order confirmation.</div>
+      </div>
+      <div class="form-group">
+        <label>Number of Pages *</label>
+        <select id="photobookPages">
+          <option value="">Select page count...</option>
+          <option value="24-page">24-Page Landscape Photobook (11" x 8.5")</option>
+          <option value="52-page">52-Page Landscape Photobook (11" x 8.5")</option>
+          <option value="74-page">74-Page Landscape Photobook (11" x 8.5")</option>
+          <option value="100-page">100-Page Landscape Photobook (11" x 8.5")</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>What is this photo book celebrating? *</label>
+        <select id="bookCelebration">
+          <option value="">Select celebration type...</option>
+          <option value="memorial">Memorial / Life Celebration</option>
+          <option value="birthday">Birthday Celebration</option>
+          <option value="anniversary">Anniversary</option>
+          <option value="wedding">Wedding</option>
+          <option value="graduation">Graduation</option>
+          <option value="baby">Baby / New Arrival</option>
+          <option value="family">Family History / Legacy</option>
+          <option value="pet">Pet Memorial / Celebration</option>
+          <option value="retirement">Retirement</option>
+          <option value="other">Other Celebration</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Who will this book honor or feature? *</label>
+        <textarea id="bookHonor" placeholder="Share names, relationships, and the story you want to tell..."></textarea>
+        <div class="helper-text" style="color: var(--text-muted); font-size: 0.85rem; margin-top: 6px;">Example: "Celebrating Mom's 60 years of life - Mary Johnson, beloved mother, grandmother, and teacher."</div>
+      </div>
+      <div class="form-group">
+        <label>Upload Your Photos</label>
+        <div style="padding: 20px; background: rgba(233, 255, 96, 0.05); border: 2px solid var(--accent-gold); border-radius: 12px; text-align: center;">
+          <p style="color: var(--accent-gold); font-weight: 600; font-size: 1rem; margin-bottom: 12px;">📸 Legacy Photo Uploader</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Click below to upload all your photos for this photo book project.</p>
+          <button type="button" class="btn btn-primary" onclick="window.open('https://script.google.com/macros/s/AKfycbypR2v8moVL72nXdl4hnJWEma3aPSUgq_-JAQ1E9XPamfFjsfPMjJRo6zq9i_8oR-ID/exec', '_blank')" style="margin: 0 auto;">🚀 Open Photo Uploader</button>
+        </div>
+      </div>
+      <div class="button-group">
+        <button class="btn btn-secondary" onclick="goToStep('step1')">← Back</button>
+        <button class="btn btn-primary" onclick="submitForm()">Submit Photo Book Request</button>
+      </div>
+    </section>
+
+    <section id="successScreen" class="step success-screen">
+      <div style="text-align: center;">
+        <div style="font-size: 4rem; margin-bottom: 20px;">✨</div>
+        <h2>Submission Received!</h2>
+        <p style="color: var(--text-muted); margin: 20px 0;">Your personalization has been submitted!<br>Taking you back to your order portal...</p>
+        <div style="margin-top: 30px;">
+          <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid rgba(233,255,96,0.3); border-top: 4px solid var(--accent-gold); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        </div>
+      </div>
+    </section>
   </div>
 
-  <!-- ===============================
-        SMART PORTAL JAVASCRIPT ENGINE
-     =============================== -->
 <script>
+const HUMAN_TEMPLATES = [
+  { name: "Golden Legacy", file: "Golden Legacy template.png" },
+  { name: "Custom Legacy Noir", file: "Custom Legacy Noir Template.png" },
+  { name: "Custom Memorial Product Orders", file: "Custom Memorial Product Orders.png" },
+  { name: "Iris Remembrance", file: "Iris Remembrance Template.png" },
+  { name: "Legacy Doves", file: "Legacy Doves.png" },
+  { name: "Legacy of Rose", file: "Legacy of Rose.png" },
+  { name: "Legacy Shadow", file: "Legacy Shadow Template.png" },
+  { name: "Custom Eternal Glow", file: "Custom Eternal Glow Template.png" }
+];
 
-//////////////////////////////////////////////////////////////
-//  CONFIGURATION
-//////////////////////////////////////////////////////////////
+const PET_TEMPLATES = [
+  { name: "Antique Gold Legacy Frame", file: "Antique Gold Legacy Frame.png" },
+  { name: "Legacy Halo Wings", file: "Legacy Halo Wings.png" },
+  { name: "Minimalist Tribute", file: "Minimalist Tribute.png" },
+  { name: "Modern Collage Scrapbook", file: "Modern Collage Scrapbook.png" },
+  { name: "Photo Frame Legacy", file: "Photo Frame Legacy.png" },
+  { name: "Rainbow Bridge Cloud", file: "Rainbow Bridge Cloud.png" }
+];
 
-const SHEET_ID = "1vhv6D32H97WQHgvtC6Jh_6CTb4u1txKk98mjKDCKW_A";
-const API_KEY = "AIzaSyBeteoBZZlHtydPRd-CqBQ1E0edQPXxtEE";
-const SMARTFORM_URL = "https://dopeleeprezzed-oss.github.io/dopelee-form/";
+let projectType = "";
+let selectedPersonOrPet = "";
+let selectedTemplate = "";
+let selectedTemplateName = "";
+let uploadedImage = null;
 
-const SHEETS = {
-  KEEPSAKES: "KEEPSAKES",
-  VIP: "VIP_PROJECTS",
-  PHOTOBOOKS: "PHOTOBOOKS",
-  PARTNERSHIPS: "PARTNERSHIPS"
-};
+function goToStep(id) {
+  document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  if (id === "step3aKeepsake" && selectedPersonOrPet) {
+    loadTemplates();
+  }
+  if (id === "step4aKeepsake" && selectedTemplate) {
+    showSelectedTemplatePreview();
+  }
+  window.scrollTo(0, 0);
+}
 
-let currentEmail = "";
-let allOrders = [];
+function showSelectedTemplatePreview() {
+  const previewImg = document.getElementById("selectedTemplateImage");
+  const previewName = document.getElementById("selectedTemplateName");
+  if (previewImg && previewName && selectedTemplate) {
+    previewImg.src = selectedTemplate.replace(/ /g, "%20");
+    previewName.textContent = selectedTemplateName;
+  }
+}
 
+function selectProjectType(type) {
+  projectType = type;
+  const radio = document.querySelector(`input[name="projectType"][value="${type}"]`);
+  if (radio) radio.checked = true;
+  document.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+  const selectedCard = document.querySelector(`input[name="projectType"][value="${type}"]`)?.closest('.option-card');
+  if (selectedCard) selectedCard.classList.add('selected');
+}
 
-//////////////////////////////////////////////////////////////
-//  PAGE LOAD – URL CHECK
-//////////////////////////////////////////////////////////////
+function validateStep1() {
+  const name = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const selected = document.querySelector("input[name='projectType']:checked");
+  if (!name || !email || !selected) {
+    alert("Please complete all required fields.");
+    return;
+  }
+  projectType = selected.value;
+  if (projectType === "keepsake") {
+    goToStep("step2aKeepsake");
+  } else if (projectType === "vip") {
+    goToStep("step2bVIP");
+  } else if (projectType === "photobook") {
+    goToStep("step2cPhotobook");
+  }
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const email = params.get("email");
-  const orderId = params.get("order");
+function setPersonOrPet(type) {
+  selectedPersonOrPet = type;
+  document.querySelectorAll("input[name='honorType']").forEach(r => {
+    r.checked = (r.value === type);
+  });
+  document.querySelectorAll('.option-card').forEach(card => {
+    const input = card.querySelector('input[name="honorType"]');
+    if (input && input.value === type) {
+      card.classList.add('selected');
+    } else {
+      card.classList.remove('selected');
+    }
+  });
+  loadTemplates();
+}
 
-  if (email) {
-    currentEmail = email;
-    loadOrdersByEmail(email);
-  } else if (orderId) {
-    loadOrderByID(orderId);
-  } else {
-    document.getElementById("content").innerHTML = `
-      <div class="loading">Enter your email to view your orders.</div>
+function loadTemplates() {
+  const container = document.getElementById("templateGrid");
+  if (!container) return;
+  container.innerHTML = "";
+  let list = [];
+  if (selectedPersonOrPet === "human") {
+    list = HUMAN_TEMPLATES;
+  } else if (selectedPersonOrPet === "pet") {
+    list = PET_TEMPLATES;
+  }
+  if (list.length === 0) {
+    container.innerHTML = '<p style="color: var(--text-dim); text-align: center; grid-column: 1/-1;">Please select Person or Pet above to see templates</p>';
+    return;
+  }
+  list.forEach(template => {
+    const card = document.createElement("div");
+    card.className = "template-card";
+    const imgURL = template.file.replace(/ /g, "%20");
+    card.innerHTML = `
+      <img src="${imgURL}" class="template-thumb" alt="${template.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23222%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-size=%2214%22%3E${template.name}%3C/text%3E%3C/svg%3E'">
+      <p class="template-title">${template.name}</p>
     `;
-  }
-});
-
-
-//////////////////////////////////////////////////////////////
-//  API FETCH
-//////////////////////////////////////////////////////////////
-
-async function fetchSheet(sheetName) {
-  const url =
-    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${sheetName}?key=${API_KEY}`;
-
-  const res = await fetch(url);
-  const json = await res.json();
-  return json.values || [];
+    card.onclick = () => {
+      selectedTemplate = template.file;
+      selectedTemplateName = template.name;
+      document.querySelectorAll(".template-card").forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+    };
+    container.appendChild(card);
+  });
 }
 
-
-//////////////////////////////////////////////////////////////
-//  LOAD ORDERS BY EMAIL
-//////////////////////////////////////////////////////////////
-
-async function loadOrdersByEmail(email) {
-  document.getElementById("content").innerHTML =
-    `<div class="loading">Searching orders for ${email}…</div>`;
-
-  const [keeps, vip, books, partners] = await Promise.all([
-    fetchSheet(SHEETS.KEEPSAKES),
-    fetchSheet(SHEETS.VIP),
-    fetchSheet(SHEETS.PHOTOBOOKS),
-    fetchSheet(SHEETS.PARTNERSHIPS)
-  ]);
-
-  allOrders = [
-    ...parseKeepsakes(keeps, email),
-    ...parseVIP(vip, email),
-    ...parseBooks(books, email),
-    ...parsePartners(partners, email)
-  ];
-
-  if (allOrders.length === 0) {
-    document.getElementById("content").innerHTML =
-      `<div class="loading">No orders found for ${email}.</div>`;
-  } else {
-    displayOrderList();
-  }
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = () => {
+      uploadedImage = img;
+      updateMockup();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 
-
-//////////////////////////////////////////////////////////////
-//  FIND ORDER BY ID
-//////////////////////////////////////////////////////////////
-
-async function loadOrderByID(orderId) {
-  document.getElementById("content").innerHTML =
-    `<div class="loading">Loading order ${orderId}…</div>`;
-
-  const [keeps, vip, books, partners] = await Promise.all([
-    fetchSheet(SHEETS.KEEPSAKES),
-    fetchSheet(SHEETS.VIP),
-    fetchSheet(SHEETS.PHOTOBOOKS),
-    fetchSheet(SHEETS.PARTNERSHIPS)
-  ]);
-
-  let order =
-    findOrder(keeps, orderId, "KEEPSAKE") ||
-    findOrder(vip, orderId, "VIP") ||
-    findOrder(books, orderId, "PHOTOBOOK") ||
-    findOrder(partners, orderId, "PARTNERSHIP");
-
-  if (!order) {
-    document.getElementById("content").innerHTML =
-      `<div class="loading">Order ${orderId} not found.</div>`;
-  } else {
-    displayOrderDetails(order);
-  }
+function updateMockup() {
+  if (!selectedTemplate || !uploadedImage) return;
+  const canvas = document.getElementById("mockupCanvas");
+  const previewSection = document.getElementById("mockupPreviewSection");
+  if (!canvas || !previewSection) return;
+  const ctx = canvas.getContext("2d");
+  const template = new Image();
+  template.crossOrigin = "anonymous";
+  template.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+    const photoWidth = canvas.width * 0.65;
+    const photoHeight = photoWidth * (uploadedImage.height / uploadedImage.width);
+    const photoX = (canvas.width - photoWidth) / 2;
+    const photoY = (canvas.height - photoHeight) / 2;
+    ctx.drawImage(uploadedImage, photoX, photoY, photoWidth, photoHeight);
+    const text = document.getElementById("customWording")?.value || "";
+    if (text) {
+      ctx.font = "bold 32px 'Playfair Display', serif";
+      ctx.fillStyle = "white";
+      ctx.textAlign = "center";
+      ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+      ctx.shadowBlur = 10;
+      const lines = text.split('\n');
+      let y = canvas.height - 60 - (lines.length * 40);
+      lines.forEach(line => {
+        ctx.fillText(line, canvas.width / 2, y);
+        y += 40;
+      });
+    }
+    previewSection.style.display = "block";
+  };
+  template.src = selectedTemplate.replace(/ /g, "%20");
 }
 
-
-//////////////////////////////////////////////////////////////
-//  PARSERS
-//////////////////////////////////////////////////////////////
-
-function parseKeepsakes(data, email) {
-  if (!data || data.length < 2) return [];
-
-  const out = [];
-  for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    if (!row[2]) continue;
-    if (row[2].toLowerCase() !== email.toLowerCase()) continue;
-
-    out.push({
-      type: "KEEPSAKE",
-      id: row[0],
-      status: row[6],
-      date: row[7] || row[8],
-      row
+async function submitForm() {
+  const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw-_tShknmieOjYDwn9kIddgBn_sG3OyZwxYOOAQmaG4JW0XdeYDU40fXhxCP722KYG/exec";
+  const baseData = {
+    fullName: document.getElementById("fullName").value,
+    email: document.getElementById("email").value,
+    orderNumber: document.getElementById("orderNumber")?.value || "",
+    projectType: projectType
+  };
+  let formData = { ...baseData };
+  if (projectType === "keepsake") {
+    formData.selectedPersonOrPet = selectedPersonOrPet;
+    formData.selectedTemplate = selectedTemplate;
+    formData.honoredName = document.getElementById("honoredName")?.value || "";
+    formData.dates = document.getElementById("dates")?.value || "";
+    formData.customWording = document.getElementById("customWording")?.value || "";
+    formData.designerNotes = document.getElementById("designerNotes")?.value || "";
+  } else if (projectType === "vip") {
+    formData.vipBusinessName = document.getElementById("vipBusinessName")?.value || "";
+    formData.vipGiftsFor = document.getElementById("vipGiftsFor")?.value || "";
+    formData.vipQuantity = document.getElementById("vipQuantity")?.value || "";
+    formData.vipDeliveryDate = document.getElementById("vipDeliveryDate")?.value || "";
+    formData.vipBudget = document.getElementById("vipBudget")?.value || "";
+    formData.vipNotes = document.getElementById("vipNotes")?.value || "";
+  } else if (projectType === "photobook") {
+    formData.photoBookOrderLink = document.getElementById("photoBookOrderLink")?.value || "";
+    formData.photobookPages = document.getElementById("photobookPages")?.value || "";
+    formData.bookCelebration = document.getElementById("bookCelebration")?.value || "";
+    formData.bookHonor = document.getElementById("bookHonor")?.value || "";
+  }
+  try {
+    await fetch(WEBHOOK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
     });
+    goToStep("successScreen");
+    launchConfetti();
+    const orderNum = baseData.orderNumber || "NEW-ORDER";
+    const portalLink = `https://dopeleeprezzed-oss.github.io/dopelee-believer-portal/?order=${orderNum}`;
+    setTimeout(() => {
+      window.location.href = portalLink;
+    }, 3000);
+  } catch (err) {
+    goToStep("successScreen");
+    launchConfetti();
+    const orderNum = baseData.orderNumber || "NEW-ORDER";
+    const portalLink = `https://dopeleeprezzed-oss.github.io/dopelee-believer-portal/?order=${orderNum}`;
+    setTimeout(() => {
+      window.location.href = portalLink;
+    }, 3000);
   }
-  return out;
 }
 
-function parseVIP(data, email) {
-  if (!data || data.length < 2) return [];
-
-  const out = [];
-  for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    if (!row[2]) continue;
-    if (row[2].toLowerCase() !== email.toLowerCase()) continue;
-
-    out.push({
-      type: "VIP",
-      id: row[0],
-      status: row[6],
-      date: row[7],
-      row
-    });
-  }
-  return out;
+function launchConfetti() {
+  const end = Date.now() + 3000;
+  const colors = ["#e9ff60", "#0a95a8", "#fd26fd", "#3461fa", "#0ff0b8"];
+  (function frame() {
+    const p = document.createElement("div");
+    p.style.position = "fixed";
+    p.style.zIndex = "9999";
+    p.style.width = "10px";
+    p.style.height = "10px";
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.borderRadius = "50%";
+    p.style.top = "-20px";
+    p.style.left = Math.random() * window.innerWidth + "px";
+    p.style.opacity = "1";
+    p.style.transition = "transform 3s linear, opacity 3s ease-out";
+    p.style.pointerEvents = "none";
+    document.body.appendChild(p);
+    setTimeout(() => {
+      p.style.transform = `translateY(${window.innerHeight + 50}px) rotate(${Math.random() * 360}deg)`;
+      p.style.opacity = "0";
+    }, 10);
+    setTimeout(() => p.remove(), 3100);
+    if (Date.now() < end) requestAnimationFrame(frame);
+  })();
 }
 
-function parseBooks(data, email) {
-  if (!data || data.length < 2) return [];
-
-  const out = [];
-  for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    if (!row[2]) continue;
-    if (row[2].toLowerCase() !== email.toLowerCase()) continue;
-
-    out.push({
-      type: "PHOTOBOOK",
-      id: row[0],
-      status: row[6],
-      date: row[7] || row[8],
-      row
-    });
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('name')) document.getElementById('fullName').value = urlParams.get('name');
+  if (urlParams.has('email')) document.getElementById('email').value = urlParams.get('email');
+  if (urlParams.has('orderNumber')) document.getElementById('orderNumber').value = urlParams.get('orderNumber');
+  if (urlParams.has('orderLink')) {
+    document.getElementById('photoBookOrderLink').value = urlParams.get('orderLink');
   }
-  return out;
-}
-
-function parsePartners(data, email) {
-  if (!data || data.length < 2) return [];
-
-  const out = [];
-  for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    if (!row[4]) continue;
-    if (row[4].toLowerCase() !== email.toLowerCase()) continue;
-
-    out.push({
-      type: "PARTNERSHIP",
-      id: row[0],
-      status: row[10],
-      date: row[1],
-      row
-    });
-  }
-  return out;
-}
-
-
-//////////////////////////////////////////////////////////////
-//  FIND ORDER BY ID IN RAW SHEET
-//////////////////////////////////////////////////////////////
-
-function findOrder(data, orderId, type) {
-  if (!data || data.length < 2) return null;
-  for (let i = 1; i < data.length; i++) {
-    if (data[i][0] === orderId) {
-      return {
-        type,
-        id: orderId,
-        status: data[i][6] || data[i][10] || "",
-        row: data[i]
-      };
+  if (urlParams.has('projectType')) {
+    const projectTypeParam = urlParams.get('projectType');
+    selectProjectType(projectTypeParam);
+    if (urlParams.has('name') && urlParams.has('email')) {
+      setTimeout(() => {
+        if (projectTypeParam === 'keepsake') {
+          goToStep('step2aKeepsake');
+        } else if (projectTypeParam === 'vip') {
+          goToStep('step2bVIP');
+        } else if (projectTypeParam === 'photobook') {
+          goToStep('step2cPhotobook');
+        }
+      }, 500);
     }
   }
-  return null;
-}
-
-
-//////////////////////////////////////////////////////////////
-//  DISPLAY ORDER LIST
-//////////////////////////////////////////////////////////////
-
-function displayOrderList() {
-  let html = `
-    <h2>Your Orders for ${currentEmail}</h2>
-    <p>Select an order to view details.</p>
-  `;
-
-  allOrders.forEach(order => {
-    html += `
-      <div style="padding:15px; border-bottom:1px solid #333; cursor:pointer;"
-           onclick='displayOrderDetails(${JSON.stringify(order).replace(/"/g, "&quot;")})'>
-        <strong>${order.type}</strong> — ${order.id}<br>
-        <span style="color:var(--text-muted);">${order.status}</span>
-      </div>
-    `;
-  });
-
-  document.getElementById("content").innerHTML = html;
-}
-
-
-//////////////////////////////////////////////////////////////
-//  DISPLAY ORDER DETAILS
-//////////////////////////////////////////////////////////////
-
-function displayOrderDetails(order) {
-  const row = order.row;
-
-  let html = `
-    <button onclick="displayOrderList()" 
-            style="margin-bottom:20px; padding:10px 20px;">
-      ← Back
-    </button>
-
-    <h2>${order.type} — ${order.id}</h2>
-    <p>Status: ${order.status}</p>
-  `;
-
-  document.getElementById("content").innerHTML = html;
-}
-
+});
 </script>
-
-<!-- ===============================
-       FOOTER
-     =============================== -->
-<footer class="footer">
-  <p>🖤 DOPELEE PREZZED BY S™</p>
-  <p>Luxury keepsakes. Timelessly crafted.</p>
-
-  <p>
-    <a href="https://www.dopeleeprezzedbys.com" target="_blank">Visit Website</a> •
-    <a href="mailto:info@dopeleeprezzedbysllc.com">Contact Us</a>
-  </p>
-
-  <p style="font-size:0.85rem; opacity:0.8;">
-    © 2025 Dopelee Prezzed by S, LLC. All rights reserved.
-  </p>
-</footer>
-
 </body>
 </html>
-
-
