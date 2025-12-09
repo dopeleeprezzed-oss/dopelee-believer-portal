@@ -630,7 +630,7 @@ function buildPartnershipDetails(row) {
 
 function determineKeepsakeNextAction(row) {
   const status = row[6] || '';
-  const formComplete = row[42] || false;
+  const formComplete = row[41] || false; // AP - Form_Complete (column 42, index 41)
   const orderId = row[0] || '';
   const customerEmail = row[2] || '';
   const customerName = row[1] || '';
@@ -707,6 +707,27 @@ function determineKeepsakeNextAction(row) {
 
 function determineVIPNextAction(row) {
   const status = row[6] || '';
+  const orderId = row[0] || '';
+  const customerEmail = row[2] || '';
+  const customerName = row[1] || '';
+  const orderNumber = row[4] || orderId;
+  
+  // If they haven't filled the form yet
+  if (status === 'New' || status === 'Payment Received') {
+    const vipFormLink = `${SMARTFORM_URL}?orderNumber=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(customerEmail)}&name=${encodeURIComponent(customerName)}&projectType=vip`;
+    
+    return `
+      <div class="detail-card" style="background: linear-gradient(135deg, rgba(233, 255, 96, 0.1), rgba(10, 149, 168, 0.1)); border: 2px solid #e9ff60;">
+        <h3 style="color: #e9ff60; margin-bottom: 1rem;">📝 Next Step: Tell Us About Your VIP Project</h3>
+        <p style="color: #b8bac0; margin-bottom: 1.5rem;">
+          Share your vision! Tell us about your business, what you're celebrating, and your gift needs.
+        </p>
+        <a href="${vipFormLink}" target="_blank" class="btn-primary" style="display: inline-block; text-decoration: none; padding: 1rem 2rem; background: linear-gradient(135deg, #e9ff60, #0ff0b8); color: #000; border-radius: 12px; font-weight: 700; text-align: center;">
+          💼 Complete VIP Project Details
+        </a>
+      </div>
+    `;
+  }
   
   if (status === 'Form Received' || status === 'Awaiting Quote') {
     return `
@@ -747,7 +768,7 @@ function determineVIPNextAction(row) {
 
 function determinePhotobookNextAction(row) {
   const status = row[6] || '';
-  const formComplete = row[42] || false;
+  const formComplete = row[41] || false; // AP - Form_Complete (column 42, index 41)
   const orderId = row[0] || '';
   const customerEmail = row[2] || '';
   const customerName = row[1] || '';
@@ -834,15 +855,23 @@ function determinePhotobookNextAction(row) {
 
 function determinePartnershipNextAction(row) {
   const status = row[10] || '';
+  const partnerId = row[0] || '';
+  const contactEmail = row[4] || '';
+  const contactName = row[2] || '';
+  const businessName = row[5] || '';
   
   if (status === 'Pending Setup' || status === 'Pending Review') {
+    const agreementFormLink = `${SMARTFORM_URL}?orderNumber=${encodeURIComponent(partnerId)}&email=${encodeURIComponent(contactEmail)}&name=${encodeURIComponent(contactName)}&projectType=partnership`;
+    
     return `
-      <div class="detail-card" style="background: rgba(233, 255, 96, 0.1); border: 2px solid #e9ff60;">
-        <h3 style="color: #e9ff60; margin-bottom: 1rem;">⏳ Application Under Review</h3>
-        <p style="color: #b8bac0;">
-          We're reviewing your partnership application. 
-          We'll contact you within 2-3 business days to schedule installation!
+      <div class="detail-card" style="background: linear-gradient(135deg, rgba(233, 255, 96, 0.1), rgba(10, 149, 168, 0.1)); border: 2px solid #e9ff60;">
+        <h3 style="color: #e9ff60; margin-bottom: 1rem;">📝 Next Step: Review & Complete Your Agreement</h3>
+        <p style="color: #b8bac0; margin-bottom: 1.5rem;">
+          Welcome to the Legacy Lounge™ Partner Network! Review the partnership terms and complete your setup details.
         </p>
+        <a href="${agreementFormLink}" target="_blank" class="btn-primary" style="display: inline-block; text-decoration: none; padding: 1rem 2rem; background: linear-gradient(135deg, #e9ff60, #0ff0b8); color: #000; border-radius: 12px; font-weight: 700; text-align: center;">
+          🤝 Complete Partnership Agreement
+        </a>
       </div>
     `;
   }
