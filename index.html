@@ -41,27 +41,58 @@
     
     .header {
       background: linear-gradient(90deg, #0a95a8, #0ff0b8, #e9ff60, #fd26fd, #3461fa);
-      padding: 2rem;
+      padding: 3rem 2rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent);
+      pointer-events: none;
     }
     
     .logo-container {
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+      z-index: 1;
+      animation: logoGlow 3s ease-in-out infinite;
+    }
+    
+    @keyframes logoGlow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(233, 255, 96, 0.3)); }
+      50% { filter: drop-shadow(0 0 40px rgba(233, 255, 96, 0.5)); }
     }
     
     .header h1 {
       color: #000;
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 1;
     }
     
     .header p {
       color: #000;
-      font-size: 0.9rem;
-      opacity: 0.8;
+      font-size: 1.1rem;
+      opacity: 0.85;
+      font-weight: 500;
+      font-style: italic;
+      letter-spacing: 0.03em;
+      position: relative;
+      z-index: 1;
     }
     
     .container {
@@ -328,6 +359,18 @@
     }
     
     @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.75rem;
+      }
+      
+      .header p {
+        font-size: 0.95rem;
+      }
+      
+      .logo-container img {
+        height: 100px !important;
+      }
+      
       .search-form {
         flex-direction: column;
       }
@@ -351,10 +394,10 @@
   
   <!-- HEADER -->
   <div class="header">
-    <div class="logo-container" style="margin-bottom: 1rem;">
+    <div class="logo-container" style="margin-bottom: 1.5rem;">
       <img src="logo.png" 
            alt="Dopelee Prezzed by S™" 
-           style="height: 80px; width: auto;">
+           style="height: 140px; width: auto;">
     </div>
     <h1>DOPELEE PREZZED BY S™</h1>
     <p>Luxury keepsakes. Timelessly crafted.</p>
@@ -377,7 +420,7 @@
       </form>
       
       <p style="margin-top: 1rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-        Can't find your order? <a href="mailto:dopeleeprezzed@gmail.com?subject=Order%20Not%20Found" style="color: var(--accent-gold); text-decoration: none;">Contact us</a>
+        Can't find your order? <a href="/cdn-cgi/l/email-protection#e98d86998c858c8c999b8c93938c8da98e84888085c78a8684d69a9c8b838c8a9dd4a69b8d8c9bccdbd9a7869dccdbd9af869c878d" style="color: var(--accent-gold); text-decoration: none;">Contact us</a>
       </p>
     </div>
     
@@ -393,11 +436,11 @@
     <p>🖤 <strong>DOPELEE PREZZED BY S™</strong></p>
     <p>Luxury keepsakes. Timelessly crafted.</p>
     <p><a href="https://www.dopeleeprezzedbys.com" target="_blank" style="color: #e9ff60; text-decoration: none;">Visit Website</a> • 
-    <a href="mailto:dopeleeprezzed@gmail.com" style="color: #e9ff60; text-decoration: none;">Contact Us</a></p>
+    <a href="/cdn-cgi/l/email-protection#3c58534c595059594c4e59464659587c5b515d5550125f5351" style="color: #e9ff60; text-decoration: none;">Contact Us</a></p>
     <p style="margin-top: 1rem; font-size: 0.8rem;">© 2025 Dopelee Prezzed by S, LLC. All rights reserved.</p>
   </div>
   
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     /* ═══════════════════════════════════════════════════════════════
        DOPELEE SMART PORTAL - COMPLETE JAVASCRIPT
        ═══════════════════════════════════════════════════════════════ */
@@ -426,6 +469,8 @@
       const emailParam = urlParams.get('email');
       
       if (orderParam) {
+        // Direct link to specific order - hide search section
+        document.querySelector('.search-section').style.display = 'none';
         loadOrderByID(orderParam);
       } else if (emailParam) {
         document.getElementById('emailInput').value = emailParam;
@@ -682,9 +727,13 @@
         html = buildPartnershipDetails(order.row);
       }
       
-      // Add back button if we came from email search
+      // Add back button
       if (currentEmail) {
+        // Came from email search - back to order list
         html = `<button onclick="displayOrdersList()" class="btn-secondary" style="margin-bottom: 1rem;">← Back to All Orders</button>` + html;
+      } else {
+        // Came from direct link - back to search
+        html = `<button onclick="window.location.reload()" class="btn-secondary" style="margin-bottom: 1rem;">← Back to Search</button>` + html;
       }
       
       document.getElementById('content').innerHTML = html;
@@ -701,7 +750,8 @@
       const product = row[14] || 'N/A';
       const template = row[15] || 'N/A';
       const customWording = row[17] || '';
-      const orderTotal = row[37] ? `$${parseFloat(row[37]).toFixed(2)}` : 'N/A';
+      const orderTotalRaw = row[37];
+      const orderTotal = orderTotalRaw && !isNaN(parseFloat(orderTotalRaw)) ? `$${parseFloat(orderTotalRaw).toFixed(2)}` : 'Pending';
       const submittedDate = row[7] ? new Date(row[7]) : null;
       
       const formCompleteRaw = row[41];
@@ -1005,14 +1055,4 @@
     
     // Show loading
     function showLoading() {
-      document.getElementById('content').innerHTML = '<div class="loading">Loading your orders...</div>';
-    }
-    
-    // Show error
-    function showError(message) {
-      document.getElementById('content').innerHTML = `<div class="error">${message}</div>`;
-    }
-  </script>
-  
-</body>
-</html>
+      document.getElementById('content').innerHTML = '<div class="l
