@@ -415,6 +415,7 @@ function showOrderDetails(index) {
 function buildKeepsakeDetails(row) {
   const orderId = row[0] || 'N/A';
   const customerName = row[1] || 'N/A';
+  const firstName = customerName.split(' ')[0]; // Get first name
   const customerEmail = row[2] || '';
   const status = row[6] || 'Unknown';
   const submittedDate = row[7] ? new Date(row[7]) : null;
@@ -450,7 +451,11 @@ function buildKeepsakeDetails(row) {
   return `
     <div class="detail-card">
       <div class="detail-header">
-        <h2><span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">KEEPSAKE</span>Order #${orderId}</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your Legacy Journii begins here.</h2>
+        <div style="margin-bottom: 1rem;">
+          <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">KEEPSAKE</span>
+          <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId}</span>
+        </div>
         <div class="status-badge ${statusClass}">${status}</div>
       </div>
       
@@ -481,6 +486,8 @@ function buildKeepsakeDetails(row) {
  */
 function buildVIPDetails(row) {
   const orderId = row[0] || 'N/A';
+  const customerName = row[1] || 'N/A';
+  const firstName = customerName.split(' ')[0];
   const status = row[6] || 'Unknown';
   const submittedDate = row[7] ? new Date(row[7]) : null;
   const businessName = row[11] || 'N/A';
@@ -496,7 +503,11 @@ function buildVIPDetails(row) {
   return `
     <div class="detail-card">
       <div class="detail-header">
-        <h2><span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">VIP</span>Order #${orderId}</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your VIP Journii begins here.</h2>
+        <div style="margin-bottom: 1rem;">
+          <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">VIP</span>
+          <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId}</span>
+        </div>
         <div class="status-badge ${statusClass}">${status}</div>
       </div>
       
@@ -524,6 +535,8 @@ function buildVIPDetails(row) {
  */
 function buildPhotobookDetails(row) {
   const orderId = row[0] || 'N/A';
+  const customerName = row[1] || 'N/A';
+  const firstName = customerName.split(' ')[0];
   const status = row[6] || 'Unknown';
   const submittedDate = row[7] ? new Date(row[7]) : null;
   const pages = row[11] || 'N/A';
@@ -537,7 +550,11 @@ function buildPhotobookDetails(row) {
   return `
     <div class="detail-card">
       <div class="detail-header">
-        <h2><span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">PHOTO BOOK</span>Order #${orderId}</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your Photo Book Journii begins here.</h2>
+        <div style="margin-bottom: 1rem;">
+          <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">PHOTO BOOK</span>
+          <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId}</span>
+        </div>
         <div class="status-badge ${statusClass}">${status}</div>
       </div>
       
@@ -564,6 +581,8 @@ function buildPhotobookDetails(row) {
 function buildPartnershipDetails(row) {
   const partnerId = row[0] || 'N/A';
   const applicationDate = row[1] ? new Date(row[1]) : null;
+  const contactName = row[2] || 'N/A';
+  const firstName = contactName.split(' ')[0];
   const businessName = row[5] || 'N/A';
   const venueType = row[11] || 'N/A';
   const status = row[10] || 'Unknown';
@@ -577,7 +596,11 @@ function buildPartnershipDetails(row) {
   return `
     <div class="detail-card">
       <div class="detail-header">
-        <h2><span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">PARTNERSHIP</span>${businessName}</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your Partnership Journii begins here.</h2>
+        <div style="margin-bottom: 1rem;">
+          <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">PARTNERSHIP</span>
+          <span style="font-size: 0.9rem; color: var(--text-muted);">${businessName}</span>
+        </div>
         <div class="status-badge ${statusClass}">${status}</div>
       </div>
       
