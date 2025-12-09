@@ -1,1 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dopelee Prezzed by S™ | Your Smart Legacy Portal</title>
+
+  <!-- ============================
+       DOPELEE LUXURY STYLES
+       Black + Metallic Gold Edition
+     ============================ -->
+  <style>
+    :root {
+      --black-100: #0b0c0f;
+      --black-200: #141518;
+      --black-300: #1d1f24;
+      
+      /* Metallic Gold */
+      --gold: #D4AF37;
+      --gold-soft: rgba(212, 175, 55, 0.25);
+      --gold-glow: rgba(212, 175, 55, 0.55);
+
+      --white: #f4f4f4;
+      --gray: #b8bac0;
+    }
+
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--black-100);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    .header {
+      padding: 3.5rem 2rem;
+      text-align: center;
+      background: radial-gradient(circle at top, var(--gold-soft), transparent),
+                  linear-gradient(to right, transparent, var(--black-100), transparent);
+      border-bottom: 1px solid var(--gold-soft);
+    }
+
+    .header img {
+      height: 140px;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 0 10px var(--gold-soft));
+    }
+
+    .header h1 {
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--gold), #f9e8a6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.35rem;
+    }
+
+    .header p {
+      font-size: 1.15rem;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    /* MAIN WRAPPER */
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1.2rem;
+      flex: 1;
+    }
+
+    /* CONTENT AREA */
+    #content {
+      width: 100%;
+      min-height: 300px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--gray);
+      font-size: 1.1rem;
+    }
+
+    .error {
+      background: rgba(255, 50, 50, 0.1);
+      border: 1px solid rgba(255, 60, 60, 0.4);
+      color: #ff6b6b;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    /* ORDER DETAIL CARDS */
+    .detail-card {
+      background: var(--black-200);
+      padding: 2rem;
+      border-radius: 16px;
+      border: 1px solid var(--gold-soft);
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 18px rgba(0,0,0,0.35);
+    }
+
+    .detail-card h2 {
+      font-size: 1.85rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .status-badge {
+      padding: 0.6rem 1.1rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 12px;
+      display: inline-block;
+      margin-top: 0.6rem;
+    }
+
+    .status-confirmed { background: rgba(10,240,180,0.2); color: #0ff0b8; }
+    .status-production { background: var(--gold-soft); color: var(--gold); }
+    .status-shipped { background: rgba(52, 97, 250, 0.2); color: #3461fa; }
+    .status-delivered { background: rgba(212,175,55,0.25); color: var(--gold); }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 1rem 2rem;
+      border-radius: 14px;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--gold), #f0d58a);
+      color: #000;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      margin-top: 1.2rem;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    /* FLOATING GOLD BUBBLE BUTTON */
+    .floating-bubble {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 20px var(--gold-glow), 0 0 10px var(--gold);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 9999;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      font-size: 1.4rem;
+      color: #000;
+      font-weight: 900;
+    }
+
+    .floating-bubble:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px var(--gold), 0 0 15px var(--gold-glow);
+    }
+
+    /* MODAL OVERLAY */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+    }
+
+    /* MODAL BOX */
+    .modal-box {
+      background: var(--black-200);
+      width: 92%;
+      max-width: 420px;
+      padding: 2rem;
+      border-radius: 18px;
+      border: 1px solid var(--gold-soft);
+      position: relative;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .modal-box input {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      background: var(--black-300);
+      border: 1px solid var(--gold-soft);
+      color: var(--white);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--gold);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <!-- ✨ LUXURY HEADER — DOPELEE PREZZED BY S™ -->
+<div class="header">
+  <div class="logo-container" style="margin-bottom: 1.5rem;">
+    <img src="logo.png" 
+         alt="Dopelee Prezzed by S™" 
+         style="height: 140px; width: auto;">
+  </div>
+
+  <h1 class="brand-title">
+    <span class="shine">DOPELEE PREZZED BY S™</span>
+  </h1>
+
+  <p class="brand-sub">
+    Your Legacy Journii Begins Here.
+  </p>
+</div>
+
+<style>
+  .brand-title {
+    font-size: 2.6rem;
+    font-weight: 900;
+    color: #000;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+    position: relative;
+    z-index: 2;
+  }
+
+  .shine {
+    background: linear-gradient(90deg, #e9ff60, #0ff0b8, #fd26fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s infinite ease-in-out;
+  }
+
+  @keyframes shimmer {
+    0% { filter: drop-shadow(0 0 10px rgba(233,255,96,0.2)); }
+    50% { filter: drop-shadow(0 0 28px rgba(233,255,96,0.45)); }
+    100% { filter: drop-shadow(0 0 10px rgba(233,255,96,0.2)); }
+  }
+
+  .brand-sub {
+    font-size: 1.2rem;
+    color: #000;
+    opacity: 0.85;
+    font-style: italic;
+    z-index: 2;
+  }
+</style>
+
+
+  <!-- MAIN CONTAINER -->
+  <div class="container">
+    <div id="content">
+      <div class="loading">Loading your portal…</div>
+    </div>
+  </div>
+  <!-- ===============================
+       FLOATING GOLD SEARCH BUTTON
+     =============================== -->
+  <div class="floating-bubble" onclick="openTrackModal()">🔍</div>
+
+  <!-- ===============================
+       TRACK ANOTHER ORDER — MODAL UI
+     =============================== -->
+  <div class="modal-overlay" id="trackModal">
+    <div class="modal-box">
+      <div class="modal-close" onclick="closeTrackModal()">✕</div>
+      <div class="modal-title" style="background: linear-gradient(90deg, var(--gold), #f7d98a);
+                                      -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        Track Another Order
+      </div>
+
+      <input id="trackEmailInput" type="email" placeholder="Enter your email" />
+
+      <button class="btn-primary" onclick="trackEmailSearch()" style="width:100%; margin-top:0.3rem;">
+        Search Orders
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ===============================
+       SMART PORTAL JAVASCRIPT ENGINE
+     =============================== -->
+  <script>
+    /* ---------------------------------------------
+       CONFIGURATION
+    --------------------------------------------- */
+    const SHEET_ID = "1vhv6D32H97WQHgvtC6Jh_6CTb4u1txKk98mjKDCKW_A";
+    const API_KEY = "AIzaSyBeteoBZZlHtydPRd-CqBQ1E0edQPXxtEE";
+    const SMARTFORM_URL = "https://dopeleeprezzed-oss.github.io/dopelee-form/";
+
+    const SHEETS = {
+      KEEPSAKES: "KEEPSAKES",
+      VIP: "VIP_PROJECTS",
+      PHOTOBOOKS: "PHOTOBOOKS",
+      PARTNERSHIPS: "PARTNERSHIPS"
+    };
+
+    let currentEmail = "";
+    let allOrders = [];
+
+    /* ---------------------------------------------
+       PAGE LOAD — CHECK URL PARAMS
+    --------------------------------------------- */
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+
+      const email = params.get("email");
+      const orderId = params.get("order");
+
+      if (email) {
+        currentEmail = email;
+        loadOrdersByEmail(email);
+      } else if (orderId) {
+        loadOrderByID(orderId);
+      } else {
+        document.getElementById("content").innerHTML = `
+          <div class="loading">Welcome. Use the gold button to track an order.</div>
+        `;
+      }
+    });
+
+
+    /* ---------------------------------------------
+       OPEN / CLOSE TRACK MODAL
+    --------------------------------------------- */
+    function openTrackModal() {
+      document.getElementById("trackModal").style.display = "flex";
+    }
+
+    function closeTrackModal() {
+      document.getElementById("trackModal").style.display = "none";
+    }
+
+    function trackEmailSearch() {
+      const email = document.getElementById("trackEmailInput").value.trim();
+      if (!email) return;
+
+      closeTrackModal();
+      loadOrdersByEmail(email);
+    }
+
+
+    /* ---------------------------------------------
+       LOADING + ERROR UI
+    --------------------------------------------- */
+    function showLoading(text = "Loading…") {
+      document.getElementById("content").innerHTML = `
+        <div class="loading">${text}</div>
+      `;
+    }
+
+    function showError(msg) {
+      document.getElementById("content").innerHTML = `
+        <div class="error">${msg}</div>
+      `;
+    }
+
+
+    /* ---------------------------------------------
+       FETCH SHEET DATA
+    --------------------------------------------- */
+    async function fetchSheet(sheetName) {
+      const url =
+        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${sheetName}?key=${API_KEY}`;
+
+      const res = await fetch(url);
+      const json = await res.json();
+
+      return json.values || [];
+    }
+
+
+    /* ---------------------------------------------
+       LOAD ALL ORDERS FOR AN EMAIL
+    --------------------------------------------- */
+    async function loadOrdersByEmail(email) {
+      currentEmail = email;
+      showLoading(`Searching orders for ${email}…`);
+
+      try {
+        const [keeps, vip, books, partners] = await Promise.all([
+          fetchSheet(SHEETS.KEEPSAKES),
+          fetchSheet(SHEETS.VIP),
+          fetchSheet(SHEETS.PHOTOBOOKS),
+          fetchSheet(SHEETS.PARTNERSHIPS)
+        ]);
+
+        allOrders = [
+          ...parseKeepsakes(keeps, email),
+          ...parseVIP(vip, email),
+          ...parseBooks(books, email),
+          ...parsePartners(partners, email)
+        ];
+
+        if (allOrders.length === 0) {
+          showError(`No orders found for <strong>${email}</strong>.`);
+        } else {
+          displayOrderList();
+        }
+
+      } catch (err) {
+        console.error(err);
+        showError("Error loading your orders.");
+      }
+    }
+
+
+    /* ---------------------------------------------
+       LOAD A SINGLE ORDER BY ID
+    --------------------------------------------- */
+    async function loadOrderByID(orderId) {
+      showLoading(`Loading order #${orderId}…`);
+
+      try {
+        const [keeps, vip, books, partners] = await Promise.all([
+          fetchSheet(SHEETS.KEEPSAKES),
+          fetchSheet(SHEETS.VIP),
+          fetchSheet(SHEETS.PHOTOBOOKS),
+          fetchSheet(SHEETS.PARTNERSHIPS)
+        ]);
+
+        let order =
+          findOrder(keeps, orderId, "KEEPSAKE") ||
+          findOrder(vip, orderId, "VIP") ||
+          findOrder(books, orderId, "PHOTOBOOK") ||
+          findOrder(partners, orderId, "PARTNERSHIP");
+
+        if (!order) {
+          showError(`Order <strong>${orderId}</strong> not found.`);
+        } else {
+          displayOrderDetails(order);
+        }
+
+      } catch (err) {
+        console.error(err);
+        showError("Error loading your order.");
+      }
+    }
+
+
+    /* ---------------------------------------------
+       PARSE KEEPSAKE ROWS
+    --------------------------------------------- */
+    function parseKeepsakes(data, email) {
+      if (!data || data.length < 2) return [];
+
+      const out = [];
+
+      for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+
+        if (!row[2]) continue;
+        if (row[2].toLowerCase() !== email.toLowerCase()) continue;
+
+        out.push({
+          type: "KEEPSAKE",
+          id: row[0],
+          status: row[6],
+          date: row[7] || row[8],
+          row
+        });
+      }
+      return out;
+    }
+
+    /* ---------------------------------------------
+       PARSE VIP ROWS
+    --------------------------------------------- */
+    function parseVIP(data, email) {
+      if (!data || data.length < 2) return [];
+
+      const out = [];
+
+      for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+
+        if (!row[2]) continue;
+        if (row[2].toLowerCase() !== email.toLowerCase()) continue;
+
+        out.push({
+          type: "VIP",
+          id: row[0],
+          status: row[6],
+          date: row[7],
+          row
+        });
+      }
+      return out;
+    }
+
+    /* ---------------------------------------------
+       PARSE PHOTOBOOK ROWS
+    --------------------------------------------- */
+    function parseBooks(data, email) {
+      if (!data || data.length < 2) return [];
+
+      const out = [];
+
+      for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+
+        if (!row[2]) continue;
+        if (row[2].toLowerCase() !== email.toLowerCase()) continue;
+
+        out.push({
+          type: "PHOTOBOOK",
+          id: row[0],
+          status: row[6],
+          date: row[7] || row[8],
+          row
+        });
+      }
+      return out;
+    }
+
+    /* ---------------------------------------------
+       PARSE PARTNERSHIP ROWS
+    --------------------------------------------- */
+    function parsePartners(data, email) {
+      if (!data || data.length < 2) return [];
+
+      const out = [];
+
+      for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+
+        if (!row[4]) continue;
+        if (row[4].toLowerCase() !== email.toLowerCase()) continue;
+
+        out.push({
+          type: "PARTNERSHIP",
+          id: row[0],
+          status: row[10],
+          date: row[1],
+          row
+        });
+      }
+      return out;
+    }
+
+
+    /* ---------------------------------------------
+       FIND ORDER IN RAW SHEET DATA
+    --------------------------------------------- */
+    function findOrder(data, orderId, type) {
+      if (!data || data.length < 2) return null;
+
+      for (let i = 1; i < data.length; i++) {
+        if (data[i][0] === orderId) {
+          return {
+            type,
+            id: orderId,
+            status: data[i][6] || data[i][10] || "",
+            row: data[i]
+          };
+        }
+      }
+      return null;
+    }
+    /* ---------------------------------------------
+       DISPLAY LIST OF ORDERS
+    --------------------------------------------- */
+    function displayOrderList() {
+      allOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      let html = `
+        <div class="detail-card">
+          <h2 style="font-size:1.6rem; margin-bottom:0.3rem;">
+            Your Orders
+          </h2>
+          <p style="color:var(--text-muted);">
+            Found ${allOrders.length} order${allOrders.length > 1 ? "s" : ""} for
+            <strong>${currentEmail}</strong>.
+          </p>
+        </div>
+
+        <div class="orders-list">
+      `;
+
+      allOrders.forEach(order => {
+        const badge = getStatusBadge(order.status);
+
+        html += `
+          <div class="order-card" onclick='displayOrderDetails(${JSON.stringify(order).replace(/"/g, "&quot;")})'>
+            <div class="order-header">
+              <div>
+                <span style="background:rgba(255,255,255,0.06); padding:4px 8px; font-size:0.75rem; border-radius:4px; margin-right:6px;">
+                  ${order.type}
+                </span>
+                <span class="order-id">${order.id}</span>
+              </div>
+              ${badge}
+            </div>
+            <div style="color:var(--text-muted); font-size:0.9rem;">
+              ${formatDate(order.date)}
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      document.getElementById("content").innerHTML = html;
+    }
+
+
+    /* ---------------------------------------------
+       DISPLAY DETAILED ORDER VIEW
+    --------------------------------------------- */
+    function displayOrderDetails(order) {
+      let html = "";
+
+      switch (order.type) {
+        case "KEEPSAKE":
+          html = buildKeepsakeDetails(order.row);
+          break;
+        case "VIP":
+          html = buildVIPDetails(order.row);
+          break;
+        case "PHOTOBOOK":
+          html = buildPhotobookDetails(order.row);
+          break;
+        case "PARTNERSHIP":
+          html = buildPartnershipDetails(order.row);
+          break;
+      }
+
+      const backBtn = currentEmail
+        ? `<button class="btn-secondary" onclick="displayOrderList()" style="margin-bottom:1rem;">← Back</button>`
+        : `<button class="btn-secondary" onclick="window.location='index.html'" style="margin-bottom:1rem;">← Back</button>`;
+
+      document.getElementById("content").innerHTML = backBtn + html;
+    }
+
+
+    /* ---------------------------------------------
+       STATUS BADGE STYLES
+    --------------------------------------------- */
+    function getStatusBadge(status) {
+      if (!status) status = "Pending";
+
+      let cls = "";
+      if (status.includes("Payment")) cls = "status-confirmed";
+      else if (status.includes("Form")) cls = "status-confirmed";
+      else if (status.includes("Production")) cls = "status-production";
+      else if (status.includes("Shipped")) cls = "status-shipped";
+      else if (status.includes("Delivered")) cls = "status-delivered";
+      else if (status.includes("Active")) cls = "status-delivered";
+      else cls = "status-confirmed";
+
+      return `<div class="status-badge ${cls}">${status}</div>`;
+    }
+
+
+    /* ---------------------------------------------
+       FORMAT DATE
+    --------------------------------------------- */
+    function formatDate(date) {
+      if (!date) return "N/A";
+      return new Date(date).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
+
+
+    /* ---------------------------------------------
+       ✨ KEEPSAKE DETAILS (LEGACY JOURNII)
+    --------------------------------------------- */
+    function buildKeepsakeDetails(row) {
+      const orderId = row[0];
+      const name = row[1] || "";
+      const firstName = name.split(" ")[0];
+      const honoree = row[11] || "";
+      const dates = row[12] || "";
+      const product = row[14] || "";
+      const template = row[15] || "";
+      const wording = row[17] || "";
+      const status = row[6] || "";
+      const formComplete = String(row[41]).toLowerCase() === "true";
+
+      let next = buildKeepsakeNextAction(row, formComplete);
+
+      return `
+        <div class="detail-card">
+          <h2 style="font-size:1.9rem; margin-bottom:0.5rem;">
+            Hi ${firstName}, your Legacy Journii begins here.
+          </h2>
+
+          <div style="margin-bottom:1rem;">
+            <span style="background:rgba(255,255,255,0.06); padding:4px 8px; font-size:0.75rem; border-radius:4px;">
+              KEEPSAKE
+            </span>
+            <span style="color:var(--text-muted); margin-left:8px;">#${orderId}</span>
+          </div>
+
+          ${getStatusBadge(status)}
+
+          <div class="order-info" style="margin-top:1.2rem;">
+            <strong>Honoring:</strong> ${honoree}<br>
+            ${dates ? `<strong>Dates:</strong> ${dates}<br>` : ""}
+            <strong>Product:</strong> ${product}<br>
+            <strong>Template:</strong> ${template}<br>
+            ${wording ? `<strong>Personalization:</strong> ${wording}<br>` : ""}
+          </div>
+        </div>
+
+        ${next}
+
+        <div class="action-buttons">
+          <button class="btn-secondary" onclick="contact('${orderId}')">📧 Contact Us</button>
+        </div>
+      `;
+    }
+
+
+    /* ---------------------------------------------
+       ✨ NEXT ACTION — KEEPSAKE LOGIC
+    --------------------------------------------- */
+    function buildKeepsakeNextAction(row, formComplete) {
+      const status = row[6];
+      const email = row[2];
+      const name = row[1];
+      const orderNumber = row[4] || row[0];
+
+      if (status === "Payment Received" && !formComplete) {
+        const link =
+          `${SMARTFORM_URL}?orderNumber=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&projectType=keepsake`;
+
+        return `
+          <div class="detail-card" style="background:rgba(233,255,96,0.07); border:2px solid var(--gold);">
+            <h3 style="color:var(--gold);">📝 Next Step: Personalize Your Keepsake</h3>
+            <p style="color:var(--text-muted); margin-bottom:1rem;">
+              We’ve received your payment. Now help us bring your Legacy piece to life.
+            </p>
+            <a class="btn-primary" href="${link}" target="_blank">✨ Complete Personalization Now</a>
+          </div>
+        `;
+      }
+
+      if (status === "Form Received") {
+        return `
+          <div class="detail-card" style="background:rgba(233,255,96,0.07); border:2px solid var(--gold);">
+            <h3 style="color:var(--gold);">👀 Design Under Review</h3>
+            <p style="color:var(--text-muted);">
+              Your details were received. Our design team is preparing your proof.
+            </p>
+          </div>
+        `;
+      }
+
+      return "";
+    }
+
+
+    /* ---------------------------------------------
+       ✨ VIP DETAILS
+    --------------------------------------------- */
+    function buildVIPDetails(row) {
+      const id = row[0];
+      const name = row[1] || "";
+      const first = name.split(" ")[0];
+      const biz = row[11] || "";
+      const gifts = row[12] || "";
+      const qty = row[13] || "";
+      const status = row[6] || "";
+
+      let next = "";
+      if (status === "Form Received") {
+        next = `
+          <div class="detail-card" style="background:rgba(233,255,96,0.07); border:2px solid var(--gold);">
+            <h3 style="color:var(--gold);">✍️ Preparing Your VIP Proposal</h3>
+            <p style="color:var(--text-muted);">
+              We’re crafting a tailored VIP gifting experience for your brand.
+            </p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="detail-card">
+          <h2 style="font-size:1.9rem;">Hi ${first}, your VIP Journii begins here.</h2>
+
+          <div style="margin-bottom:1rem;">
+            <span style="background:rgba(255,255,255,0.06); padding:4px 8px; border-radius:4px; font-size:0.75rem;">
+              VIP
+            </span>
+            <span style="color:var(--text-muted); margin-left:8px;">#${id}</span>
+          </div>
+
+          ${getStatusBadge(status)}
+
+          <div class="order-info" style="margin-top:1.2rem;">
+            <strong>Business:</strong> ${biz}<br/>
+            <strong>Gifts For:</strong> ${gifts}<br/>
+            <strong>Quantity:</strong> ${qty}<br/>
+          </div>
+        </div>
+
+        ${next}
+      `;
+    }
+
+
+    /* ---------------------------------------------
+       ✨ PHOTOBOOK DETAILS
+    --------------------------------------------- */
+    function buildPhotobookDetails(row) {
+      const id = row[0];
+      const name = row[1];
+      const first = name.split(" ")[0];
+      const pages = row[11];
+      const status = row[6];
+      const formComplete = String(row[41]).toLowerCase() === "true";
+
+      let next = "";
+
+      if (status === "Payment Received" && !formComplete) {
+        const link =
+          `https://script.google.com/macros/s/AKfycbypR2v8moVL72nXdl4hnJWEma3aPSUgq_-JAQ1E9XPamfFjsfPMjJRo6zq9i_8oR-ID/exec?order=${id}&email=${row[2]}&name=${row[1]}`;
+
+        next = `
+          <div class="detail-card" style="background:rgba(233,255,96,0.07); border:2px solid var(--gold);">
+            <h3 style="color:var(--gold);">📸 Upload Your Images</h3>
+            <p style="color:var(--text-muted);">Upload 24–110 images to begin your book.</p>
+            <a class="btn-primary" href="${link}" target="_blank">Upload Photos</a>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="detail-card">
+          <h2 style="font-size:1.9rem;">Hi ${first}, your PhotoBook Journii begins here.</h2>
+
+          ${getStatusBadge(status)}
+
+          <div class="order-info" style="margin-top:1.2rem;">
+            <strong>Pages:</strong> ${pages}<br/>
+          </div>
+        </div>
+
+        ${next}
+      `;
+    }
+
+
+    /* ---------------------------------------------
+       ✨ PARTNERSHIP DETAILS
+    --------------------------------------------- */
+    function buildPartnershipDetails(row) {
+      const id = row[0];
+      const contact = row[2];
+      const first = contact.split(" ")[0];
+      const biz = row[5];
+      const status = row[10];
+
+      let next = "";
+
+      if (status === "Pending Setup" || status === "Pending Review") {
+        const link =
+          `${SMARTFORM_URL}partnership.html?partnerId=${id}&email=${row[4]}&name=${contact}&business=${biz}`;
+
+        next = `
+          <div class="detail-card" style="background:rgba(233,255,96,0.07); border:2px solid var(--gold);">
+            <h3 style="color:var(--gold);">🤝 Complete Your Partnership Setup</h3>
+            <p style="color:var(--text-muted);">Your Legacy Lounge™ activation awaits.</p>
+            <a class="btn-primary" href="${link}" target="_blank">Complete Setup</a>
+          </div>
+        `;
+      }
+
+      if (status === "Active") {
+        next = `
+          <div class="detail-card" style="background:rgba(52,97,250,0.08); border:2px solid #3461fa;">
+            <h3 style="color:#3461fa;">✨ Live Partnership</h3>
+            <p style="color:var(--text-muted);">Your Legacy Lounge™ is active and running.</p>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="detail-card">
+          <h2 style="font-size:1.9rem;">Hi ${first}, your Partnership Journii begins here.</h2>
+
+          ${getStatusBadge(status)}
+
+          <div class="order-info" style="margin-top:1.2rem;">
+            <strong>Business:</strong> ${biz}<br/>
+          </div>
+        </div>
+
+        ${next}
+      `;
+    }
+
+
+    /* ---------------------------------------------
+       EMAIL LINK (CONTACT SUPPORT)
+    --------------------------------------------- */
+    function contact(orderId) {
+      window.location = `mailto:info@dopeleeprezzedbysllc.com?subject=Order%20${orderId}%20Support`;
+
+
+      <div class="footer">
+  <p style="font-size: 1rem; color: #e9ff60; margin-bottom: 6px;">
+    🖤 DOPELEE PREZZED BY S™
+  </p>
+  <p style="color: var(--text-muted); margin-bottom: 6px;">
+    Luxury keepsakes. Timelessly crafted.
+  </p>
+
+  <p>
+    <a href="https://www.dopeleeprezzedbys.com"
+       target="_blank"
+       style="color: #e9ff60; text-decoration: none;">
+       Visit Website
+    </a> •
+    <a href="mailto:info@dopeleeprezzedbysllc.com"
+       style="color: #e9ff60; text-decoration: none;">
+       Contact Support
+    </a>
+  </p>
+
+  <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+    © 2025 Dopelee Prezzed by S, LLC. All rights reserved.
+  </p>
+</div>
+
+    }
+    /* -----------------------------------------------------------
+       ✨ FLOATING BUBBLE NAVIGATION (iPhone-style)
+       ----------------------------------------------------------- */
+
+
+    const navBubbles = `
+      <div id="floatingNav" style="
+        position:fixed;
+        bottom:22px;
+        right:22px;
+        display:flex;
+        flex-direction:column;
+        gap:14px;
+        z-index:999;
+      ">
+        <div class="bubble" onclick="scrollToTop()">
+          ↑
+        </div>
+        <div class="bubble" onclick="scrollToOrders()">
+          🧾
+        </div>
+        <div class="bubble" onclick="contactSupport()">
+          💬
+        </div>
+        <div style="margin: 8px 0 18px 0;">
+    <a href="https://dopelee-portal.github.io/" 
+     style="color: #e9ff60; font-size: 0.9rem; text-decoration: none;">
+     ✨ Track My Order
+  </a>
+</div>
+</div>
+    
+    `;
+
+    document.body.insertAdjacentHTML("beforeend", navBubbles);
+
+    const bubbleStyle = document.createElement("style");
+    bubbleStyle.innerHTML = `
+      .bubble {
+        width:48px;
+        height:48px;
+        background:linear-gradient(135deg, #e9ff60, #0ff0b8);
+        border-radius:50%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-size:1.3rem;
+        font-weight:700;
+        cursor:pointer;
+        box-shadow:0 0 18px rgba(233,255,96,0.45);
+        transition:all .22s ease;
+      }
+      .bubble:hover {
+        transform:translateY(-4px) scale(1.05);
+        box-shadow:0 0 25px rgba(233,255,96,0.8);
+      }
+    `;
+    document.head.appendChild(bubbleStyle);
+
+
+    /* -----------------------------------------------------------
+       NAVIGATION ACTIONS
+       ----------------------------------------------------------- */
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function scrollToOrders() {
+      const list = document.querySelector(".orders-list") || document.querySelector(".detail-card");
+      if (list) list.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function contactSupport() {
+      window.location = "mailto:info@dopeleeprezzedbysllc.com?subject=Support%20Request";
+    }
+
+
+    /* -----------------------------------------------------------
+       ✨ CONFETTI CELEBRATION (Triggered on “Form Received”)
+       ----------------------------------------------------------- */
+
+    function launchConfetti() {
+      const duration = 2500;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 12,
+          spread: 110,
+          origin: { x: Math.random(), y: Math.random() * 0.4 },
+          colors: ["#e9ff60", "#0ff0b8", "#fd26fd"],
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+
+    /* Trigger confetti only when the page shows "Form Received" */
+    function maybeCelebrate(status) {
+      if (status && status.includes("Form Received")) {
+        setTimeout(() => launchConfetti(), 600);
+      }
+    }
+
+
+    /* -----------------------------------------------------------
+       ✨ Inject Confetti Script (no extra files needed)
+       ----------------------------------------------------------- */
+    const confettiScript = document.createElement("script");
+    confettiScript.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js";
+    document.head.appendChild(confettiScript);
+
+
+    /* -----------------------------------------------------------
+       ✨ ENHANCED TRANSITIONS / LUX MOTION
+       ----------------------------------------------------------- */
+    const motionStyle = document.createElement("style");
+    motionStyle.innerHTML = `
+      #content {
+        animation: fadeIn .45s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from { opacity:0; transform:translateY(12px); }
+        to { opacity:1; transform:translateY(0); }
+      }
+
+      .detail-card {
+        animation: floatUp .50s ease-out;
+      }
+
+      @keyframes floatUp {
+        from { opacity:.3; transform:translateY(25px); }
+        to { opacity:1; transform:translateY(0); }
+      }
+    `;
+    document.head.appendChild(motionStyle);
+
+
+    /* -----------------------------------------------------------
+       ✨ TRIGGER CONFETTI WHEN APPROPRIATE
+       (Add this inside each buildXYZDetails function after status badge)
+       ----------------------------------------------------------- */
+    // Example for Keepsake:
+    // maybeCelebrate(status);
+
 
