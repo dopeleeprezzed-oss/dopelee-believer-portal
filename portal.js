@@ -12,7 +12,7 @@ const SHEETS = {
 
 const REVIEW_LINK = 'https://tr.ee/3OJ5e4';
 const DAYS_UNTIL_REVIEW = 5;
-const SMARTFORM_URL = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
+const SMARTFORM_URL = 'https://dopeleeprezzed-oss.github.io/dopelee-form/partnership.html';
 
 // Global data
 let allOrders = [];
@@ -1214,4 +1214,5 @@ function contactUs(orderId) {
   const mailtoLink = `mailto:dopeleeprezzed@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   window.location.href = mailtoLink;
 }
+
 
