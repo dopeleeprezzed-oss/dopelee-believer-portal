@@ -2,254 +2,216 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Legacy Lounge™ Partner Portal</title>
 
-<!-- FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-
 <style>
-/* GLOBAL */
-body {
-  margin: 0;
-  background: #0b0c0f;
-  font-family: 'Montserrat', sans-serif;
-  color: #eaeaea;
-}
+  body {
+    margin: 0;
+    font-family: 'Inter', Arial, sans-serif;
+    background: #0b0c0f;
+    color: #fff;
+  }
 
-/* HEADER */
-.portal-header {
-  text-align: center;
-  padding: 60px 20px;
-  position: relative;
-  color: white;
-}
+  /* HEADER */
+  .header {
+    background: linear-gradient(90deg,#0a95a8,#3461fa,#fd26fd,#d3fb1b);
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 3px solid #d3fb1b;
+  }
+  .header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .header p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    opacity: .9;
+  }
 
-.header-gradient {
-  background: linear-gradient(90deg, #0a95a8, #d3fb1b, #fd26fd, #3461fa);
-  height: 6px;
-  width: 100%;
-  position: absolute;
-  top: 0;
-}
+  /* MAIN WRAPPER */
+  .container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+  }
 
-.portal-title {
-  font-size: 34px;
-  font-weight: 900;
-  margin: 10px 0;
-}
+  /* DASHBOARD CARDS */
+  .card {
+    background: #121319;
+    border: 1px solid #1f2024;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.55);
+  }
+  .card h2 {
+    margin-top: 0;
+    font-size: 20px;
+    letter-spacing: .5px;
+    border-left: 4px solid #d3fb1b;
+    padding-left: 10px;
+  }
+  .card p, .card span {
+    color: #cfcfcf;
+    font-size: 15px;
+    line-height: 1.6;
+  }
 
-.portal-subtitle {
-  font-size: 16px;
-  opacity: 0.7;
-}
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    flex: 1;
+    min-width: 200px;
+    background: #1b1c22;
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid #292a30;
+    text-align: center;
+  }
+  .stat-box h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #d3fb1b;
+  }
+  .stat-box p {
+    margin: 8px 0 0;
+    font-size: 22px;
+    font-weight: 700;
+  }
 
-/* CARDS */
-.container {
-  width: 92%;
-  max-width: 900px;
-  margin: auto;
-}
+  /* QR CODE */
+  .qr-box img {
+    width: 150px;
+    height: 150px;
+    margin-top: 12px;
+    border-radius: 10px;
+  }
 
-.card {
-  background: #15171c;
-  border: 1px solid #26282d;
-  border-radius: 14px;
-  padding: 20px;
-  margin: 20px 0;
-  box-shadow: 0 0 25px rgba(0,0,0,0.2);
-}
-
-.card h2 {
-  color: #d3fb1b;
-  margin-bottom: 15px;
-}
-
-/* TIMELINE */
-.timeline li {
-  margin: 8px 0;
-}
-
-/* LOADING */
-.loading-box {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.loader {
-  border: 5px solid #333;
-  border-top: 5px solid #d3fb1b;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: auto;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  100% { transform: rotate(360deg); }
-}
-
-/* PLACEHOLDER */
-.placeholder { opacity: 0.5; }
-
-/* BUBBLE NAV */
-.bubble-menu {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-}
-
-.bubble {
-  background: #0b0c0f;
-  border: 2px solid #d3fb1b;
-  color: #d3fb1b;
-  border-radius: 50%;
-  width: 55px;
-  height: 55px;
-  font-size: 22px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-/* ORDER ROW */
-.order-row {
-  padding: 10px 0;
-  border-bottom: 1px solid #2a2a2a;
-  font-size: 14px;
-}
+  /* CONTACT BUTTON */
+  .contact-btn {
+    display: block;
+    width: 100%;
+    background: #d3fb1b;
+    color: #000;
+    text-align: center;
+    padding: 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    text-decoration: none;
+    margin-top: 15px;
+    transition: .3s;
+  }
+  .contact-btn:hover {
+    background: #c3eb18;
+  }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<header class="portal-header">
-  <div class="header-gradient"></div>
-  <h1 class="portal-title">Legacy Lounge™ Partner Portal</h1>
-  <p class="portal-subtitle">Your Partnership. Your Impact. Your Earnings.</p>
-</header>
+<div class="header">
+  <h1>Legacy Lounge™ Partner Portal</h1>
+  <p>Your Display • Your Earnings • Your Impact</p>
+</div>
 
-<!-- MAIN -->
 <div class="container">
 
-  <!-- LOADING -->
-  <div id="loading" class="loading-box">
-    <div class="loader"></div>
-    <p>Loading your partnership details...</p>
+  <!-- PARTNER INFO CARD -->
+  <div class="card" id="partnerInfo">
+    <h2>Partner Information</h2>
+    <p><strong>Business:</strong> <span id="businessName"></span></p>
+    <p><strong>Contact Person:</strong> <span id="contactPerson"></span></p>
+    <p><strong>Email:</strong> <span id="contactEmail"></span></p>
+    <p><strong>Status:</strong> <span id="status"></span></p>
   </div>
 
-  <!-- CONTENT -->
-  <div id="portalContent" style="display:none;">
+  <!-- INSTALLATION -->
+  <div class="card">
+    <h2>Installation Status</h2>
+    <p><strong>Scheduled:</strong> <span id="installScheduled"></span></p>
+    <p><strong>Completed:</strong> <span id="installCompleted"></span></p>
+    <p><strong>Activated:</strong> <span id="activated"></span></p>
+  </div>
 
-    <!-- OVERVIEW -->
-    <section class="card">
-      <h2>🏢 Location Overview</h2>
-      <p><strong>Business:</strong> <span id="businessName"></span></p>
-      <p><strong>Contact:</strong> <span id="contactPerson"></span></p>
-      <p><strong>Email:</strong> <span id="contactEmail"></span></p>
-      <p><strong>Status:</strong> <span id="status"></span></p>
-    </section>
+  <!-- COMMISSION DASHBOARD -->
+  <div class="card">
+    <h2>Commission Dashboard</h2>
 
-    <!-- QR CODE -->
-    <section class="card">
-      <h2>📲 QR Code</h2>
-      <div id="qrBox">
-        <p class="placeholder">Your QR code will appear once installation is complete.</p>
+    <div class="stats-row">
+      <div class="stat-box">
+        <h3>Total Earned</h3>
+        <p id="commissionTotal">$0</p>
       </div>
-    </section>
 
-    <!-- EARNINGS -->
-    <section class="card">
-      <h2>💰 Earnings Snapshot</h2>
-      <p><strong>Total Earned:</strong> <span id="earnedTotal">$0.00</span></p>
-      <p><strong>This Month:</strong> <span id="earnedMonth">$0.00</span></p>
-      <p><strong>Total Orders:</strong> <span id="orderCount">0</span></p>
-      <p><strong>Avg Order Value:</strong> <span id="avgOrderValue">$0.00</span></p>
-    </section>
+      <div class="stat-box">
+        <h3>Last Payout</h3>
+        <p id="lastPayout">$0</p>
+      </div>
 
-    <!-- TIMELINE -->
-    <section class="card">
-      <h2>📅 Partnership Timeline</h2>
-      <ul class="timeline">
-        <li><strong>Applied:</strong> <span id="appliedDate"></span></li>
-        <li><strong>Setup Scheduled:</strong> <span id="setupScheduled"></span></li>
-        <li><strong>Installed:</strong> <span id="setupCompleted"></span></li>
-        <li><strong>Activated:</strong> <span id="activatedDate"></span></li>
-        <li><strong>Training Completed:</strong> <span id="trainingComplete"></span></li>
-      </ul>
-    </section>
-
-    <!-- RECENT ORDERS -->
-    <section class="card">
-      <h2>🖤 Recent Legacy Orders</h2>
-      <div id="recentOrders"></div>
-    </section>
-
+      <div class="stat-box">
+        <h3>Orders This Month</h3>
+        <p id="ordersThisMonth">0</p>
+      </div>
+    </div>
   </div>
+
+  <!-- QR CODE -->
+  <div class="card qr-box">
+    <h2>Your Legacy Lounge QR Code</h2>
+    <p>Display this QR code near your installation for easy customer access.</p>
+    <img id="qrImage" src="">
+  </div>
+
+  <!-- CONTACT BUTTON -->
+  <a href="mailto:info@dopeleeprezzedbysllc.com" class="contact-btn">
+    Message Dopelee Partner Support
+  </a>
+
 </div>
 
-<!-- FLOATING ACTIONS -->
-<div class="bubble-menu">
-  <button class="bubble" onclick="window.scrollTo({top:0,behavior:'smooth'});">⬆️</button>
-  <button class="bubble" onclick="window.location.href='mailto:info@dopeleeprezzedbysllc.com'">📬</button>
-</div>
-
-<!-- SCRIPT (JS MERGED DIRECTLY) -->
 <script>
-// Get Partner ID
+const API_URL = "https://script.google.com/macros/s/AKfycbzz3MVLWOyTljFUuX869gYxe32295s4Bl1wJA0mzl7EBWRdVsllcA_sAzyVNOkFnOu7/exec";
+
+/* READ ?partner= FROM URL */
 const urlParams = new URLSearchParams(window.location.search);
 const partnerId = urlParams.get("partner");
 
-const loadingBox = document.getElementById("loading");
-const contentBox = document.getElementById("portalContent");
+if (!partnerId) {
+  document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:50px;'>Partner ID Missing</h2>";
+}
 
-// CALL APPS SCRIPT
-fetch(`https://script.google.com/macros/s/AKfycbzz3MVLWOyTljFUuX869gYxe32295s4Bl1wJA0mzl7EBWRdVsllcA_sAzyVNOkFnOu7/exec`)
-  .then(r => r.json())
+/* FETCH PARTNER DATA */
+fetch(`${API_URL}?partner=${partnerId}`)
+  .then(res => res.json())
   .then(data => {
-    loadingBox.style.display = "none";
-    contentBox.style.display = "block";
+    console.log("Partner Data Loaded:", data);
 
-    // Fill Main Data
-    document.getElementById("businessName").textContent = data.Business_Name || "";
-    document.getElementById("contactPerson").textContent = data.Contact_Person || "";
-    document.getElementById("contactEmail").textContent = data.Contact_Email || "";
-    document.getElementById("status").textContent = data.Status || "";
+    document.getElementById("businessName").innerText = data.Business_Name || "";
+    document.getElementById("contactPerson").innerText = data.Contact_Person || "";
+    document.getElementById("contactEmail").innerText = data.Contact_Email || "";
+    document.getElementById("status").innerText = data.Status || "Pending";
 
-    // QR Code
-    const qrBox = document.getElementById("qrBox");
-    if (data.QR_Code_URL) {
-      qrBox.innerHTML = `<img src="${data.QR_Code_URL}" style="width:180px;border-radius:12px;">`;
-    }
+    document.getElementById("installScheduled").innerText = data.Setup_Scheduled_Date || "Not Scheduled";
+    document.getElementById("installCompleted").innerText = data.Setup_Completed_Date || "Not Completed";
+    document.getElementById("activated").innerText = data.Date_Activated || "Not Activated";
 
-    // Earnings
-    document.getElementById("earnedTotal").textContent = `$${data.Commission_Earned_Total || 0}`;
-    document.getElementById("earnedMonth").textContent = `$${data.Commission_This_Month || 0}`;
-    document.getElementById("orderCount").textContent = data.Orders_Count_Total || 0;
-    document.getElementById("avgOrderValue").textContent = `$${data.Average_Order_Value || 0}`;
+    document.getElementById("commissionTotal").innerText = "$" + (data.Commission_Earned_Total || 0);
+    document.getElementById("lastPayout").innerText = "$" + (data.Last_Commission_Amount || 0);
+    document.getElementById("ordersThisMonth").innerText = data.Orders_Count_This_Month || 0;
 
-    // Timeline
-    document.getElementById("appliedDate").textContent = data.Application_Date || "";
-    document.getElementById("setupScheduled").textContent = data.Setup_Scheduled_Date || "";
-    document.getElementById("setupCompleted").textContent = data.Setup_Completed_Date || "";
-    document.getElementById("activatedDate").textContent = data.Date_Activated || "";
-    document.getElementById("trainingComplete").textContent = data.Training_Completed || "";
-
-    // Recent Orders
-    const ro = document.getElementById("recentOrders");
-    if (data.Recent_Orders && data.Recent_Orders.length > 0) {
-      data.Recent_Orders.forEach(o => {
-        ro.innerHTML += `
-          <div class="order-row">
-            <strong>${o.Order_ID}</strong> — ${o.Product}
-            <span style="float:right;color:#d3fb1b;">+$${o.Commission}</span>
-          </div>
-        `;
-      });
-    } else {
-      ro.innerHTML = `<p class="placeholder">No orders yet.</p>`;
-    }
-
+    document.getElementById("qrImage").src = data.QR_Code_URL || "";
+  })
+  .catch(err => {
+    console.error(err);
+    document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:50px;'>Error loading partner data</h2>";
   });
 </script>
 
