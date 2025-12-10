@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legacy Lounge™ Partner Portal</title>
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* GLOBAL */
+body {
+  margin: 0;
+  background: #0b0c0f;
+  font-family: 'Montserrat', sans-serif;
+  color: #eaeaea;
+}
+
+/* HEADER */
+.portal-header {
+  text-align: center;
+  padding: 60px 20px;
+  position: relative;
+  color: white;
+}
+
+.header-gradient {
+  background: linear-gradient(90deg, #0a95a8, #d3fb1b, #fd26fd, #3461fa);
+  height: 6px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.portal-title {
+  font-size: 34px;
+  font-weight: 900;
+  margin: 10px 0;
+}
+
+.portal-subtitle {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+/* CARDS */
+.container {
+  width: 92%;
+  max-width: 900px;
+  margin: auto;
+}
+
+.card {
+  background: #15171c;
+  border: 1px solid #26282d;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 0 25px rgba(0,0,0,0.2);
+}
+
+.card h2 {
+  color: #d3fb1b;
+  margin-bottom: 15px;
+}
+
+/* TIMELINE */
+.timeline li {
+  margin: 8px 0;
+}
+
+/* LOADING */
+.loading-box {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loader {
+  border: 5px solid #333;
+  border-top: 5px solid #d3fb1b;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: auto;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* PLACEHOLDER */
+.placeholder { opacity: 0.5; }
+
+/* BUBBLE NAV */
+.bubble-menu {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
+
+.bubble {
+  background: #0b0c0f;
+  border: 2px solid #d3fb1b;
+  color: #d3fb1b;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  font-size: 22px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* ORDER ROW */
+.order-row {
+  padding: 10px 0;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="portal-header">
+  <div class="header-gradient"></div>
+  <h1 class="portal-title">Legacy Lounge™ Partner Portal</h1>
+  <p class="portal-subtitle">Your Partnership. Your Impact. Your Earnings.</p>
+</header>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- LOADING -->
+  <div id="loading" class="loading-box">
+    <div class="loader"></div>
+    <p>Loading your partnership details...</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="portalContent" style="display:none;">
+
+    <!-- OVERVIEW -->
+    <section class="card">
+      <h2>🏢 Location Overview</h2>
+      <p><strong>Business:</strong> <span id="businessName"></span></p>
+      <p><strong>Contact:</strong> <span id="contactPerson"></span></p>
+      <p><strong>Email:</strong> <span id="contactEmail"></span></p>
+      <p><strong>Status:</strong> <span id="status"></span></p>
+    </section>
+
+    <!-- QR CODE -->
+    <section class="card">
+      <h2>📲 QR Code</h2>
+      <div id="qrBox">
+        <p class="placeholder">Your QR code will appear once installation is complete.</p>
+      </div>
+    </section>
+
+    <!-- EARNINGS -->
+    <section class="card">
+      <h2>💰 Earnings Snapshot</h2>
+      <p><strong>Total Earned:</strong> <span id="earnedTotal">$0.00</span></p>
+      <p><strong>This Month:</strong> <span id="earnedMonth">$0.00</span></p>
+      <p><strong>Total Orders:</strong> <span id="orderCount">0</span></p>
+      <p><strong>Avg Order Value:</strong> <span id="avgOrderValue">$0.00</span></p>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="card">
+      <h2>📅 Partnership Timeline</h2>
+      <ul class="timeline">
+        <li><strong>Applied:</strong> <span id="appliedDate"></span></li>
+        <li><strong>Setup Scheduled:</strong> <span id="setupScheduled"></span></li>
+        <li><strong>Installed:</strong> <span id="setupCompleted"></span></li>
+        <li><strong>Activated:</strong> <span id="activatedDate"></span></li>
+        <li><strong>Training Completed:</strong> <span id="trainingComplete"></span></li>
+      </ul>
+    </section>
+
+    <!-- RECENT ORDERS -->
+    <section class="card">
+      <h2>🖤 Recent Legacy Orders</h2>
+      <div id="recentOrders"></div>
+    </section>
+
+  </div>
+</div>
+
+<!-- FLOATING ACTIONS -->
+<div class="bubble-menu">
+  <button class="bubble" onclick="window.scrollTo({top:0,behavior:'smooth'});">⬆️</button>
+  <button class="bubble" onclick="window.location.href='mailto:info@dopeleeprezzedbysllc.com'">📬</button>
+</div>
+
+<!-- SCRIPT (JS MERGED DIRECTLY) -->
+<script>
+// Get Partner ID
+const urlParams = new URLSearchParams(window.location.search);
+const partnerId = urlParams.get("partner");
+
+const loadingBox = document.getElementById("loading");
+const contentBox = document.getElementById("portalContent");
+
+// CALL APPS SCRIPT
+fetch(`https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec?partner=${partnerId}`)
+  .then(r => r.json())
+  .then(data => {
+    loadingBox.style.display = "none";
+    contentBox.style.display = "block";
+
+    // Fill Main Data
+    document.getElementById("businessName").textContent = data.Business_Name || "";
+    document.getElementById("contactPerson").textContent = data.Contact_Person || "";
+    document.getElementById("contactEmail").textContent = data.Contact_Email || "";
+    document.getElementById("status").textContent = data.Status || "";
+
+    // QR Code
+    const qrBox = document.getElementById("qrBox");
+    if (data.QR_Code_URL) {
+      qrBox.innerHTML = `<img src="${data.QR_Code_URL}" style="width:180px;border-radius:12px;">`;
+    }
+
+    // Earnings
+    document.getElementById("earnedTotal").textContent = `$${data.Commission_Earned_Total || 0}`;
+    document.getElementById("earnedMonth").textContent = `$${data.Commission_This_Month || 0}`;
+    document.getElementById("orderCount").textContent = data.Orders_Count_Total || 0;
+    document.getElementById("avgOrderValue").textContent = `$${data.Average_Order_Value || 0}`;
+
+    // Timeline
+    document.getElementById("appliedDate").textContent = data.Application_Date || "";
+    document.getElementById("setupScheduled").textContent = data.Setup_Scheduled_Date || "";
+    document.getElementById("setupCompleted").textContent = data.Setup_Completed_Date || "";
+    document.getElementById("activatedDate").textContent = data.Date_Activated || "";
+    document.getElementById("trainingComplete").textContent = data.Training_Completed || "";
+
+    // Recent Orders
+    const ro = document.getElementById("recentOrders");
+    if (data.Recent_Orders && data.Recent_Orders.length > 0) {
+      data.Recent_Orders.forEach(o => {
+        ro.innerHTML += `
+          <div class="order-row">
+            <strong>${o.Order_ID}</strong> — ${o.Product}
+            <span style="float:right;color:#d3fb1b;">+$${o.Commission}</span>
+          </div>
+        `;
+      });
+    } else {
+      ro.innerHTML = `<p class="placeholder">No orders yet.</p>`;
+    }
+
+  });
+</script>
+
+</body>
+</html>
