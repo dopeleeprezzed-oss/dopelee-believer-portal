@@ -178,7 +178,7 @@
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzz3MVLWOyTljFUuX869gYxe32295s4Bl1wJA0mzl7EBWRdVsllcA_sAzyVNOkFnOu7/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyNg4ikJ28LTUpy1AVdncGCGw1M6ETqxD9dt0_ARCJMw9vPuC2i0VKqzzGoKtRIJErE/exec";
 
 /* READ ?partner= FROM URL */
 const urlParams = new URLSearchParams(window.location.search);
