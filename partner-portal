@@ -204,7 +204,7 @@ const loadingBox = document.getElementById("loading");
 const contentBox = document.getElementById("portalContent");
 
 // CALL APPS SCRIPT
-fetch(`https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec?partner=${partnerId}`)
+fetch(`https://script.google.com/macros/s/AKfycbzz3MVLWOyTljFUuX869gYxe32295s4Bl1wJA0mzl7EBWRdVsllcA_sAzyVNOkFnOu7/exec`)
   .then(r => r.json())
   .then(data => {
     loadingBox.style.display = "none";
