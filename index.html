@@ -1,1 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Order Portal | Dopelee Prezzed by S™</title>
+  
+  <style>
+    :root {
+      --bg-primary: #0b0c0f;
+      --bg-secondary: #16171d;
+      --bg-card: #1e1f26;
+      --text-primary: #e8e8ec;
+      --text-muted: #b8bac0;
+      --accent-gold: #e9ff60;
+      --accent-cyan: #0ff0b8;
+      --accent-blue: #0a95a8;
+      --accent-pink: #fd26fd;
+      --accent-purple: #3461fa;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      background: linear-gradient(90deg, #0a95a8, #0ff0b8, #e9ff60, #fd26fd, #3461fa);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent);
+      pointer-events: none;
+    }
+    
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      animation: logoGlow 3s ease-in-out infinite;
+    }
+    
+    @keyframes logoGlow {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(233, 255, 96, 0.3)); }
+      50% { filter: drop-shadow(0 0 40px rgba(233, 255, 96, 0.5)); }
+    }
+    
+    .header h1 {
+      color: #000;
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header p {
+      color: #000;
+      font-size: 1.1rem;
+      opacity: 0.85;
+      font-weight: 500;
+      font-style: italic;
+      letter-spacing: 0.03em;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+    
+    .search-section {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    .search-section h2 {
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .search-form {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .search-form input {
+      flex: 1;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 2px solid rgba(233, 255, 96, 0.3);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+    
+    .search-form input:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+    }
+    
+    .search-form button {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-cyan));
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .search-form button:hover {
+      transform: translateY(-2px);
+    }
+    
+    .orders-list { display: grid; gap: 1rem; }
+    
+    .order-card {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid rgba(233, 255, 96, 0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .order-card:hover {
+      border-color: var(--accent-gold);
+      transform: translateX(4px);
+    }
+    
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .order-id { font-size: 1.1rem; font-weight: 600; }
+    
+    .status-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .status-confirmed { background: rgba(15, 240, 184, 0.2); color: var(--accent-cyan); }
+    .status-production { background: rgba(233, 255, 96, 0.2); color: var(--accent-gold); }
+    .status-shipped { background: rgba(52, 97, 250, 0.2); color: var(--accent-purple); }
+    .status-delivered { background: rgba(233, 255, 96, 0.3); color: var(--accent-gold); }
+    
+    .detail-card {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+      border: 2px solid rgba(233, 255, 96, 0.2);
+    }
+    
+    .detail-header { margin-bottom: 1.5rem; }
+    .detail-header h2 { color: var(--text-primary); margin-bottom: 0.5rem; }
+    
+    .order-info { line-height: 2; color: var(--text-muted); }
+    .order-info strong { color: var(--text-primary); }
+    
+    .btn-primary {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-cyan));
+      color: #000;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      transition: transform 0.2s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .btn-primary:hover { transform: translateY(-2px); }
+    
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 2px solid var(--accent-gold);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-secondary:hover { background: var(--accent-gold); color: #000; }
+    
+    .action-buttons { display: flex; gap: 1rem; margin-top: 2rem; }
+    
+    .footer {
+      background: var(--bg-secondary);
+      padding: 2rem;
+      text-align: center;
+      margin-top: auto;
+      border-top: 2px solid rgba(233, 255, 96, 0.1);
+    }
+    
+    .footer p { color: var(--text-muted); font-size: 0.9rem; }
+    
+    .loading { text-align: center; padding: 3rem; color: var(--text-muted); }
+    
+    .error {
+      background: rgba(253, 38, 253, 0.1);
+      border: 2px solid var(--accent-pink);
+      padding: 1.5rem;
+      border-radius: 12px;
+      color: var(--accent-pink);
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.75rem; }
+      .header p { font-size: 0.95rem; }
+      .logo-container img { height: 100px !important; }
+      .search-form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="header">
+    <div class="logo-container" style="margin-bottom: 1.5rem;">
+      <img src="https://25zppb-bv.myshopify.com/cdn/shop/files/dopelee_prezzed_logo.png?v=1755138398&width=450" alt="Dopelee Prezzed by S™" style="height: 140px; width: auto;">
+    </div>
+    <h1>DOPELEE PREZZED BY S™</h1>
+    <p>Luxury keepsakes. Timelessly crafted.</p>
+  </div>
+  
+  <div class="container">
+    <div class="search-section">
+      <h2>🔍 Track Your Order</h2>
+      <form class="search-form" id="searchForm" onsubmit="searchOrders(event)">
+        <input type="email" id="emailInput" placeholder="Enter your email address" required />
+        <button type="submit">Search Orders</button>
+      </form>
+      <p style="margin-top: 1rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+        Can't find your order? <a href="mailto:dopeleeprezzed@gmail.com?subject=Order%20Not%20Found" style="color: var(--accent-gold); text-decoration: none;">Contact us</a>
+      </p>
+    </div>
+    
+    <div id="content">
+      <div class="loading">Enter your email to view your orders</div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <p>🖤 <strong>DOPELEE PREZZED BY S™</strong></p>
+    <p>Luxury keepsakes. Timelessly crafted.</p>
+    <p><a href="https://www.dopeleeprezzedbys.com" target="_blank" style="color: #e9ff60; text-decoration: none;">Visit Website</a> • 
+    <a href="mailto:dopeleeprezzed@gmail.com" style="color: #e9ff60; text-decoration: none;">Contact Us</a></p>
+    <p style="margin-top: 1rem; font-size: 0.8rem;">© 2025 Dopelee Prezzed by S, LLC. All rights reserved.</p>
+  </div>
+  
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    // SUPABASE CONFIG
+    // ═══════════════════════════════════════════════════════════════
+    const SUPABASE_URL = 'https://zgnceundsigimwujwrzu.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnbmNldW5kc2lnaW13dWp3cnp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTA5MzQsImV4cCI6MjA4MDU2NjkzNH0.yS_kSCHle9F0Ng5lTJ-lVuT5lTEPLRlhR6HqSvvNEYs';
+    
+    const SMARTFORM_URL = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
+    
+    let allOrders = [];
+    let currentEmail = '';
+    
+    // ═══════════════════════════════════════════════════════════════
+    // PAGE LOAD
+    // ═══════════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderParam = urlParams.get('order');
+      const emailParam = urlParams.get('email');
+      
+      if (orderParam) {
+        document.querySelector('.search-section').style.display = 'none';
+        loadOrderByID(orderParam);
+      } else if (emailParam) {
+        document.getElementById('emailInput').value = emailParam;
+        loadOrdersByEmail(emailParam);
+      }
+    });
+    
+    // ═══════════════════════════════════════════════════════════════
+    // SEARCH ORDERS
+    // ═══════════════════════════════════════════════════════════════
+    function searchOrders(event) {
+      event.preventDefault();
+      const email = document.getElementById('emailInput').value.trim();
+      if (email) loadOrdersByEmail(email);
+    }
+    
+    async function loadOrdersByEmail(email) {
+      currentEmail = email;
+      showLoading();
+      
+      try {
+        allOrders = [];
+        
+        // Fetch from all 3 tables
+        const keepsakes = await fetchSupabaseOrders(email);
+        const vips = await fetchSupabaseVIPs(email);
+        const photobooks = await fetchSupabasePhotobooks(email);
+        
+        allOrders = [...keepsakes, ...vips, ...photobooks];
+        
+        console.log(`✅ Found ${allOrders.length} orders for ${email}`);
+        
+        if (allOrders.length === 0) {
+          showError(`⚠️ No Orders Found<br><br>No orders found for <strong>${email}</strong>.<br>Please check your email address and try again.`);
+        } else {
+          displayOrdersList();
+        }
+      } catch (error) {
+        console.error('Error loading orders:', error);
+        showError('❌ Error loading orders. Please try again.');
+      }
+    }
+    
+    async function loadOrderByID(orderUUID) {
+      showLoading();
+      
+      try {
+        // Try to find in orders table first
+        let order = await fetchSupabaseOrderByID(orderUUID);
+        
+        // If not found, try VIP table
+        if (!order) {
+          order = await fetchSupabaseVIPByID(orderUUID);
+        }
+        
+        // If not found, try photobooks table
+        if (!order) {
+          order = await fetchSupabasePhotobookByID(orderUUID);
+        }
+        
+        if (order) {
+          console.log(`✅ Found order ${orderUUID}`);
+          displayOrderDetails(order);
+        } else {
+          showError(`⚠️ No Orders Found<br><br>Order <strong>${orderUUID}</strong> not found.<br>Please check your link or search by email.`);
+        }
+      } catch (error) {
+        console.error('Error loading order:', error);
+        showError('❌ Error loading order. Please try again.');
+      }
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // SUPABASE FETCH FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════
+    
+    async function fetchSupabaseOrders(email) {
+      const url = `${SUPABASE_URL}/rest/v1/orders?customer_email=eq.${encodeURIComponent(email)}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      return (data || []).map(row => ({
+        type: 'KEEPSAKE',
+        orderId: row.order_id,
+        status: row.status || 'Unknown',
+        date: row.created_at || row.payment_received_at || '',
+        data: row
+      }));
+    }
+    
+    async function fetchSupabaseVIPs(email) {
+      const url = `${SUPABASE_URL}/rest/v1/vip_intake?email=eq.${encodeURIComponent(email)}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      return (data || []).map(row => ({
+        type: 'VIP',
+        orderId: row.intake_id,
+        status: row.status || 'Unknown',
+        date: row.created_at || row.submitted_at || '',
+        data: row
+      }));
+    }
+    
+    async function fetchSupabasePhotobooks(email) {
+      const url = `${SUPABASE_URL}/rest/v1/photobooks?customer_email=eq.${encodeURIComponent(email)}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      return (data || []).map(row => ({
+        type: 'PHOTOBOOK',
+        orderId: row.id,
+        status: row.status || 'Unknown',
+        date: row.created_at || row.form_submitted_date || '',
+        data: row
+      }));
+    }
+    
+    async function fetchSupabaseOrderByID(orderUUID) {
+      const url = `${SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderUUID}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        return {
+          type: 'KEEPSAKE',
+          orderId: data[0].order_id,
+          status: data[0].status,
+          data: data[0]
+        };
+      }
+      return null;
+    }
+    
+    async function fetchSupabaseVIPByID(vipUUID) {
+      const url = `${SUPABASE_URL}/rest/v1/vip_intake?intake_id=eq.${vipUUID}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        return {
+          type: 'VIP',
+          orderId: data[0].intake_id,
+          status: data[0].status,
+          data: data[0]
+        };
+      }
+      return null;
+    }
+    
+    async function fetchSupabasePhotobookByID(bookUUID) {
+      const url = `${SUPABASE_URL}/rest/v1/photobooks?id=eq.${bookUUID}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        return {
+          type: 'PHOTOBOOK',
+          orderId: data[0].id,
+          status: data[0].status,
+          data: data[0]
+        };
+      }
+      return null;
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // DISPLAY FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════
+    
+    function displayOrdersList() {
+      allOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      let html = `
+        <div class="detail-card">
+          <h2>Your Orders (${allOrders.length})</h2>
+          <p style="color: var(--text-muted); margin-top: 0.5rem;">
+            Found ${allOrders.length} ${allOrders.length === 1 ? 'order' : 'orders'} for ${currentEmail}
+          </p>
+        </div>
+        <div class="orders-list">
+      `;
+      
+      allOrders.forEach(order => {
+        const statusClass = getStatusClass(order.status);
+        const typeLabel = order.type;
+        const displayId = order.orderId.substring(0, 8) + '...'; // Show first 8 chars of UUID
+        
+        html += `
+          <div class="order-card" onclick='displayOrderDetails(${JSON.stringify(order).replace(/'/g, "\\'")})'> 
+            <div class="order-header">
+              <div>
+                <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">${typeLabel}</span>
+                <span class="order-id">${displayId}</span>
+              </div>
+              <div class="status-badge ${statusClass}">${order.status}</div>
+            </div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">
+              ${formatDate(new Date(order.date))}
+            </div>
+          </div>
+        `;
+      });
+      
+      html += '</div>';
+      document.getElementById('content').innerHTML = html;
+    }
+    
+    function displayOrderDetails(order) {
+      let html = '';
+      
+      if (order.type === 'KEEPSAKE') {
+        html = buildKeepsakeDetails(order.data);
+      } else if (order.type === 'VIP') {
+        html = buildVIPDetails(order.data);
+      } else if (order.type === 'PHOTOBOOK') {
+        html = buildPhotobookDetails(order.data);
+      }
+      
+      if (currentEmail) {
+        html = `<button onclick="displayOrdersList()" class="btn-secondary" style="margin-bottom: 1rem;">← Back to All Orders</button>` + html;
+      } else {
+        html = `<button onclick="window.location.reload()" class="btn-secondary" style="margin-bottom: 1rem;">← Back to Search</button>` + html;
+      }
+      
+      document.getElementById('content').innerHTML = html;
+    }
+    
+    function buildKeepsakeDetails(data) {
+      const orderId = data.order_id || 'N/A';
+      const customerName = data.customer_name || 'N/A';
+      const firstName = customerName.split(' ')[0];
+      const status = data.status || 'Unknown';
+      const honoree = data.honored_name || 'N/A';
+      const dates = data.dates || '';
+      const product = data.product_type || 'N/A';
+      const template = data.template_chosen || 'N/A';
+      const customWording = data.custom_wording || '';
+      const orderTotal = data.order_total ? `$${parseFloat(data.order_total).toFixed(2)}` : 'Pending';
+      const submittedDate = data.created_at ? new Date(data.created_at) : null;
+      const statusClass = getStatusClass(status);
+      const nextAction = determineKeepsakeNextAction(data);
+      
+      return `
+        <div class="detail-card">
+          <div class="detail-header">
+            <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your Legacy Journii begins here.</h2>
+            <div style="margin-bottom: 1rem;">
+              <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">KEEPSAKE</span>
+              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId.substring(0, 8)}...</span>
+            </div>
+            <div class="status-badge ${statusClass}">${status}</div>
+          </div>
+          <div class="order-info">
+            <strong>Honoring:</strong> ${honoree}<br>
+            ${dates ? `<strong>Dates:</strong> ${dates}<br>` : ''}
+            <strong>Product:</strong> ${product}<br>
+            <strong>Template:</strong> ${template}<br>
+            ${customWording ? `<strong>Personalization:</strong> ${customWording}<br>` : ''}
+            <strong>Order Total:</strong> ${orderTotal}<br>
+            <strong>Ordered:</strong> ${submittedDate ? formatDate(submittedDate) : 'N/A'}<br>
+          </div>
+        </div>
+        ${nextAction}
+        <div class="action-buttons">
+          <button onclick="contactUs('${orderId}')" class="btn-secondary">📧 Contact Us</button>
+        </div>
+      `;
+    }
+    
+    function buildVIPDetails(data) {
+      const orderId = data.intake_id || 'N/A';
+      const customerName = data.full_name || 'N/A';
+      const firstName = customerName.split(' ')[0];
+      const status = data.status || 'Unknown';
+      const businessName = data.vip_business_name || 'N/A';
+      const giftsFor = data.gifts_for || 'N/A';
+      const quantity = data.estimated_quantity || 'N/A';
+      const statusClass = getStatusClass(status);
+      const nextAction = determineVIPNextAction(data);
+      
+      return `
+        <div class="detail-card">
+          <div class="detail-header">
+            <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your VIP Journii begins here.</h2>
+            <div style="margin-bottom: 1rem;">
+              <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">VIP</span>
+              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId.substring(0, 8)}...</span>
+            </div>
+            <div class="status-badge ${statusClass}">${status}</div>
+          </div>
+          <div class="order-info">
+            <strong>Business:</strong> ${businessName}<br>
+            <strong>Gifts For:</strong> ${giftsFor}<br>
+            <strong>Quantity:</strong> ${quantity}<br>
+          </div>
+        </div>
+        ${nextAction}
+        <div class="action-buttons">
+          <button onclick="contactUs('${orderId}')" class="btn-secondary">📧 Contact Us</button>
+        </div>
+      `;
+    }
+    
+    function buildPhotobookDetails(data) {
+      const orderId = data.id || 'N/A';
+      const customerName = data.customer_name || 'N/A';
+      const firstName = customerName.split(' ')[0];
+      const status = data.status || 'Unknown';
+      const pages = data.photo_book_pages || 'N/A';
+      const statusClass = getStatusClass(status);
+      const nextAction = determinePhotobookNextAction(data);
+      
+      return `
+        <div class="detail-card">
+          <div class="detail-header">
+            <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your Photo Book Journii begins here.</h2>
+            <div style="margin-bottom: 1rem;">
+              <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">PHOTO BOOK</span>
+              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId.substring(0, 8)}...</span>
+            </div>
+            <div class="status-badge ${statusClass}">${status}</div>
+          </div>
+          <div class="order-info">
+            <strong>Pages:</strong> ${pages}<br>
+          </div>
+        </div>
+        ${nextAction}
+        <div class="action-buttons">
+          <button onclick="contactUs('${orderId}')" class="btn-secondary">📧 Contact Us</button>
+        </div>
+      `;
+    }
+    
+    function determineKeepsakeNextAction(data) {
+      const status = data.status || '';
+      const formComplete = data.form_complete || false;
+      const orderId = data.order_id || '';
+      const customerEmail = data.customer_email || '';
+      const customerName = data.customer_name || '';
+      const externalOrderNumber = data.external_order_number || orderId;
+      
+      if (status === 'Payment Received' && !formComplete) {
+        const formLink = `${SMARTFORM_URL}?orderNumber=${encodeURIComponent(externalOrderNumber)}&email=${encodeURIComponent(customerEmail)}&name=${encodeURIComponent(customerName)}&projectType=keepsake`;
+        return `
+          <div class="detail-card" style="background: linear-gradient(135deg, rgba(233, 255, 96, 0.1), rgba(10, 149, 168, 0.1)); border: 2px solid #e9ff60;">
+            <h3 style="color: #e9ff60; margin-bottom: 1rem;">📝 Next Step: Complete Your Design Details</h3>
+            <p style="color: #b8bac0; margin-bottom: 1.5rem;">We've received your payment! Now it's time to personalize your keepsake.</p>
+            <a href="${formLink}" target="_blank" class="btn-primary">✨ Complete Personalization Now</a>
+          </div>
+        `;
+      }
+      
+      if (status === 'Form Received') {
+        return `
+          <div class="detail-card" style="background: rgba(233, 255, 96, 0.1); border: 2px solid #e9ff60;">
+            <h3 style="color: #e9ff60; margin-bottom: 1rem;">👀 Your Design is Being Reviewed</h3>
+            <p style="color: #b8bac0;">We're reviewing your design details and will begin production shortly.</p>
+          </div>
+        `;
+      }
+      
+      return '';
+    }
+    
+    function determineVIPNextAction(data) {
+      const status = data.status || '';
+      const orderId = data.intake_id || '';
+      const customerEmail = data.email || '';
+      const customerName = data.full_name || '';
+      
+      if (status === 'Form Received') {
+        return `
+          <div class="detail-card" style="background: rgba(233, 255, 96, 0.1); border: 2px solid #e9ff60;">
+            <h3 style="color: #e9ff60; margin-bottom: 1rem;">✍️ Preparing Your Custom Quote</h3>
+            <p style="color: #b8bac0;">We're creating a custom proposal for your VIP project.</p>
+          </div>
+        `;
+      }
+      
+      return '';
+    }
+    
+    function determinePhotobookNextAction(data) {
+      const status = data.status || '';
+      const formComplete = data.form_complete || false;
+      const orderId = data.id || '';
+      const customerEmail = data.customer_email || '';
+      const customerName = data.customer_name || '';
+      const orderNumber = data.order_number_square || orderId;
+      
+      if (status === 'Payment Received' && !formComplete) {
+        const photoUploaderLink = `https://script.google.com/macros/s/AKfycbypR2v8moVL72nXdl4hnJWEma3aPSUgq_-JAQ1E9XPamfFjsfPMjJRo6zq9i_8oR-ID/exec?orderNumber=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(customerEmail)}&name=${encodeURIComponent(customerName)}`;
+        return `
+          <div class="detail-card" style="background: linear-gradient(135deg, rgba(233, 255, 96, 0.1), rgba(10, 149, 168, 0.1)); border: 2px solid #e9ff60;">
+            <h3 style="color: #e9ff60; margin-bottom: 1rem;">📝 Next Step: Upload Photos & Complete Details</h3>
+            <p style="color: #b8bac0; margin-bottom: 1.5rem;">Upload your photos (24-110 photos) and tell us about your celebration.</p>
+            <a href="${photoUploaderLink}" target="_blank" class="btn-primary">📸 Upload Photos & Complete Form</a>
+          </div>
+        `;
+      }
+      
+      return '';
+    }
+    
+    function getStatusClass(status) {
+      if (status.includes('Payment') || status.includes('Form Received')) return 'status-confirmed';
+      if (status.includes('Production')) return 'status-production';
+      if (status.includes('Shipped')) return 'status-shipped';
+      if (status.includes('Delivered') || status.includes('Active')) return 'status-delivered';
+      return 'status-confirmed';
+    }
+    
+    function formatDate(date) {
+      if (!date) return 'N/A';
+      return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    }
+    
+    function contactUs(orderId) {
+      const subject = `Order ${orderId} - Question`;
+      const body = `Hello,\n\nI have a question about my order #${orderId}.\n\n`;
+      const mailtoLink = `mailto:dopeleeprezzed@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoLink;
+    }
+    
+    function showLoading() {
+      document.getElementById('content').innerHTML = '<div class="loading">Loading your orders...</div>';
+    }
+    
+    function showError(message) {
+      document.getElementById('content').innerHTML = `<div class="error">${message}</div>`;
+    }
+  </script>
+  
+</body>
+</html>
 
