@@ -259,7 +259,7 @@
   
   <div class="header">
     <div class="logo-container" style="margin-bottom: 1.5rem;">
-      <img src="logo.png" alt="Dopelee Prezzed by S™" style="height: 140px; width: auto;">
+      <img src="https://25zppb-bv.myshopify.com/cdn/shop/files/dopelee_prezzed_logo.png?v=1755138398&width=450" alt="Dopelee Prezzed by S™" style="height: 140px; width: auto;">
     </div>
     <h1>DOPELEE PREZZED BY S™</h1>
     <p>Luxury keepsakes. Timelessly crafted.</p>
@@ -291,20 +291,20 @@
   </div>
   
   <script>
-    const SPREADSHEET_ID = '1vhv6D32H97WQHgvtC6Jh_6CTb4u1txKk98mjKDCKW_A';
-    const API_KEY = 'AIzaSyBeteoBZZlHtydPRd-CqBQ1E0edQPXxtEE';
-    const SMARTFORM_URL = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
+    // ═══════════════════════════════════════════════════════════════
+    // SUPABASE CONFIG
+    // ═══════════════════════════════════════════════════════════════
+    const SUPABASE_URL = 'https://zgnceundsigimwujwrzu.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnbmNldW5kc2lnaW13dWp3cnp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTA5MzQsImV4cCI6MjA4MDU2NjkzNH0.yS_kSCHle9F0Ng5lTJ-lVuT5lTEPLRlhR6HqSvvNEYs';
     
-    const SHEETS = {
-      KEEPSAKES: 'KEEPSAKES',
-      VIP: 'VIP_PROJECTS',
-      PHOTOBOOKS: 'PHOTOBOOKS',
-      PARTNERSHIPS: 'PARTNERSHIPS'
-    };
+    const SMARTFORM_URL = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
     
     let allOrders = [];
     let currentEmail = '';
     
+    // ═══════════════════════════════════════════════════════════════
+    // PAGE LOAD
+    // ═══════════════════════════════════════════════════════════════
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const orderParam = urlParams.get('order');
@@ -319,6 +319,9 @@
       }
     });
     
+    // ═══════════════════════════════════════════════════════════════
+    // SEARCH ORDERS
+    // ═══════════════════════════════════════════════════════════════
     function searchOrders(event) {
       event.preventDefault();
       const email = document.getElementById('emailInput').value.trim();
@@ -331,19 +334,13 @@
       
       try {
         allOrders = [];
-        const results = await Promise.all([
-          fetchSheetData(SHEETS.KEEPSAKES),
-          fetchSheetData(SHEETS.VIP),
-          fetchSheetData(SHEETS.PHOTOBOOKS),
-          fetchSheetData(SHEETS.PARTNERSHIPS)
-        ]);
         
-        const keepsakeOrders = parseKeepsakeOrders(results[0], email);
-        const vipOrders = parseVIPOrders(results[1], email);
-        const photobookOrders = parsePhotobookOrders(results[2], email);
-        const partnershipOrders = parsePartnershipOrders(results[3], email);
+        // Fetch from all 3 tables
+        const keepsakes = await fetchSupabaseOrders(email);
+        const vips = await fetchSupabaseVIPs(email);
+        const photobooks = await fetchSupabasePhotobooks(email);
         
-        allOrders = [...keepsakeOrders, ...vipOrders, ...photobookOrders, ...partnershipOrders];
+        allOrders = [...keepsakes, ...vips, ...photobooks];
         
         console.log(`✅ Found ${allOrders.length} orders for ${email}`);
         
@@ -358,27 +355,28 @@
       }
     }
     
-    async function loadOrderByID(orderId) {
+    async function loadOrderByID(orderUUID) {
       showLoading();
       
       try {
-        const results = await Promise.all([
-          fetchSheetData(SHEETS.KEEPSAKES),
-          fetchSheetData(SHEETS.VIP),
-          fetchSheetData(SHEETS.PHOTOBOOKS),
-          fetchSheetData(SHEETS.PARTNERSHIPS)
-        ]);
+        // Try to find in orders table first
+        let order = await fetchSupabaseOrderByID(orderUUID);
         
-        let order = findOrderInSheet(results[0], orderId, 'KEEPSAKE');
-        if (!order) order = findOrderInSheet(results[1], orderId, 'VIP');
-        if (!order) order = findOrderInSheet(results[2], orderId, 'PHOTOBOOK');
-        if (!order) order = findOrderInSheet(results[3], orderId, 'PARTNERSHIP');
+        // If not found, try VIP table
+        if (!order) {
+          order = await fetchSupabaseVIPByID(orderUUID);
+        }
+        
+        // If not found, try photobooks table
+        if (!order) {
+          order = await fetchSupabasePhotobookByID(orderUUID);
+        }
         
         if (order) {
-          console.log(`✅ Found order ${orderId}`);
+          console.log(`✅ Found order ${orderUUID}`);
           displayOrderDetails(order);
         } else {
-          showError(`⚠️ No Orders Found<br><br>Order <strong>${orderId}</strong> not found.<br>Please check your link or search by email.`);
+          showError(`⚠️ No Orders Found<br><br>Order <strong>${orderUUID}</strong> not found.<br>Please check your link or search by email.`);
         }
       } catch (error) {
         console.error('Error loading order:', error);
@@ -386,75 +384,139 @@
       }
     }
     
-    async function fetchSheetData(sheetName) {
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${sheetName}?key=${API_KEY}`;
-      const response = await fetch(url);
+    // ═══════════════════════════════════════════════════════════════
+    // SUPABASE FETCH FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════
+    
+    async function fetchSupabaseOrders(email) {
+      const url = `${SUPABASE_URL}/rest/v1/orders?customer_email=eq.${encodeURIComponent(email)}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
       const data = await response.json();
-      return data.values || [];
+      
+      return (data || []).map(row => ({
+        type: 'KEEPSAKE',
+        orderId: row.order_id,
+        status: row.status || 'Unknown',
+        date: row.created_at || row.payment_received_at || '',
+        data: row
+      }));
     }
     
-    function parseKeepsakeOrders(data, email) {
-      if (!data || data.length < 2) return [];
-      const orders = [];
-      for (let i = 1; i < data.length; i++) {
-        const row = data[i];
-        const rowEmail = row[2];
-        if (rowEmail && rowEmail.toLowerCase() === email.toLowerCase()) {
-          orders.push({ type: 'KEEPSAKE', orderId: row[0] || '', status: row[6] || '', date: row[7] || row[8] || '', row: row });
+    async function fetchSupabaseVIPs(email) {
+      const url = `${SUPABASE_URL}/rest/v1/vip_intake?email=eq.${encodeURIComponent(email)}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
         }
-      }
-      return orders;
+      });
+      
+      const data = await response.json();
+      
+      return (data || []).map(row => ({
+        type: 'VIP',
+        orderId: row.intake_id,
+        status: row.status || 'Unknown',
+        date: row.created_at || row.submitted_at || '',
+        data: row
+      }));
     }
     
-    function parseVIPOrders(data, email) {
-      if (!data || data.length < 2) return [];
-      const orders = [];
-      for (let i = 1; i < data.length; i++) {
-        const row = data[i];
-        const rowEmail = row[2];
-        if (rowEmail && rowEmail.toLowerCase() === email.toLowerCase()) {
-          orders.push({ type: 'VIP', orderId: row[0] || '', status: row[6] || '', date: row[7] || '', row: row });
+    async function fetchSupabasePhotobooks(email) {
+      const url = `${SUPABASE_URL}/rest/v1/photobooks?customer_email=eq.${encodeURIComponent(email)}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
         }
-      }
-      return orders;
+      });
+      
+      const data = await response.json();
+      
+      return (data || []).map(row => ({
+        type: 'PHOTOBOOK',
+        orderId: row.id,
+        status: row.status || 'Unknown',
+        date: row.created_at || row.form_submitted_date || '',
+        data: row
+      }));
     }
     
-    function parsePhotobookOrders(data, email) {
-      if (!data || data.length < 2) return [];
-      const orders = [];
-      for (let i = 1; i < data.length; i++) {
-        const row = data[i];
-        const rowEmail = row[2];
-        if (rowEmail && rowEmail.toLowerCase() === email.toLowerCase()) {
-          orders.push({ type: 'PHOTOBOOK', orderId: row[0] || '', status: row[6] || '', date: row[7] || row[8] || '', row: row });
+    async function fetchSupabaseOrderByID(orderUUID) {
+      const url = `${SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderUUID}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
         }
-      }
-      return orders;
-    }
-    
-    function parsePartnershipOrders(data, email) {
-      if (!data || data.length < 2) return [];
-      const orders = [];
-      for (let i = 1; i < data.length; i++) {
-        const row = data[i];
-        const rowEmail = row[4];
-        if (rowEmail && rowEmail.toLowerCase() === email.toLowerCase()) {
-          orders.push({ type: 'PARTNERSHIP', orderId: row[0] || '', status: row[10] || '', date: row[1] || '', row: row });
-        }
-      }
-      return orders;
-    }
-    
-    function findOrderInSheet(data, orderId, type) {
-      if (!data || data.length < 2) return null;
-      for (let i = 1; i < data.length; i++) {
-        const row = data[i];
-        if (row[0] === orderId) {
-          return { type, orderId, status: row[6] || row[10] || '', row };
-        }
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        return {
+          type: 'KEEPSAKE',
+          orderId: data[0].order_id,
+          status: data[0].status,
+          data: data[0]
+        };
       }
       return null;
     }
+    
+    async function fetchSupabaseVIPByID(vipUUID) {
+      const url = `${SUPABASE_URL}/rest/v1/vip_intake?intake_id=eq.${vipUUID}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        return {
+          type: 'VIP',
+          orderId: data[0].intake_id,
+          status: data[0].status,
+          data: data[0]
+        };
+      }
+      return null;
+    }
+    
+    async function fetchSupabasePhotobookByID(bookUUID) {
+      const url = `${SUPABASE_URL}/rest/v1/photobooks?id=eq.${bookUUID}&select=*`;
+      const response = await fetch(url, {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        return {
+          type: 'PHOTOBOOK',
+          orderId: data[0].id,
+          status: data[0].status,
+          data: data[0]
+        };
+      }
+      return null;
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // DISPLAY FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════
     
     function displayOrdersList() {
       allOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -472,13 +534,14 @@
       allOrders.forEach(order => {
         const statusClass = getStatusClass(order.status);
         const typeLabel = order.type;
+        const displayId = order.orderId.substring(0, 8) + '...'; // Show first 8 chars of UUID
         
         html += `
-          <div class="order-card" onclick="displayOrderDetails(${JSON.stringify(order).replace(/"/g, '&quot;')})">
+          <div class="order-card" onclick='displayOrderDetails(${JSON.stringify(order).replace(/'/g, "\\'")})'> 
             <div class="order-header">
               <div>
                 <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">${typeLabel}</span>
-                <span class="order-id">${order.orderId}</span>
+                <span class="order-id">${displayId}</span>
               </div>
               <div class="status-badge ${statusClass}">${order.status}</div>
             </div>
@@ -497,13 +560,11 @@
       let html = '';
       
       if (order.type === 'KEEPSAKE') {
-        html = buildKeepsakeDetails(order.row);
+        html = buildKeepsakeDetails(order.data);
       } else if (order.type === 'VIP') {
-        html = buildVIPDetails(order.row);
+        html = buildVIPDetails(order.data);
       } else if (order.type === 'PHOTOBOOK') {
-        html = buildPhotobookDetails(order.row);
-      } else if (order.type === 'PARTNERSHIP') {
-        html = buildPartnershipDetails(order.row);
+        html = buildPhotobookDetails(order.data);
       }
       
       if (currentEmail) {
@@ -515,21 +576,20 @@
       document.getElementById('content').innerHTML = html;
     }
     
-    function buildKeepsakeDetails(row) {
-      const orderId = row[0] || 'N/A';
-      const customerName = row[1] || 'N/A';
+    function buildKeepsakeDetails(data) {
+      const orderId = data.order_id || 'N/A';
+      const customerName = data.customer_name || 'N/A';
       const firstName = customerName.split(' ')[0];
-      const status = row[6] || 'Unknown';
-      const honoree = row[11] || 'N/A';
-      const dates = row[12] || '';
-      const product = row[14] || 'N/A';
-      const template = row[15] || 'N/A';
-      const customWording = row[17] || '';
-      const orderTotalRaw = row[37];
-      const orderTotal = orderTotalRaw && !isNaN(parseFloat(orderTotalRaw)) ? `$${parseFloat(orderTotalRaw).toFixed(2)}` : 'Pending';
-      const submittedDate = row[7] ? new Date(row[7]) : null;
+      const status = data.status || 'Unknown';
+      const honoree = data.honored_name || 'N/A';
+      const dates = data.dates || '';
+      const product = data.product_type || 'N/A';
+      const template = data.template_chosen || 'N/A';
+      const customWording = data.custom_wording || '';
+      const orderTotal = data.order_total ? `$${parseFloat(data.order_total).toFixed(2)}` : 'Pending';
+      const submittedDate = data.created_at ? new Date(data.created_at) : null;
       const statusClass = getStatusClass(status);
-      const nextAction = determineKeepsakeNextAction(row);
+      const nextAction = determineKeepsakeNextAction(data);
       
       return `
         <div class="detail-card">
@@ -537,7 +597,7 @@
             <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your Legacy Journii begins here.</h2>
             <div style="margin-bottom: 1rem;">
               <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">KEEPSAKE</span>
-              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId}</span>
+              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId.substring(0, 8)}...</span>
             </div>
             <div class="status-badge ${statusClass}">${status}</div>
           </div>
@@ -558,16 +618,16 @@
       `;
     }
     
-    function buildVIPDetails(row) {
-      const orderId = row[0] || 'N/A';
-      const customerName = row[1] || 'N/A';
+    function buildVIPDetails(data) {
+      const orderId = data.intake_id || 'N/A';
+      const customerName = data.full_name || 'N/A';
       const firstName = customerName.split(' ')[0];
-      const status = row[6] || 'Unknown';
-      const businessName = row[11] || 'N/A';
-      const giftsFor = row[12] || 'N/A';
-      const quantity = row[13] || 'N/A';
+      const status = data.status || 'Unknown';
+      const businessName = data.vip_business_name || 'N/A';
+      const giftsFor = data.gifts_for || 'N/A';
+      const quantity = data.estimated_quantity || 'N/A';
       const statusClass = getStatusClass(status);
-      const nextAction = determineVIPNextAction(row);
+      const nextAction = determineVIPNextAction(data);
       
       return `
         <div class="detail-card">
@@ -575,7 +635,7 @@
             <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your VIP Journii begins here.</h2>
             <div style="margin-bottom: 1rem;">
               <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">VIP</span>
-              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId}</span>
+              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId.substring(0, 8)}...</span>
             </div>
             <div class="status-badge ${statusClass}">${status}</div>
           </div>
@@ -592,14 +652,14 @@
       `;
     }
     
-    function buildPhotobookDetails(row) {
-      const orderId = row[0] || 'N/A';
-      const customerName = row[1] || 'N/A';
+    function buildPhotobookDetails(data) {
+      const orderId = data.id || 'N/A';
+      const customerName = data.customer_name || 'N/A';
       const firstName = customerName.split(' ')[0];
-      const status = row[6] || 'Unknown';
-      const pages = row[11] || 'N/A';
+      const status = data.status || 'Unknown';
+      const pages = data.photo_book_pages || 'N/A';
       const statusClass = getStatusClass(status);
-      const nextAction = determinePhotobookNextAction(row);
+      const nextAction = determinePhotobookNextAction(data);
       
       return `
         <div class="detail-card">
@@ -607,7 +667,7 @@
             <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your Photo Book Journii begins here.</h2>
             <div style="margin-bottom: 1rem;">
               <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">PHOTO BOOK</span>
-              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId}</span>
+              <span style="font-size: 0.9rem; color: var(--text-muted);">Order #${orderId.substring(0, 8)}...</span>
             </div>
             <div class="status-badge ${statusClass}">${status}</div>
           </div>
@@ -622,46 +682,16 @@
       `;
     }
     
-    function buildPartnershipDetails(row) {
-      const partnerId = row[0] || 'N/A';
-      const contactName = row[2] || 'N/A';
-      const firstName = contactName.split(' ')[0];
-      const businessName = row[5] || 'N/A';
-      const status = row[10] || 'Unknown';
-      const statusClass = getStatusClass(status);
-      const nextAction = determinePartnershipNextAction(row);
-      
-      return `
-        <div class="detail-card">
-          <div class="detail-header">
-            <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Hi ${firstName}, your Partnership Journii begins here.</h2>
-            <div style="margin-bottom: 1rem;">
-              <span style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-right: 8px;">PARTNERSHIP</span>
-              <span style="font-size: 0.9rem; color: var(--text-muted);">${businessName}</span>
-            </div>
-            <div class="status-badge ${statusClass}">${status}</div>
-          </div>
-        </div>
-        ${nextAction}
-        <div class="action-buttons">
-          <button onclick="contactUs('${partnerId}')" class="btn-secondary">📧 Contact Us</button>
-        </div>
-      `;
-    }
-    
-    function determineKeepsakeNextAction(row) {
-      const status = row[6] || '';
-      const formCompleteRaw = row[41];
-      const formComplete = formCompleteRaw === true || String(formCompleteRaw).toLowerCase() === 'true';
-      const orderId = row[0] || '';
-      const customerEmail = row[2] || '';
-      const customerName = row[1] || '';
-      const orderNumber = row[4] || orderId;
-      
-      console.log(`🔍 DEBUG KEEPSAKE: Status="${status}", FormComplete=${formComplete}, Raw="${formCompleteRaw}"`);
+    function determineKeepsakeNextAction(data) {
+      const status = data.status || '';
+      const formComplete = data.form_complete || false;
+      const orderId = data.order_id || '';
+      const customerEmail = data.customer_email || '';
+      const customerName = data.customer_name || '';
+      const externalOrderNumber = data.external_order_number || orderId;
       
       if (status === 'Payment Received' && !formComplete) {
-        const formLink = `${SMARTFORM_URL}?orderNumber=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(customerEmail)}&name=${encodeURIComponent(customerName)}&projectType=keepsake`;
+        const formLink = `${SMARTFORM_URL}?orderNumber=${encodeURIComponent(externalOrderNumber)}&email=${encodeURIComponent(customerEmail)}&name=${encodeURIComponent(customerName)}&projectType=keepsake`;
         return `
           <div class="detail-card" style="background: linear-gradient(135deg, rgba(233, 255, 96, 0.1), rgba(10, 149, 168, 0.1)); border: 2px solid #e9ff60;">
             <h3 style="color: #e9ff60; margin-bottom: 1rem;">📝 Next Step: Complete Your Design Details</h3>
@@ -683,24 +713,11 @@
       return '';
     }
     
-    function determineVIPNextAction(row) {
-      const status = row[6] || '';
-      const orderId = row[0] || '';
-      const customerEmail = row[2] || '';
-      const customerName = row[1] || '';
-      
-      console.log(`🔍 DEBUG VIP: Status="${status}"`);
-      
-      if (status === 'New' || status === 'Payment Received') {
-        const formLink = `${SMARTFORM_URL}?orderNumber=${encodeURIComponent(orderId)}&email=${encodeURIComponent(customerEmail)}&name=${encodeURIComponent(customerName)}&projectType=vip`;
-        return `
-          <div class="detail-card" style="background: linear-gradient(135deg, rgba(233, 255, 96, 0.1), rgba(10, 149, 168, 0.1)); border: 2px solid #e9ff60;">
-            <h3 style="color: #e9ff60; margin-bottom: 1rem;">📝 Next Step: Complete VIP Project Details</h3>
-            <p style="color: #b8bac0; margin-bottom: 1.5rem;">Tell us about your VIP bulk gift project.</p>
-            <a href="${formLink}" target="_blank" class="btn-primary">💼 Complete VIP Project Details</a>
-          </div>
-        `;
-      }
+    function determineVIPNextAction(data) {
+      const status = data.status || '';
+      const orderId = data.intake_id || '';
+      const customerEmail = data.email || '';
+      const customerName = data.full_name || '';
       
       if (status === 'Form Received') {
         return `
@@ -714,16 +731,13 @@
       return '';
     }
     
-    function determinePhotobookNextAction(row) {
-      const status = row[6] || '';
-      const formCompleteRaw = row[41];
-      const formComplete = formCompleteRaw === true || String(formCompleteRaw).toLowerCase() === 'true';
-      const orderId = row[0] || '';
-      const customerEmail = row[2] || '';
-      const customerName = row[1] || '';
-      const orderNumber = row[4] || orderId;
-      
-      console.log(`🔍 DEBUG PHOTOBOOK: Status="${status}", FormComplete=${formComplete}`);
+    function determinePhotobookNextAction(data) {
+      const status = data.status || '';
+      const formComplete = data.form_complete || false;
+      const orderId = data.id || '';
+      const customerEmail = data.customer_email || '';
+      const customerName = data.customer_name || '';
+      const orderNumber = data.order_number_square || orderId;
       
       if (status === 'Payment Received' && !formComplete) {
         const photoUploaderLink = `https://script.google.com/macros/s/AKfycbypR2v8moVL72nXdl4hnJWEma3aPSUgq_-JAQ1E9XPamfFjsfPMjJRo6zq9i_8oR-ID/exec?orderNumber=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(customerEmail)}&name=${encodeURIComponent(customerName)}`;
@@ -732,38 +746,6 @@
             <h3 style="color: #e9ff60; margin-bottom: 1rem;">📝 Next Step: Upload Photos & Complete Details</h3>
             <p style="color: #b8bac0; margin-bottom: 1.5rem;">Upload your photos (24-110 photos) and tell us about your celebration.</p>
             <a href="${photoUploaderLink}" target="_blank" class="btn-primary">📸 Upload Photos & Complete Form</a>
-          </div>
-        `;
-      }
-      
-      return '';
-    }
-    
-    function determinePartnershipNextAction(row) {
-      const status = row[10] || '';
-      
-      console.log(`🔍 DEBUG PARTNERSHIP: Status="${status}"`);
-      
-      if (status === 'Pending Setup' || status === 'Pending Review') {
-        const partnerId = row[0] || '';
-        const contactEmail = row[4] || '';
-        const contactName = row[2] || '';
-        const businessName = row[5] || '';
-        const formLink = `https://dopeleeprezzed-oss.github.io/dopelee-form/partnership.html?partnerId=${encodeURIComponent(partnerId)}&email=${encodeURIComponent(contactEmail)}&contactName=${encodeURIComponent(contactName)}&businessName=${encodeURIComponent(businessName)}`;
-        return `
-          <div class="detail-card" style="background: linear-gradient(135deg, rgba(233, 255, 96, 0.1), rgba(10, 149, 168, 0.1)); border: 2px solid #e9ff60;">
-            <h3 style="color: #e9ff60; margin-bottom: 1rem;">📝 Next Step: Review & Complete Your Agreement</h3>
-            <p style="color: #b8bac0; margin-bottom: 1.5rem;">Welcome to the Legacy Lounge™ Partner Network!</p>
-            <a href="${formLink}" target="_blank" class="btn-primary">🤝 Complete Partnership Agreement</a>
-          </div>
-        `;
-      }
-      
-      if (status === 'Active') {
-        return `
-          <div class="detail-card" style="background: rgba(52, 97, 250, 0.05); border: 2px solid #3461fa;">
-            <h3 style="color: #3461fa; margin-bottom: 1rem;">✨ Partnership Active!</h3>
-            <p style="color: #b8bac0;">Your Legacy Lounge™ is live and generating commissions!</p>
           </div>
         `;
       }
@@ -802,3 +784,4 @@
   
 </body>
 </html>
+
