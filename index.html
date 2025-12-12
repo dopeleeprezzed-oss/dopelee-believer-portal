@@ -780,10 +780,12 @@
     function showError(message) {
       document.getElementById('content').innerHTML = `<div class="error">${message}</div>`;
     }
-  </script>
-  
+ <script>
+  window.location.search += window.location.search.includes("v=") ? "" : "&v=3";
+</script>
 </body>
 </html>
+
 
 
 
