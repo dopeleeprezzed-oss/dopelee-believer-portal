@@ -27,30 +27,83 @@
       display: flex;
       flex-direction: column;
     }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+    
+    @keyframes logoGlow {
+      0%, 100% { filter: drop-shadow(0 0 30px rgba(211, 251, 27, 0.6)) drop-shadow(0 0 60px rgba(15, 240, 184, 0.4)); }
+      50% { filter: drop-shadow(0 0 50px rgba(253, 38, 253, 0.8)) drop-shadow(0 0 80px rgba(52, 97, 250, 0.6)); }
+    }
+    
     .header {
-      background: linear-gradient(90deg, #0a95a8, #3461fa, #fd26fd, #d3fb1b);
-      padding: 3rem 2rem;
+      background: linear-gradient(135deg, #0a95a8, #3461fa, #fd26fd, #d3fb1b, #0ff0b8, #0a95a8);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      padding: 4rem 2rem;
       text-align: center;
       position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: gradientShift 15s linear infinite;
+    }
+    
     .logo-container {
       display: flex;
       justify-content: center;
-      margin-bottom: 1.5rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 2;
     }
+    
+    .logo-container img {
+      animation: logoFloat 4s ease-in-out infinite, logoGlow 3s ease-in-out infinite;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+    
     .header h1 {
       color: #000;
-      font-size: 2.5rem;
+      font-size: 3rem;
       font-weight: 900;
-      margin-bottom: 0.75rem;
+      margin-bottom: 1rem;
       text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 2px 10px rgba(255, 255, 255, 0.3);
+      position: relative;
+      z-index: 2;
     }
+    
     .header p {
       color: #000;
-      font-size: 1.1rem;
-      opacity: 0.85;
-      font-weight: 500;
+      font-size: 1.3rem;
+      opacity: 0.9;
+      font-weight: 600;
       font-style: italic;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 2;
     }
     .container {
       max-width: 900px;
@@ -217,7 +270,7 @@
 <body>
   <div class="header">
     <div class="logo-container">
-      <img src="https://25zppb-bv.myshopify.com/cdn/shop/files/dopelee_prezzed_logo.png?v=1755138398&width=450" alt="Dopelee" style="height: 140px;">
+      <img src="https://25zppb-bv.myshopify.com/cdn/shop/files/dopelee_prezzed_logo.png?v=1755138398&width=450" alt="Dopelee" style="height: 220px; width: auto;">
     </div>
     <h1>DOPELEE PREZZED BY S™</h1>
     <p>Luxury keepsakes. Timelessly crafted.</p>
@@ -412,4 +465,3 @@
   </script>
 </body>
 </html>
-
