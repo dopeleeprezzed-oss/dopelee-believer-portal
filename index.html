@@ -105,6 +105,61 @@
       position: relative;
       z-index: 2;
     }
+
+    /* NEW: GOOGLE REVIEW CELEBRATION CARD */
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .celebration-card {
+      background: linear-gradient(135deg, #d3fb1b, #0a95a8, #fd26fd);
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(211, 251, 27, 0.3);
+      animation: slideDown 0.6s ease;
+    }
+
+    .celebration-card h2 {
+      font-size: 2.5rem;
+      color: #000;
+      margin-bottom: 1rem;
+      font-weight: 900;
+    }
+
+    .celebration-card p {
+      font-size: 1.2rem;
+      color: #000;
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+
+    .review-button {
+      display: inline-block;
+      background: #000;
+      color: #d3fb1b;
+      padding: 1.2rem 3rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .review-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
     .container {
       max-width: 900px;
       margin: 2rem auto;
@@ -175,6 +230,9 @@
     .status-payment { background: rgba(253, 38, 253, 0.2); color: var(--accent-pink); }
     .status-form { background: rgba(15, 240, 184, 0.2); color: var(--accent-cyan); }
     .status-production { background: rgba(211, 251, 27, 0.2); color: var(--accent-gold); }
+    .status-shipped { background: rgba(52, 97, 250, 0.2); color: var(--accent-purple); }
+    .status-delivered { background: rgba(15, 240, 184, 0.2); color: var(--accent-cyan); }
+
     .detail-card {
       background: var(--bg-card);
       padding: 2rem;
@@ -182,20 +240,33 @@
       margin-bottom: 1.5rem;
       border: 2px solid rgba(211, 251, 27, 0.2);
     }
+
+    /* FIXED: TIMELINE PROGRESS BAR */
     .timeline {
       display: flex;
       justify-content: space-between;
       margin: 2rem 0;
       position: relative;
+      padding: 0 20px;
     }
     .timeline::before {
       content: '';
       position: absolute;
       top: 20px;
-      left: 0;
-      right: 0;
+      left: 40px;
+      right: 40px;
       height: 4px;
       background: var(--bg-secondary);
+      z-index: 0;
+    }
+    .timeline-progress {
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
+      transition: width 1s ease;
+      z-index: 0;
     }
     .timeline-step {
       flex: 1;
@@ -213,13 +284,24 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.5s ease;
+      font-weight: bold;
     }
     .timeline-dot.active {
       background: var(--accent-gold);
       box-shadow: 0 0 20px rgba(211, 251, 27, 0.5);
+      animation: pulse 2s infinite;
     }
     .timeline-dot.completed {
       background: var(--accent-cyan);
+    }
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(211, 251, 27, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(211, 251, 27, 0.8);
+      }
     }
     .timeline-label {
       font-size: 0.85rem;
@@ -264,6 +346,12 @@
       border-radius: 12px;
       color: var(--accent-pink);
       text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 { font-size: 2rem; }
+      .timeline { flex-direction: column; gap: 1rem; padding: 0; }
+      .timeline::before, .timeline-progress { display: none; }
     }
   </style>
 </head>
@@ -312,11 +400,36 @@
       if (order) {
         document.getElementById('searchSection').style.display = 'none';
         loadOrder(order);
+        // NEW: Track portal visit
+        trackPortalVisit(order);
       } else if (emailParam) {
         document.getElementById('emailInput').value = emailParam;
         loadOrders(emailParam);
       }
     });
+    
+    // ═══════════════════════════════════════════════════════════════
+    // NEW: TRACK PORTAL VISIT
+    // ═══════════════════════════════════════════════════════════════
+    async function trackPortalVisit(orderUUID) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderUUID}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            last_portal_visit: new Date().toISOString()
+          })
+        });
+        console.log('✅ Portal visit tracked');
+      } catch (error) {
+        console.error('❌ Failed to track visit:', error);
+      }
+    }
     
     function searchOrders(e) {
       e.preventDefault();
@@ -392,7 +505,10 @@
       let html = `<div class="detail-card"><h2>Your Orders (${orders.length})</h2></div><div class="orders-list">`;
       orders.forEach((o, i) => {
         const last4 = o.id.slice(-4);
-        const sc = o.status.includes('Payment') ? 'status-payment' : o.status.includes('Form') ? 'status-form' : 'status-production';
+        const sc = o.status.includes('Payment') ? 'status-payment' : 
+                   o.status.includes('Form') ? 'status-form' : 
+                   o.status.includes('Shipped') ? 'status-shipped' :
+                   o.status.includes('Delivered') ? 'status-delivered' : 'status-production';
         html += `<div class="order-card" onclick="showTracking(orders[${i}])">
           <div class="order-header">
             <div><span style="background:rgba(255,255,255,0.1);padding:4px 8px;border-radius:4px;font-size:0.75rem;margin-right:8px">${o.type}</span>
@@ -414,11 +530,29 @@
         const fc = d.form_complete || false;
         const st = d.status || 'Payment Received';
         
+        // Determine current step
         let step = 1;
         if (st.includes('Form') || fc) step = 2;
         if (st.includes('Production')) step = 3;
         if (st.includes('Shipped')) step = 4;
         if (st.includes('Delivered')) step = 5;
+        
+        // NEW: Show celebration card if delivered
+        if (step === 5) {
+          html += `<div class="celebration-card">
+            <h2>🎉 Your Order Has Been Delivered!</h2>
+            <p>Hope you're absolutely loving your Dopelee piece! 💙</p>
+            <p style="font-size: 1rem; margin-bottom: 2rem;">
+              We'd be super grateful if you could take a moment to leave us a quick review!
+            </p>
+            <a href="https://tr.ee/U07ytK" target="_blank" class="review-button">
+              ⭐ Leave a Google Review
+            </a>
+            <p style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.9;">
+              Your feedback means the world to us! 🙏
+            </p>
+          </div>`;
+        }
         
         html += `<div class="detail-card">
           <h2 style="font-size:1.8rem;margin-bottom:1rem">Hi ${name}, your Legacy Journii begins here.</h2>
@@ -426,6 +560,7 @@
           <span style="color:var(--text-muted)">#${last4}</span></div>
           
           <div class="timeline">
+            <div class="timeline-progress" style="width: ${((step - 1) / 4) * 100}%"></div>
             <div class="timeline-step"><div class="timeline-dot completed">✓</div><div class="timeline-label">Payment</div></div>
             <div class="timeline-step"><div class="timeline-dot ${step >= 2 ? (step === 2 ? 'active' : 'completed') : ''}">${step >= 2 ? '✓' : '2'}</div><div class="timeline-label ${step === 2 ? 'active' : ''}">Personalization</div></div>
             <div class="timeline-step"><div class="timeline-dot ${step >= 3 ? (step === 3 ? 'active' : 'completed') : ''}">${step >= 3 ? '✓' : '3'}</div><div class="timeline-label ${step === 3 ? 'active' : ''}">Production</div></div>
@@ -436,6 +571,7 @@
           <div style="line-height:2;color:var(--text-muted);margin-top:2rem">
             <strong style="color:var(--text-primary)">Product:</strong> ${d.product_type || 'Keepsake'}<br>
             ${d.honored_name ? `<strong style="color:var(--text-primary)">Honoring:</strong> ${d.honored_name}<br>` : ''}
+            ${d.tracking_number ? `<strong style="color:var(--text-primary)">Tracking:</strong> <a href="https://tools.usps.com/go/TrackConfirmAction?tLabels=${d.tracking_number}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">${d.tracking_number}</a><br>` : ''}
             <strong style="color:var(--text-primary)">Total:</strong> ${d.order_total ? '$' + d.order_total : 'Pending'}
           </div>
         </div>`;
