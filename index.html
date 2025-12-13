@@ -441,16 +441,17 @@
         </div>`;
         
         if (st === 'Payment Received' && !fc) {
-          const ext = d.external_order_number || o.id;
-          const em = d.customer_email || '';
-          const link = `${FORM_URL}?orderNumber=${encodeURIComponent(ext)}&email=${encodeURIComponent(em)}&name=${encodeURIComponent(d.customer_name || '')}&projectType=keepsake`;
-          html += `<div class="detail-card" style="background:linear-gradient(135deg,rgba(211,251,27,0.1),rgba(10,149,168,0.1));border:2px solid #d3fb1b">
-            <h3 style="color:#d3fb1b;margin-bottom:1rem">⚡ ACTION NEEDED</h3>
-            <p style="color:#b8bac0;margin-bottom:1.5rem">Complete your personalization!</p>
-            <a href="${link}" class="btn-primary">✨ Complete Now</a>
-          </div>`;
-        }
-      }
+  const ext = d.external_order_number || o.id;
+  const em = d.customer_email || '';
+  const link = `${FORM_URL}?orderNumber=${encodeURIComponent(ext)}&email=${encodeURIComponent(em)}&name=${encodeURIComponent(d.customer_name || '')}&projectType=keepsake`;
+  html += `<div class="detail-card" style="background:linear-gradient(135deg,rgba(211,251,27,0.15),rgba(15,240,184,0.15));border:3px solid #d3fb1b;box-shadow:0 0 30px rgba(211,251,27,0.3);text-align:center;padding:3rem 2rem">
+    <h3 style="color:#d3fb1b;margin:0 0 1.5rem 0;font-size:2rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;text-shadow:0 0 20px rgba(211,251,27,0.5)">⚡ ACTION NEEDED</h3>
+    <p style="color:#e8e8ec;margin:0 auto 2rem auto;font-size:1.1rem;line-height:1.6;max-width:600px">Complete your personalization details so we can start creating your keepsake!</p>
+    <div style="text-align:center">
+      <a href="${link}" class="btn-primary" style="display:inline-block;padding:1.2rem 3rem;font-size:1.1rem;box-shadow:0 10px 40px rgba(211,251,27,0.4);text-decoration:none">✨ Complete Personalization Now</a>
+    </div>
+  </div>`;
+}
       
       document.getElementById('content').innerHTML = html;
     }
@@ -465,4 +466,5 @@
   </script>
 </body>
 </html>
+
 
