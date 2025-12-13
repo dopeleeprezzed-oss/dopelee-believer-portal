@@ -444,7 +444,7 @@
           const ext = d.external_order_number || o.id;
           const em = d.customer_email || '';
           const link = `${FORM_URL}?orderNumber=${encodeURIComponent(ext)}&email=${encodeURIComponent(em)}&name=${encodeURIComponent(d.customer_name || '')}&projectType=keepsake`;
-          html += `<div class="detail-card" style="background:linear-gradient(135deg,rgba(211,251,27,0.1),rgba(10,149,168,0.1));border:2px solid #d3fb1b;text-align:center">
+          html += `<div class="detail-card" style="background:linear-gradient(135deg,rgba(211,251,27,0.1),rgba(10,149,168,0.1));border:2px solid #d3fb1b">
             <h3 style="color:#d3fb1b;margin-bottom:1rem">⚡ ACTION NEEDED</h3>
             <p style="color:#b8bac0;margin-bottom:1.5rem">Complete your personalization!</p>
             <a href="${link}" class="btn-primary">✨ Complete Now</a>
@@ -465,4 +465,3 @@
   </script>
 </body>
 </html>
-
