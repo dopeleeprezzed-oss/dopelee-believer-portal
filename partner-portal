@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Legacy Lounge™ Partner Portal</title>
+<title>Partner Portal | The Legacy Lounge™</title>
 
 <style>
   body {
@@ -87,11 +87,76 @@
   }
 
   /* QR CODE */
+  .qr-box {
+    text-align: center;
+  }
   .qr-box img {
-    width: 150px;
-    height: 150px;
-    margin-top: 12px;
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
     border-radius: 10px;
+    border: 2px solid #d3fb1b;
+    padding: 10px;
+    background: white;
+  }
+  
+  .qr-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  
+  .qr-btn {
+    padding: 10px 20px;
+    background: #d3fb1b;
+    color: #000;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+  }
+  
+  .qr-btn:hover {
+    background: #c3eb18;
+  }
+
+  /* INSTALLATION STATUS */
+  .install-status {
+    background: linear-gradient(135deg, rgba(211, 251, 27, 0.1), rgba(10, 149, 168, 0.1));
+    border: 2px solid #d3fb1b;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .install-status.pending {
+    border-color: #fd26fd;
+    background: linear-gradient(135deg, rgba(253, 38, 253, 0.1), rgba(52, 97, 250, 0.1));
+  }
+  
+  .install-status.complete {
+    border-color: #0ff0b8;
+    background: linear-gradient(135deg, rgba(15, 240, 184, 0.1), rgba(10, 149, 168, 0.1));
+  }
+  
+  .schedule-btn {
+    display: inline-block;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, #d3fb1b, #0ff0b8);
+    color: #000;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 15px;
+  }
+  
+  .schedule-btn:hover {
+    transform: scale(1.05);
   }
 
   /* CONTACT BUTTON */
@@ -112,107 +177,268 @@
   .contact-btn:hover {
     background: #c3eb18;
   }
+  
+  /* LOADING & ERROR */
+  .loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: #cfcfcf;
+  }
+  
+  .error {
+    background: rgba(253, 38, 253, 0.1);
+    border: 2px solid #fd26fd;
+    color: #fd26fd;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 30px 0;
+  }
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <h1>Legacy Lounge™ Partner Portal</h1>
+  <h1>The Legacy Lounge™ Partner Portal</h1>
   <p>Your Display • Your Earnings • Your Impact</p>
 </div>
 
-<div class="container">
-
-  <!-- PARTNER INFO CARD -->
-  <div class="card" id="partnerInfo">
-    <h2>Partner Information</h2>
-    <p><strong>Business:</strong> <span id="businessName"></span></p>
-    <p><strong>Contact Person:</strong> <span id="contactPerson"></span></p>
-    <p><strong>Email:</strong> <span id="contactEmail"></span></p>
-    <p><strong>Status:</strong> <span id="status"></span></p>
-  </div>
-
-  <!-- INSTALLATION -->
-  <div class="card">
-    <h2>Installation Status</h2>
-    <p><strong>Scheduled:</strong> <span id="installScheduled"></span></p>
-    <p><strong>Completed:</strong> <span id="installCompleted"></span></p>
-    <p><strong>Activated:</strong> <span id="activated"></span></p>
-  </div>
-
-  <!-- COMMISSION DASHBOARD -->
-  <div class="card">
-    <h2>Commission Dashboard</h2>
-
-    <div class="stats-row">
-      <div class="stat-box">
-        <h3>Total Earned</h3>
-        <p id="commissionTotal">$0</p>
-      </div>
-
-      <div class="stat-box">
-        <h3>Last Payout</h3>
-        <p id="lastPayout">$0</p>
-      </div>
-
-      <div class="stat-box">
-        <h3>Orders This Month</h3>
-        <p id="ordersThisMonth">0</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- QR CODE -->
-  <div class="card qr-box">
-    <h2>Your Legacy Lounge QR Code</h2>
-    <p>Display this QR code near your installation for easy customer access.</p>
-    <img id="qrImage" src="">
-  </div>
-
-  <!-- CONTACT BUTTON -->
-  <a href="mailto:info@dopeleeprezzedbysllc.com" class="contact-btn">
-    Message Dopelee Partner Support
-  </a>
-
+<div class="container" id="content">
+  <div class="loading">Loading your dashboard...</div>
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyNg4ikJ28LTUpy1AVdncGCGw1M6ETqxD9dt0_ARCJMw9vPuC2i0VKqzzGoKtRIJErE/exec";
+const SUPABASE_URL = 'https://zgnceundsigimwujwrzu.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Vdl9J8D_kkmxhPq1QwU33g__b1_AGNF';
+const CALENDAR_LINK = 'https://calendar.app.google/hHSCmkVBcuFM7oVe6';
 
-/* READ ?partner= FROM URL */
+/* GET PARTNER ID FROM URL */
 const urlParams = new URLSearchParams(window.location.search);
-const partnerId = urlParams.get("partner");
+const partnerId = urlParams.get('partner');
 
 if (!partnerId) {
-  document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:50px;'>Partner ID Missing</h2>";
+  document.getElementById('content').innerHTML = `
+    <div class="error">
+      <h2>⚠️ Partner ID Missing</h2>
+      <p>Please use the link provided in your welcome email.</p>
+      <p>Need help? Call K.Smith: <a href="tel:8165301520" style="color:#d3fb1b">816-530-1520</a></p>
+    </div>
+  `;
+} else {
+  loadPartnerDashboard();
 }
 
-/* FETCH PARTNER DATA */
-fetch(`${API_URL}?partner=${partnerId}`)
-  .then(res => res.json())
-  .then(data => {
-    console.log("Partner Data Loaded:", data);
+/* LOAD PARTNER DASHBOARD */
+async function loadPartnerDashboard() {
+  try {
+    // Fetch partner data from Supabase
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/partners?partner_id=eq.${partnerId}&select=*`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      }
+    });
+    
+    const data = await response.json();
+    
+    if (!data || data.length === 0) {
+      showError('Partner not found. Please contact K.Smith at 816-530-1520');
+      return;
+    }
+    
+    const partner = data[0];
+    
+    // Fetch orders for this partner
+    const ordersResponse = await fetch(`${SUPABASE_URL}/rest/v1/orders?partner_id=eq.${partnerId}&select=*&order=created_at.desc&limit=10`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+      }
+    });
+    
+    const orders = await ordersResponse.json() || [];
+    
+    renderDashboard(partner, orders);
+    
+  } catch (err) {
+    console.error('Error loading dashboard:', err);
+    showError('Error loading dashboard. Please try again or contact support.');
+  }
+}
 
-    document.getElementById("businessName").innerText = data.Business_Name || "";
-    document.getElementById("contactPerson").innerText = data.Contact_Person || "";
-    document.getElementById("contactEmail").innerText = data.Contact_Email || "";
-    document.getElementById("status").innerText = data.Status || "Pending";
+/* RENDER DASHBOARD */
+function renderDashboard(partner, orders) {
+  const status = partner.status || 'Pending';
+  const installScheduled = partner.setup_scheduled_date || null;
+  const installComplete = partner.setup_completed_date || null;
+  const isLive = status === 'Active' || status === 'Live';
+  
+  let html = `
+    <!-- PARTNER INFO CARD -->
+    <div class="card">
+      <h2>Welcome, ${partner.business_name}!</h2>
+      <p><strong>Contact Person:</strong> ${partner.contact_person || partner.contact_name || 'N/A'}</p>
+      <p><strong>Email:</strong> ${partner.contact_email || 'N/A'}</p>
+      <p><strong>Status:</strong> <span style="color:${isLive ? '#0ff0b8' : '#fd26fd'};font-weight:700">${status}</span></p>
+    </div>
+  `;
+  
+  // INSTALLATION STATUS
+  if (!installComplete) {
+    const statusClass = installScheduled ? 'install-status' : 'install-status pending';
+    html += `
+      <div class="${statusClass}">
+        <h2 style="color:#d3fb1b;margin-top:0">📅 Installation ${installScheduled ? 'Scheduled' : 'Pending'}</h2>
+        ${installScheduled ? 
+          `<p style="font-size:18px;margin:10px 0">Your installation is scheduled for:<br><strong style="color:#d3fb1b;font-size:24px">${new Date(installScheduled).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong></p>` :
+          `<p style="margin:10px 0">Schedule your installation to get started!</p>
+           <a href="${CALENDAR_LINK}" target="_blank" class="schedule-btn">📅 Schedule Now</a>`
+        }
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="install-status complete">
+        <h2 style="color:#0ff0b8;margin-top:0">✅ Installation Complete!</h2>
+        <p>Installed on: <strong>${new Date(installComplete).toLocaleDateString()}</strong></p>
+        <p style="color:#d3fb1b;font-weight:700;font-size:18px;margin-top:10px">You're LIVE and earning! 🎉</p>
+      </div>
+    `;
+  }
+  
+  // COMMISSION DASHBOARD
+  const totalEarned = partner.commission_earned_total || 0;
+  const thisMonth = partner.orders_count_this_month || 0;
+  const totalOrders = partner.orders_count_total || orders.length || 0;
+  
+  html += `
+    <div class="card">
+      <h2>💰 Commission Dashboard</h2>
+      <div class="stats-row">
+        <div class="stat-box">
+          <h3>Total Earned</h3>
+          <p>$${parseFloat(totalEarned).toFixed(2)}</p>
+        </div>
+        <div class="stat-box">
+          <h3>Orders This Month</h3>
+          <p>${thisMonth}</p>
+        </div>
+        <div class="stat-box">
+          <h3>Total Orders</h3>
+          <p>${totalOrders}</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // QR CODE
+  const qrCodeUrl = partner.qr_code_url || generateQRCodeUrl(partner.partner_id);
+  const landingPageUrl = `https://prezzedbeyond.com/partner.html?id=${partner.partner_id}`;
+  
+  html += `
+    <div class="card qr-box">
+      <h2>📱 Your Legacy Lounge™ QR Code</h2>
+      <p>Display this QR code at your location and share it everywhere!</p>
+      <img src="${qrCodeUrl}" alt="QR Code" id="qrImage">
+      <div class="qr-buttons">
+        <button class="qr-btn" onclick="downloadQR()">⬇️ Download QR</button>
+        <button class="qr-btn" onclick="copyLink()">📋 Copy Link</button>
+      </div>
+      <p style="font-size:12px;margin-top:15px;color:#b8bac0">
+        Your landing page: <a href="${landingPageUrl}" target="_blank" style="color:#d3fb1b">${landingPageUrl}</a>
+      </p>
+    </div>
+  `;
+  
+  // RECENT ORDERS
+  if (orders.length > 0) {
+    html += `
+      <div class="card">
+        <h2>📦 Recent Orders</h2>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;margin-top:15px">
+            <thead>
+              <tr style="border-bottom:2px solid #d3fb1b">
+                <th style="text-align:left;padding:10px;color:#d3fb1b">Order #</th>
+                <th style="text-align:left;padding:10px;color:#d3fb1b">Date</th>
+                <th style="text-align:left;padding:10px;color:#d3fb1b">Total</th>
+                <th style="text-align:left;padding:10px;color:#d3fb1b">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    orders.forEach(order => {
+      const last4 = order.order_id ? order.order_id.slice(-4) : 'N/A';
+      const date = order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A';
+      const total = order.order_total ? `$${parseFloat(order.order_total).toFixed(2)}` : 'N/A';
+      const status = order.status || 'Processing';
+      
+      html += `
+        <tr style="border-bottom:1px solid #292a30">
+          <td style="padding:10px">#${last4}</td>
+          <td style="padding:10px">${date}</td>
+          <td style="padding:10px;font-weight:700">${total}</td>
+          <td style="padding:10px">${status}</td>
+        </tr>
+      `;
+    });
+    
+    html += `
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+  
+  // CONTACT
+  html += `
+    <a href="mailto:info@dopeleeprezzedbysllc.com" class="contact-btn">
+      💬 Contact Dopelee Support
+    </a>
+  `;
+  
+  document.getElementById('content').innerHTML = html;
+}
 
-    document.getElementById("installScheduled").innerText = data.Setup_Scheduled_Date || "Not Scheduled";
-    document.getElementById("installCompleted").innerText = data.Setup_Completed_Date || "Not Completed";
-    document.getElementById("activated").innerText = data.Date_Activated || "Not Activated";
+/* GENERATE QR CODE URL */
+function generateQRCodeUrl(partnerId) {
+  const landingPageUrl = `https://prezzedbeyond.com/partner.html?id=${partnerId}`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(landingPageUrl)}`;
+}
 
-    document.getElementById("commissionTotal").innerText = "$" + (data.Commission_Earned_Total || 0);
-    document.getElementById("lastPayout").innerText = "$" + (data.Last_Commission_Amount || 0);
-    document.getElementById("ordersThisMonth").innerText = data.Orders_Count_This_Month || 0;
+/* DOWNLOAD QR CODE */
+function downloadQR() {
+  const img = document.getElementById('qrImage');
+  const link = document.createElement('a');
+  link.href = img.src;
+  link.download = `legacy-lounge-qr-${partnerId}.png`;
+  link.click();
+}
 
-    document.getElementById("qrImage").src = data.QR_Code_URL || "";
-  })
-  .catch(err => {
-    console.error(err);
-    document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:50px;'>Error loading partner data</h2>";
+/* COPY LINK */
+function copyLink() {
+  const landingPageUrl = `https://prezzedbeyond.com/partner.html?id=${partnerId}`;
+  navigator.clipboard.writeText(landingPageUrl).then(() => {
+    alert('✅ Link copied to clipboard!');
   });
+}
+
+/* SHOW ERROR */
+function showError(message) {
+  document.getElementById('content').innerHTML = `
+    <div class="error">
+      <h2>⚠️ Error</h2>
+      <p>${message}</p>
+      <p style="margin-top:20px">
+        Need help? Call K.Smith: <a href="tel:8165301520" style="color:#d3fb1b;font-weight:700">816-530-1520</a>
+      </p>
+    </div>
+  `;
+}
 </script>
 
 </body>
