@@ -247,14 +247,13 @@
       justify-content: space-between;
       margin: 2rem 0;
       position: relative;
-      padding: 0 20px;
     }
     .timeline::before {
       content: '';
       position: absolute;
       top: 20px;
-      left: 40px;
-      right: 40px;
+      left: 10%;
+      right: 10%;
       height: 4px;
       background: var(--bg-secondary);
       z-index: 0;
@@ -262,11 +261,12 @@
     .timeline-progress {
       position: absolute;
       top: 20px;
-      left: 40px;
+      left: 10%;
       height: 4px;
       background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
       transition: width 1s ease;
       z-index: 0;
+      max-width: 80%;
     }
     .timeline-step {
       flex: 1;
@@ -560,7 +560,7 @@
           <span style="color:var(--text-muted)">#${last4}</span></div>
           
           <div class="timeline">
-            <div class="timeline-progress" style="width: ${((step - 1) / 4) * 100}%"></div>
+            <div class="timeline-progress" style="width: ${(step - 1) * 20}%"></div>
             <div class="timeline-step"><div class="timeline-dot completed">✓</div><div class="timeline-label">Payment</div></div>
             <div class="timeline-step"><div class="timeline-dot ${step >= 2 ? (step === 2 ? 'active' : 'completed') : ''}">${step >= 2 ? '✓' : '2'}</div><div class="timeline-label ${step === 2 ? 'active' : ''}">Personalization</div></div>
             <div class="timeline-step"><div class="timeline-dot ${step >= 3 ? (step === 3 ? 'active' : 'completed') : ''}">${step >= 3 ? '✓' : '3'}</div><div class="timeline-label ${step === 3 ? 'active' : ''}">Production</div></div>
