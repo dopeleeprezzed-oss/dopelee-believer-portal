@@ -106,16 +106,10 @@
       z-index: 2;
     }
 
-    /* NEW: GOOGLE REVIEW CELEBRATION CARD */
+    /* CELEBRATION CARD */
     @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .celebration-card {
@@ -202,6 +196,37 @@
       font-weight: 700;
       cursor: pointer;
     }
+
+    /* ACTION BUTTONS */
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .action-btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 1rem 1.5rem;
+      background: var(--bg-card);
+      border: 2px solid var(--accent-gold);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .action-btn:hover {
+      background: rgba(211, 251, 27, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(211, 251, 27, 0.3);
+    }
+
     .orders-list { display: grid; gap: 1rem; }
     .order-card {
       background: var(--bg-card);
@@ -241,7 +266,7 @@
       border: 2px solid rgba(211, 251, 27, 0.2);
     }
 
-    /* FIXED: TIMELINE PROGRESS BAR */
+    /* TIMELINE */
     .timeline {
       display: flex;
       justify-content: space-between;
@@ -296,12 +321,8 @@
       background: var(--accent-cyan);
     }
     @keyframes pulse {
-      0%, 100% {
-        box-shadow: 0 0 20px rgba(211, 251, 27, 0.5);
-      }
-      50% {
-        box-shadow: 0 0 30px rgba(211, 251, 27, 0.8);
-      }
+      0%, 100% { box-shadow: 0 0 20px rgba(211, 251, 27, 0.5); }
+      50% { box-shadow: 0 0 30px rgba(211, 251, 27, 0.8); }
     }
     .timeline-label {
       font-size: 0.85rem;
@@ -311,6 +332,38 @@
       color: var(--accent-gold);
       font-weight: 600;
     }
+
+    /* INVOICE STYLES */
+    .invoice-container {
+      background: white;
+      color: #000;
+      padding: 3rem;
+      border-radius: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .invoice-header {
+      border-bottom: 3px solid var(--accent-gold);
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .invoice-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .invoice-total {
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 1.5rem 0;
+      border-top: 3px solid var(--accent-gold);
+      margin-top: 1rem;
+    }
+
     .btn-primary {
       display: inline-block;
       padding: 1rem 2rem;
@@ -350,12 +403,22 @@
 
     @media (max-width: 768px) {
       .header h1 { font-size: 2rem; }
-      .timeline { flex-direction: column; gap: 1rem; padding: 0; }
+      .timeline { flex-direction: column; gap: 1rem; }
       .timeline::before, .timeline-progress { display: none; }
+      .action-buttons { flex-direction: column; }
+      .action-btn { width: 100%; }
+      .invoice-container { padding: 1.5rem; }
+    }
+
+    @media print {
+      body { background: white; }
+      .header, .footer, .action-buttons, .btn-secondary { display: none; }
+      .invoice-container { box-shadow: none; }
     }
   </style>
 </head>
 <body>
+
   <div class="header">
     <div class="logo-container">
       <img src="https://25zppb-bv.myshopify.com/cdn/shop/files/dopelee_prezzed_logo.png?v=1755138398&width=450" alt="Dopelee" style="height: 220px; width: auto;">
@@ -391,6 +454,7 @@
     const FORM_URL = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
     let orders = [];
     let email = '';
+    let currentView = 'order'; // 'order', 'invoice', 'history'
     
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
@@ -398,9 +462,9 @@
       const emailParam = params.get('email');
       
       if (order) {
+        // HIDE SEARCH if coming from email link
         document.getElementById('searchSection').style.display = 'none';
         loadOrder(order);
-        // NEW: Track portal visit
         trackPortalVisit(order);
       } else if (emailParam) {
         document.getElementById('emailInput').value = emailParam;
@@ -408,9 +472,7 @@
       }
     });
     
-    // ═══════════════════════════════════════════════════════════════
-    // NEW: TRACK PORTAL VISIT
-    // ═══════════════════════════════════════════════════════════════
+    // TRACK PORTAL VISIT
     async function trackPortalVisit(orderUUID) {
       try {
         await fetch(`${SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderUUID}`, {
@@ -441,7 +503,7 @@
       email = em;
       showLoading();
       try {
-        const k = await fetch(`${SUPABASE_URL}/rest/v1/orders?customer_email=eq.${encodeURIComponent(em)}&select=*`, {
+        const k = await fetch(`${SUPABASE_URL}/rest/v1/orders?customer_email=eq.${encodeURIComponent(em)}&select=*&order=created_at.desc`, {
           headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
         }).then(r => r.json());
         
@@ -461,7 +523,11 @@
         
         if (orders.length === 0) {
           showError(`No orders found for ${em}`);
+        } else if (orders.length === 1) {
+          // Only one order - show it directly
+          showTracking(orders[0]);
         } else {
+          // Multiple orders - show list
           showList();
         }
       } catch (err) {
@@ -509,19 +575,29 @@
                    o.status.includes('Form') ? 'status-form' : 
                    o.status.includes('Shipped') ? 'status-shipped' :
                    o.status.includes('Delivered') ? 'status-delivered' : 'status-production';
+        const amount = o.data.order_total ? `$${parseFloat(o.data.order_total).toFixed(2)}` : '';
+        const date = o.date ? new Date(o.date).toLocaleDateString() : '';
+        
         html += `<div class="order-card" onclick="showTracking(orders[${i}])">
           <div class="order-header">
-            <div><span style="background:rgba(255,255,255,0.1);padding:4px 8px;border-radius:4px;font-size:0.75rem;margin-right:8px">${o.type}</span>
-            <span style="font-size:1.1rem;font-weight:600">#${last4}</span></div>
+            <div>
+              <span style="background:rgba(255,255,255,0.1);padding:4px 8px;border-radius:4px;font-size:0.75rem;margin-right:8px">${o.type}</span>
+              <span style="font-size:1.1rem;font-weight:600">#${last4}</span>
+            </div>
             <div class="status-badge ${sc}">${o.status}</div>
-          </div></div>`;
+          </div>
+          <div style="margin-top:0.5rem;color:var(--text-muted);font-size:0.9rem">
+            ${date} ${amount ? '• ' + amount : ''}
+          </div>
+        </div>`;
       });
       html += '</div>';
       document.getElementById('content').innerHTML = html;
     }
     
     function showTracking(o) {
-      let html = orders.length > 1 ? '<button onclick="showList()" class="btn-secondary" style="margin-bottom:1rem">← Back</button>' : '';
+      currentView = 'order';
+      let html = orders.length > 1 ? '<button onclick="showList()" class="btn-secondary" style="margin-bottom:1rem">← Back to All Orders</button>' : '';
       
       if (o.type === 'KEEPSAKE') {
         const d = o.data;
@@ -530,14 +606,12 @@
         const fc = d.form_complete || false;
         const st = d.status || 'Payment Received';
         
-        // Determine current step
         let step = 1;
         if (st.includes('Form') || fc) step = 2;
         if (st.includes('Production')) step = 3;
         if (st.includes('Shipped')) step = 4;
         if (st.includes('Delivered')) step = 5;
         
-        // NEW: Show celebration card if delivered
         if (step === 5) {
           html += `<div class="celebration-card">
             <h2>🎉 Your Order Has Been Delivered!</h2>
@@ -554,10 +628,19 @@
           </div>`;
         }
         
+        // ACTION BUTTONS
+        html += `<div class="action-buttons">
+          <button class="action-btn" onclick="showInvoice(orders[0])">📄 View Invoice</button>
+          ${orders.length > 1 ? '<button class="action-btn" onclick="showList()">📋 Order History</button>' : ''}
+          <button class="action-btn" onclick="sharePortal()">🔗 Share Portal</button>
+        </div>`;
+        
         html += `<div class="detail-card">
           <h2 style="font-size:1.8rem;margin-bottom:1rem">Hi ${name}, your Legacy Journii begins here.</h2>
-          <div style="margin-bottom:1rem"><span style="background:rgba(255,255,255,0.1);padding:4px 8px;border-radius:4px;font-size:0.75rem;margin-right:8px">KEEPSAKE</span>
-          <span style="color:var(--text-muted)">#${last4}</span></div>
+          <div style="margin-bottom:1rem">
+            <span style="background:rgba(255,255,255,0.1);padding:4px 8px;border-radius:4px;font-size:0.75rem;margin-right:8px">KEEPSAKE</span>
+            <span style="color:var(--text-muted)">#${last4}</span>
+          </div>
           
           <div class="timeline">
             <div class="timeline-progress" style="width: ${(step - 1) * 20}%"></div>
@@ -572,7 +655,7 @@
             <strong style="color:var(--text-primary)">Product:</strong> ${d.product_type || 'Keepsake'}<br>
             ${d.honored_name ? `<strong style="color:var(--text-primary)">Honoring:</strong> ${d.honored_name}<br>` : ''}
             ${d.tracking_number ? `<strong style="color:var(--text-primary)">Tracking:</strong> <a href="https://tools.usps.com/go/TrackConfirmAction?tLabels=${d.tracking_number}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">${d.tracking_number}</a><br>` : ''}
-            <strong style="color:var(--text-primary)">Total:</strong> ${d.order_total ? '$' + d.order_total : 'Pending'}
+            <strong style="color:var(--text-primary)">Total:</strong> ${d.order_total ? '$' + parseFloat(d.order_total).toFixed(2) : 'Pending'}
           </div>
         </div>`;
         
@@ -591,6 +674,111 @@
       document.getElementById('content').innerHTML = html;
     }
     
+    function showInvoice(o) {
+      if (!o || !o.data) return;
+      
+      const d = o.data;
+      const invoiceNum = d.external_order_number || d.order_id?.slice(-8) || 'INV-' + Date.now();
+      const orderDate = d.created_at ? new Date(d.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+      const paymentDate = d.payment_received_at ? new Date(d.payment_received_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : orderDate;
+      
+      const html = `
+        <button onclick="showTracking(orders[0])" class="btn-secondary" style="margin-bottom:1.5rem">← Back to Order</button>
+        
+        <div class="invoice-container">
+          <div class="invoice-header">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:2rem">
+              <div>
+                <h1 style="font-size:2.5rem;margin-bottom:0.5rem">INVOICE</h1>
+                <p style="font-size:1.2rem;color:#666">Invoice #${invoiceNum}</p>
+              </div>
+              <img src="https://25zppb-bv.myshopify.com/cdn/shop/files/dopelee_prezzed_logo.png?v=1755138398&width=450" alt="Logo" style="height:80px">
+            </div>
+            
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+              <div>
+                <h3 style="margin-bottom:0.5rem">From:</h3>
+                <p style="line-height:1.8">
+                  <strong>Dopelee Prezzed by S™, LLC</strong><br>
+                  Luxury Memorial Keepsakes<br>
+                  info@dopeleeprezzedbysllc.com<br>
+                  816-530-1520
+                </p>
+              </div>
+              <div>
+                <h3 style="margin-bottom:0.5rem">Bill To:</h3>
+                <p style="line-height:1.8">
+                  <strong>${d.customer_name || 'Customer'}</strong><br>
+                  ${d.customer_email || ''}<br>
+                  ${d.customer_phone || ''}
+                </p>
+              </div>
+            </div>
+            
+            <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div><strong>Order Date:</strong> ${orderDate}</div>
+              <div><strong>Payment Date:</strong> ${paymentDate}</div>
+            </div>
+          </div>
+          
+          <table style="width:100%;margin:2rem 0">
+            <thead>
+              <tr style="border-bottom:2px solid #ddd">
+                <th style="text-align:left;padding:1rem 0">Item</th>
+                <th style="text-align:right;padding:1rem 0">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="invoice-row">
+                <td>
+                  <strong>${d.product_type || 'Memorial Keepsake'}</strong><br>
+                  <span style="color:#666;font-size:0.9rem">
+                    ${d.honored_name ? `Honoring: ${d.honored_name}` : ''}
+                    ${d.template_chosen ? `<br>Template: ${d.template_chosen}` : ''}
+                  </span>
+                </td>
+                <td style="text-align:right;font-weight:600">$${d.order_total ? parseFloat(d.order_total).toFixed(2) : '0.00'}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="invoice-total" style="text-align:right">
+            <div style="font-size:1rem;margin-bottom:0.5rem">Subtotal: $${d.order_total ? parseFloat(d.order_total).toFixed(2) : '0.00'}</div>
+            <div style="font-size:1rem;margin-bottom:1rem">Tax: $0.00</div>
+            <div style="font-size:1.8rem;color:var(--accent-gold)">
+              TOTAL: $${d.order_total ? parseFloat(d.order_total).toFixed(2) : '0.00'}
+            </div>
+          </div>
+          
+          <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid #ddd;text-align:center;color:#666">
+            <p style="margin-bottom:0.5rem">Thank you for choosing Dopelee Prezzed by S™</p>
+            <p style="font-size:0.9rem">Luxury keepsakes. Timelessly crafted.</p>
+          </div>
+          
+          <div style="margin-top:2rem;text-align:center">
+            <button onclick="window.print()" class="btn-primary" style="border:none;cursor:pointer">🖨️ Print Invoice</button>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('content').innerHTML = html;
+    }
+    
+    function sharePortal() {
+      const url = window.location.href;
+      if (navigator.share) {
+        navigator.share({
+          title: 'Dopelee Order Portal',
+          text: 'Track your Dopelee order',
+          url: url
+        });
+      } else {
+        navigator.clipboard.writeText(url).then(() => {
+          alert('✅ Portal link copied to clipboard!');
+        });
+      }
+    }
+    
     function showLoading() {
       document.getElementById('content').innerHTML = '<div class="loading">Loading...</div>';
     }
@@ -599,6 +787,6 @@
       document.getElementById('content').innerHTML = `<div class="error">${msg}</div>`;
     }
   </script>
+
 </body>
 </html>
-
