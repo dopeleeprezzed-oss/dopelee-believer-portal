@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Supabase Connection Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    .result {
+      background: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: 2px solid #d3fb1b;
+    }
+    .success { color: #0ff0b8; }
+    .error { color: #fd26fd; }
+    button {
+      background: #d3fb1b;
+      color: #000;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    pre {
+      background: #000;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Supabase Connection Test</h1>
+  <p>This will test if your new Supabase database is working correctly.</p>
+  
+  <button onclick="runTest()">▶️ Run Test</button>
+  
+  <div id="results"></div>
+  
+  <script>
+    const SUPABASE_URL = 'https://samkrdbtkknarmeiqad.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNhbWtyZGJ0a2tuYXJtZWlucWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4MjA2MzcsImV4cCI6MjA4MTM5NjYzN30.uNuSkH0D6VmW7B3t4QRP0mw_2sErsIRpWa2EcOJB9MU';
+    
+    async function runTest() {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '<div class="result">Testing connection...</div>';
+      
+      let html = '<div class="result">';
+      
+      // TEST 1: DNS Resolution
+      html += '<h3>TEST 1: DNS Resolution</h3>';
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/`);
+        html += '<p class="success">✅ DNS resolved successfully!</p>';
+        html += `<p>Status: ${response.status}</p>`;
+      } catch (err) {
+        html += `<p class="error">❌ DNS Resolution Failed: ${err.message}</p>`;
+        resultsDiv.innerHTML = html + '</div>';
+        return;
+      }
+      
+      // TEST 2: Fetch test data
+      html += '<h3>TEST 2: Fetch Test Orders</h3>';
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/orders?customer_email=eq.test@example.com&select=*`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.length > 0) {
+          html += `<p class="success">✅ Successfully fetched ${data.length} orders!</p>`;
+          html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        } else if (response.ok && data.length === 0) {
+          html += '<p class="error">⚠️ Connection works but no test data found!</p>';
+          html += '<p>Run this in Supabase SQL Editor to add test data:</p>';
+          html += `<pre>INSERT INTO orders (external_order_number, customer_name, customer_email, product_type, order_total, status)
+VALUES ('TEST-001', 'John Smith', 'test@example.com', 'Slate Keepsake', 75.00, 'Payment Received');</pre>`;
+        } else {
+          html += `<p class="error">❌ Error: ${response.status} - ${JSON.stringify(data)}</p>`;
+        }
+      } catch (err) {
+        html += `<p class="error">❌ Fetch Failed: ${err.message}</p>`;
+      }
+      
+      // TEST 3: Check RLS
+      html += '<h3>TEST 3: Row Level Security Check</h3>';
+      html += '<p>If you see data above, RLS is configured correctly! ✅</p>';
+      
+      html += '</div>';
+      resultsDiv.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
