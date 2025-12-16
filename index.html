@@ -1100,12 +1100,13 @@
     }
 
     /**
-     * Fetch single order by UUID
+     * Fetch single order by UUID (for direct links)
      */
     async function fetchSingleOrder(orderId) {
       showLoading();
 
       try {
+        // Try all 3 tables
         const [ordersRes, vipRes, photobooksRes] = await Promise.all([
           fetch(`${SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderId}&select=*`, {
             headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
@@ -1132,6 +1133,9 @@
           return;
         }
 
+        // Store order in allOrders for back button
+        allOrders = [order];
+        
         showDetailView(order);
 
       } catch (error) {
@@ -1139,6 +1143,24 @@
         showError('Error loading order. Please try again.');
       }
     }
+    
+    /**
+     * Refresh current order data (when returning from form)
+     */
+    async function refreshCurrentOrder() {
+      if (!currentOrder || !currentOrder.order_id) return;
+      
+      console.log('🔄 Refreshing order data...');
+      await fetchSingleOrder(currentOrder.order_id);
+    }
+    
+    // Check if we're returning from form submission
+    window.addEventListener('focus', () => {
+      // When window regains focus, refresh order data
+      if (currentOrder) {
+        setTimeout(refreshCurrentOrder, 500);
+      }
+    });
 
     function showListView() {
       hideAll();
@@ -1221,20 +1243,28 @@
       const status = order.status || 'Unknown';
       const progress = getProgressStep(status);
       const formComplete = order.form_complete;
-      const customerName = order.customer_name ? order.customer_name.split(' ')[0] : 'Believer';
+      const customerName = order.customer_name ? order.customer_name.split(' ')[0] : null;
 
       // UPDATE HERO TO PERSONALIZED VIEW
       const heroHeader = document.getElementById('heroHeader');
       const heroTitle = document.getElementById('heroTitle');
       heroHeader.classList.add('personalized');
       
+      const productDisplay = order.product_type || order.type || 'Keepsake';
+      
+      // GREETING: "Hey K," or "Hey Believer," if no name
+      const greeting = customerName ? `Hey ${customerName},` : 'Hey Believer,';
+      
       heroTitle.innerHTML = `
-        <div class="personal-greeting">Hey Believer, <span class="name">${customerName}</span></div>
+        <div class="personal-greeting">${greeting}</div>
         <div style="font-size: 1.5rem; font-weight: 300; margin-bottom: 16px;">
           Your legacy journ<span style="font-style: italic;">ii</span> begins here.
         </div>
-        <div style="font-size: 1.1rem; color: rgba(255,255,255,0.7);">
-          ${order.type.toUpperCase()} <strong style="color: #e9ff60;">#${last4}</strong>
+        <div style="font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
+          ${productDisplay} <strong style="color: #e9ff60;">#${last4}</strong>
+        </div>
+        <div style="font-size: 0.95rem; color: rgba(255,255,255,0.6);">
+          Complete your personalization below
         </div>
       `;
 
