@@ -43,51 +43,63 @@
       bottom: 0;
     }
 
-    /* SHIMMERY FLOATING BUBBLES - Blue/Purple/Pink */
+    /* SHIMMERY FLOATING BUBBLES - More visible and animated */
     .orb {
       position: fixed;
       border-radius: 50%;
       pointer-events: none;
-      animation: float 20s infinite ease-in-out;
       z-index: 0;
-      filter: blur(60px);
-      opacity: 0.4;
+      filter: blur(80px);
+      opacity: 0.6;
+      animation: shimmer 6s infinite ease-in-out, float 20s infinite ease-in-out;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.6; filter: blur(80px) brightness(1); }
+      50% { opacity: 0.8; filter: blur(60px) brightness(1.3); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -50px) scale(1.1); }
+      50% { transform: translate(-30px, 30px) scale(0.9); }
+      75% { transform: translate(30px, 20px) scale(1.05); }
     }
 
     .orb1 { 
-      width: 300px; 
-      height: 300px; 
-      top: 10%; 
-      left: 5%; 
-      animation-delay: 0s;
-      background: radial-gradient(circle, rgba(100, 149, 237, 0.5), rgba(70, 130, 180, 0.2)); /* Cornflower blue */
+      width: 400px; 
+      height: 400px; 
+      top: 5%; 
+      left: -5%; 
+      animation-delay: 0s, 0s;
+      background: radial-gradient(circle, rgba(100, 149, 237, 0.8), rgba(70, 130, 180, 0.3)); 
     }
     
     .orb2 { 
-      width: 200px; 
-      height: 200px; 
-      top: 60%; 
-      right: 10%; 
-      animation-delay: 5s;
-      background: radial-gradient(circle, rgba(147, 112, 219, 0.5), rgba(138, 43, 226, 0.2)); /* Purple */
+      width: 350px; 
+      height: 350px; 
+      top: 50%; 
+      right: -5%; 
+      animation-delay: 2s, 5s;
+      background: radial-gradient(circle, rgba(147, 112, 219, 0.8), rgba(138, 43, 226, 0.3)); 
     }
     
     .orb3 { 
-      width: 250px; 
-      height: 250px; 
-      bottom: 20%; 
-      left: 30%; 
-      animation-delay: 10s;
-      background: radial-gradient(circle, rgba(255, 105, 180, 0.4), rgba(255, 20, 147, 0.2)); /* Pink */
+      width: 300px; 
+      height: 300px; 
+      bottom: 10%; 
+      left: 20%; 
+      animation-delay: 4s, 10s;
+      background: radial-gradient(circle, rgba(255, 105, 180, 0.7), rgba(255, 20, 147, 0.3)); 
     }
     
     .orb4 { 
-      width: 180px; 
-      height: 180px; 
-      top: 40%; 
-      right: 30%; 
-      animation-delay: 15s;
-      background: radial-gradient(circle, rgba(135, 206, 250, 0.5), rgba(70, 130, 180, 0.2)); /* Light sky blue */
+      width: 280px; 
+      height: 280px; 
+      top: 30%; 
+      right: 40%; 
+      animation-delay: 6s, 15s;
+      background: radial-gradient(circle, rgba(135, 206, 250, 0.7), rgba(70, 130, 180, 0.3)); 
     }
 
     @keyframes float {
@@ -107,13 +119,30 @@
     /* HERO HEADER */
     .hero-header {
       text-align: center;
-      margin-bottom: 60px;
+      margin-bottom: 40px;
       padding: 60px 20px;
       position: relative;
       border-radius: 24px;
       background: transparent;
       border: 2px solid #d4af37;
       box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 30px rgba(212, 175, 55, 0.1);
+    }
+
+    .hero-header.personalized {
+      padding: 40px 20px;
+    }
+
+    .personal-greeting {
+      font-size: 2rem;
+      font-weight: 300;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .personal-greeting .name {
+      color: #e9ff60;
+      font-weight: 600;
     }
 
     .logo {
@@ -875,14 +904,14 @@
   <div class="container">
     
     <!-- HERO HEADER -->
-    <div class="hero-header">
+    <div class="hero-header" id="heroHeader">
       <div class="logo"></div>
-      <h1 class="hero-title">Preserving what matters most</h1>
+      <h1 class="hero-title" id="heroTitle">Preserving what matters most</h1>
       <p class="hero-tagline">Luxury • Legacy • Keepsakes</p>
     </div>
 
     <!-- SEARCH SECTION -->
-    <div class="search-section">
+    <div class="search-section" id="searchSection">
       <h2 class="search-title">🔍 Track Your Order</h2>
       <form class="search-form" id="searchForm">
         <input 
@@ -916,26 +945,15 @@
 
     <!-- DETAIL VIEW -->
     <div id="detailView" class="detail-view">
-      <button class="back-btn" onclick="showListView()">
+      <button class="back-btn" id="backBtn">
         ← Back to Orders
       </button>
       
       <div class="detail-card">
-        <div class="detail-header">
-          <h1 class="detail-title">Hi Believer, your Legacy Journey begins here.</h1>
-          <p class="detail-order-id">
-            <span id="detailOrderType">KEEPSAKE</span> <strong id="detailOrderId">#0000</strong>
-          </p>
-        </div>
 
         <!-- ACTION BUTTONS -->
         <div class="action-buttons">
-          <a href="#" id="invoiceBtn" class="action-btn action-btn-primary">
-            📄 View Invoice
-          </a>
-          <button class="action-btn action-btn-secondary" onclick="sharePortal()">
-            🔗 Share Portal
-          </button>
+          <!-- Populated by JavaScript -->
         </div>
 
         <!-- TIMELINE -->
@@ -1007,6 +1025,24 @@
       
       if (orderId) {
         fetchSingleOrder(orderId);
+      }
+      
+      // Back button event listener
+      const backBtn = document.getElementById('backBtn');
+      if (backBtn) {
+        backBtn.addEventListener('click', () => {
+          if (allOrders.length > 1) {
+            showListView();
+          } else {
+            // Reset to search view
+            hideAll();
+            document.getElementById('searchSection').style.display = 'block';
+            const heroHeader = document.getElementById('heroHeader');
+            const heroTitle = document.getElementById('heroTitle');
+            heroHeader.classList.remove('personalized');
+            heroTitle.textContent = 'Track Your Orders';
+          }
+        });
       }
     });
 
@@ -1106,6 +1142,17 @@
 
     function showListView() {
       hideAll();
+      
+      // RESET HERO TO DEFAULT
+      const heroHeader = document.getElementById('heroHeader');
+      const heroTitle = document.getElementById('heroTitle');
+      heroHeader.classList.remove('personalized');
+      heroTitle.textContent = 'Track Your Orders';
+      
+      // SHOW SEARCH SECTION
+      document.getElementById('searchSection').style.display = 'block';
+      
+      // SHOW LIST VIEW
       document.getElementById('listView').classList.add('active');
       document.getElementById('orderCount').textContent = allOrders.length;
 
@@ -1160,14 +1207,6 @@
               <div class="order-info-value">${order.product_type || order.type}</div>
             </div>
           </div>
-
-          <div class="mini-progress">
-            <div class="mini-progress-bar">
-              ${[1,2,3,4,5].map(step => `
-                <div class="mini-step ${step <= progress ? 'active' : ''}">${step}</div>
-              `).join('')}
-            </div>
-          </div>
         </div>
       `;
 
@@ -1177,33 +1216,64 @@
     function showDetailView(order) {
       hideAll();
       currentOrder = order;
-      document.getElementById('detailView').classList.add('active');
-
+      
       const last4 = order.order_id ? order.order_id.slice(-4) : '0000';
       const status = order.status || 'Unknown';
       const progress = getProgressStep(status);
+      const formComplete = order.form_complete;
+      const customerName = order.customer_name ? order.customer_name.split(' ')[0] : 'Believer';
 
-      document.getElementById('detailOrderType').textContent = order.type.toUpperCase();
-      document.getElementById('detailOrderId').textContent = `#${last4}`;
+      // UPDATE HERO TO PERSONALIZED VIEW
+      const heroHeader = document.getElementById('heroHeader');
+      const heroTitle = document.getElementById('heroTitle');
+      heroHeader.classList.add('personalized');
+      
+      heroTitle.innerHTML = `
+        <div class="personal-greeting">Hey Believer, <span class="name">${customerName}</span></div>
+        <div style="font-size: 1.5rem; font-weight: 300; margin-bottom: 16px;">
+          Your legacy journ<span style="font-style: italic;">ii</span> begins here.
+        </div>
+        <div style="font-size: 1.1rem; color: rgba(255,255,255,0.7);">
+          ${order.type.toUpperCase()} <strong style="color: #e9ff60;">#${last4}</strong>
+        </div>
+      `;
+
+      // HIDE SEARCH SECTION
+      document.getElementById('searchSection').style.display = 'none';
+
+      // SHOW DETAIL VIEW
+      document.getElementById('detailView').classList.add('active');
+
+      // CREATE PRE-FILLED FORM LINK
+      const formBaseUrl = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
+      const formParams = new URLSearchParams({
+        orderId: order.order_id || '',
+        email: order.customer_email || '',
+        name: order.customer_name || '',
+        phone: order.customer_phone || '',
+        product: order.product_type || '',
+        honoredName: order.honored_name || '',
+        dates: order.dates || ''
+      });
+      const preFilledFormUrl = `${formBaseUrl}?${formParams.toString()}`;
 
       // UPDATE ACTION BUTTONS BASED ON FORM STATUS
-      const formComplete = order.form_complete;
       const actionButtonsContainer = document.querySelector('.action-buttons');
       
       if (!formComplete) {
         // FORM NOT COMPLETE - Show "Complete Personalization" button
-        const formUrl = order.form_link || 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
         actionButtonsContainer.innerHTML = `
-          <a href="${formUrl}" class="action-btn action-btn-primary" style="grid-column: 1 / -1;">
+          <a href="${preFilledFormUrl}" target="_blank" class="action-btn action-btn-primary" style="grid-column: 1 / -1;">
             ⚡ Complete Personalization Now
           </a>
+          <button class="action-btn action-btn-secondary" onclick="sharePortal()">
+            🔗 Share Portal
+          </button>
         `;
       } else {
         // FORM COMPLETE - Show Invoice + Share buttons
         actionButtonsContainer.innerHTML = `
-          <a href="${order.invoice_link || '#'}" id="invoiceBtn" class="action-btn action-btn-primary" ${!order.invoice_link ? 'style="display:none;"' : ''}>
-            📄 View Invoice
-          </a>
+          ${order.invoice_link ? `<a href="${order.invoice_link}" class="action-btn action-btn-primary">📄 View Invoice</a>` : ''}
           <button class="action-btn action-btn-secondary" onclick="sharePortal()">
             🔗 Share Portal
           </button>
