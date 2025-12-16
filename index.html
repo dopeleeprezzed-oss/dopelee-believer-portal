@@ -1276,6 +1276,12 @@
 
       // CREATE PRE-FILLED FORM LINK
       const formBaseUrl = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
+      
+      // Determine project type from order.type
+      let projectTypeParam = 'keepsake'; // default
+      if (order.type === 'vip') projectTypeParam = 'vip';
+      else if (order.type === 'photobook') projectTypeParam = 'photobook';
+      
       const formParams = new URLSearchParams({
         orderId: order.order_id || '',
         email: order.customer_email || '',
@@ -1283,9 +1289,13 @@
         phone: order.customer_phone || '',
         product: order.product_type || '',
         honoredName: order.honored_name || '',
-        dates: order.dates || ''
+        dates: order.dates || '',
+        projectType: projectTypeParam  // ALWAYS SEND THIS!
       });
+      
       const preFilledFormUrl = `${formBaseUrl}?${formParams.toString()}`;
+      
+      console.log('📝 Form URL:', preFilledFormUrl);
 
       // UPDATE ACTION BUTTONS BASED ON FORM STATUS
       const actionButtonsContainer = document.querySelector('.action-buttons');
