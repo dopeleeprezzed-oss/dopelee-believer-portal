@@ -102,13 +102,6 @@
       background: radial-gradient(circle, rgba(135, 206, 250, 0.7), rgba(70, 130, 180, 0.3)); 
     }
 
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      25% { transform: translate(30px, -30px) scale(1.1); }
-      50% { transform: translate(-20px, 20px) scale(0.9); }
-      75% { transform: translate(20px, 10px) scale(1.05); }
-    }
-
     .container {
       max-width: 900px;
       margin: 0 auto;
@@ -582,6 +575,29 @@
       border-color: #e9ff60;
       transform: translateY(-3px);
       box-shadow: 0 4px 20px rgba(233, 255, 96, 0.3);
+    }
+
+    /* COMPLETION STATUS BOX */
+    .completion-status {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 24px;
+      background: rgba(0, 255, 0, 0.1);
+      border: 2px solid rgba(0, 255, 0, 0.3);
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .completion-status-title {
+      color: #00ff00;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .completion-status-message {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
     }
 
     /* TIMELINE */
@@ -1242,7 +1258,8 @@
       const last4 = order.order_id ? order.order_id.slice(-4) : '0000';
       const status = order.status || 'Unknown';
       const progress = getProgressStep(status);
-      const formComplete = order.form_complete;
+      // ✅ FIXED: Using correct field name from database
+      const formComplete = order.form_completed;
       const customerName = order.customer_name ? order.customer_name.split(' ')[0] : null;
 
       // UPDATE HERO TO PERSONALIZED VIEW
@@ -1290,17 +1307,18 @@
         product: order.product_type || '',
         honoredName: order.honored_name || '',
         dates: order.dates || '',
-        projectType: projectTypeParam  // ALWAYS SEND THIS!
+        projectType: projectTypeParam
       });
       
       const preFilledFormUrl = `${formBaseUrl}?${formParams.toString()}`;
       
       console.log('📝 Form URL:', preFilledFormUrl);
+      console.log('📋 Form Complete Status:', formComplete);
 
-      // UPDATE ACTION BUTTONS BASED ON FORM STATUS
+      // ✅ UPDATE ACTION BUTTONS BASED ON FORM STATUS
       const actionButtonsContainer = document.querySelector('.action-buttons');
       
-      if (!formComplete) {
+      if (!formComplete || formComplete === false) {
         // FORM NOT COMPLETE - Show "Complete Personalization" button
         actionButtonsContainer.innerHTML = `
           <a href="${preFilledFormUrl}" target="_blank" class="action-btn action-btn-primary" style="grid-column: 1 / -1;">
@@ -1311,11 +1329,13 @@
           </button>
         `;
       } else {
-       
-        // FORM COMPLETE - Show Invoice + Share buttons
+        // ✅ FORM COMPLETE - Show completion message and share button
         actionButtonsContainer.innerHTML = `
-          ${order.invoice_link ? `<a href="${order.invoice_link}" class="action-btn action-btn-primary">📄 View Invoice</a>` : ''}
-          <button class="action-btn action-btn-secondary" onclick="sharePortal()">
+          <div class="completion-status">
+            <p class="completion-status-title">✓ Personalization Complete!</p>
+            <p class="completion-status-message">Your keepsake is now in production. We'll notify you when it ships!</p>
+          </div>
+          <button class="action-btn action-btn-secondary" onclick="sharePortal()" style="grid-column: 1 / -1;">
             🔗 Share Portal
           </button>
         `;
@@ -1448,4 +1468,3 @@
 
 </body>
 </html>
-
