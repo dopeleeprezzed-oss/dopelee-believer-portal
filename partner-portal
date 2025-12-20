@@ -6,194 +6,386 @@
 <title>Partner Portal | The Legacy Lounge™</title>
 
 <style>
-  body {
+  * {
     margin: 0;
-    font-family: 'Inter', Arial, sans-serif;
-    background: #0b0c0f;
-    color: #fff;
+    padding: 0;
+    box-sizing: border-box;
   }
 
-  /* HEADER */
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #000;
+    color: #fff;
+    min-height: 100vh;
+  }
+
+  /* ANIMATED GRADIENT HEADER */
   .header {
-    background: linear-gradient(90deg,#0a95a8,#3461fa,#fd26fd,#d3fb1b);
+    background: linear-gradient(90deg, #0a95a8, #3461fa, #fd26fd, #d3fb1b, #0ff0b8, #0a95a8);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
     padding: 30px 20px;
     text-align: center;
-    border-bottom: 3px solid #d3fb1b;
+    border-bottom: 3px solid #0ff0b8;
+    box-shadow: 0 4px 20px rgba(15, 240, 184, 0.3);
   }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
   .header h1 {
     margin: 0;
     font-size: 28px;
     font-weight: 800;
+    color: #000;
     text-shadow: 0 2px 6px rgba(0,0,0,0.4);
   }
+  
   .header p {
     margin: 6px 0 0;
     font-size: 14px;
+    color: #000;
+    font-weight: 600;
     opacity: .9;
   }
 
   /* MAIN WRAPPER */
   .container {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 20px;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
   }
 
   /* DASHBOARD CARDS */
   .card {
-    background: #121319;
-    border: 1px solid #1f2024;
-    border-radius: 14px;
-    padding: 22px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.55);
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    border: 1px solid rgba(15, 240, 184, 0.2);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
   }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(15, 240, 184, 0.5);
+    box-shadow: 0 12px 40px rgba(15, 240, 184, 0.2);
+  }
+  
   .card h2 {
-    margin-top: 0;
-    font-size: 20px;
-    letter-spacing: .5px;
-    border-left: 4px solid #d3fb1b;
-    padding-left: 10px;
-  }
-  .card p, .card span {
-    color: #cfcfcf;
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  .stat-box {
-    flex: 1;
-    min-width: 200px;
-    background: #1b1c22;
-    border-radius: 12px;
-    padding: 18px;
-    border: 1px solid #292a30;
-    text-align: center;
-  }
-  .stat-box h3 {
-    margin: 0;
-    font-size: 16px;
-    color: #d3fb1b;
-  }
-  .stat-box p {
-    margin: 8px 0 0;
+    margin: 0 0 20px;
     font-size: 22px;
-    font-weight: 700;
+    letter-spacing: .5px;
+    background: linear-gradient(90deg, #0a95a8, #0ff0b8, #d3fb1b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+  }
+  
+  .card p, .card span {
+    color: #b8bac0;
+    font-size: 15px;
+    line-height: 1.8;
   }
 
-  /* QR CODE */
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .stat-box {
+    background: linear-gradient(135deg, rgba(10, 149, 168, 0.1), rgba(15, 240, 184, 0.05));
+    border: 1px solid rgba(15, 240, 184, 0.3);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  
+  .stat-box:hover {
+    border-color: rgba(15, 240, 184, 0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(15, 240, 184, 0.2);
+  }
+  
+  .stat-box h3 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: #0ff0b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  
+  .stat-box p {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0ff0b8, #d3fb1b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* QR CODE SECTION */
   .qr-box {
     text-align: center;
   }
+  
   .qr-box img {
-    width: 200px;
-    height: 200px;
-    margin: 20px auto;
-    border-radius: 10px;
-    border: 2px solid #d3fb1b;
-    padding: 10px;
+    width: 220px;
+    height: 220px;
+    margin: 25px auto;
+    border-radius: 12px;
+    border: 3px solid #0ff0b8;
+    padding: 15px;
     background: white;
+    box-shadow: 0 8px 30px rgba(15, 240, 184, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .qr-box img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(15, 240, 184, 0.5);
   }
   
   .qr-buttons {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     justify-content: center;
-    margin-top: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
   }
   
   .qr-btn {
-    padding: 10px 20px;
-    background: #d3fb1b;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #0a95a8, #0ff0b8);
     color: #000;
     text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
+    border-radius: 10px;
+    font-weight: 700;
     cursor: pointer;
     border: none;
-    font-size: 14px;
+    font-size: 15px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(15, 240, 184, 0.3);
   }
   
   .qr-btn:hover {
-    background: #c3eb18;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(15, 240, 184, 0.5);
+    background: linear-gradient(135deg, #0ff0b8, #d3fb1b);
   }
 
   /* INSTALLATION STATUS */
   .install-status {
-    background: linear-gradient(135deg, rgba(211, 251, 27, 0.1), rgba(10, 149, 168, 0.1));
+    background: linear-gradient(135deg, rgba(211, 251, 27, 0.1), rgba(15, 240, 184, 0.1));
     border: 2px solid #d3fb1b;
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 30px;
     text-align: center;
-    margin: 20px 0;
+    margin: 30px 0;
+    box-shadow: 0 8px 30px rgba(211, 251, 27, 0.2);
   }
   
   .install-status.pending {
     border-color: #fd26fd;
     background: linear-gradient(135deg, rgba(253, 38, 253, 0.1), rgba(52, 97, 250, 0.1));
+    box-shadow: 0 8px 30px rgba(253, 38, 253, 0.2);
   }
   
   .install-status.complete {
     border-color: #0ff0b8;
-    background: linear-gradient(135deg, rgba(15, 240, 184, 0.1), rgba(10, 149, 168, 0.1));
+    background: linear-gradient(135deg, rgba(15, 240, 184, 0.15), rgba(10, 149, 168, 0.1));
+    box-shadow: 0 8px 30px rgba(15, 240, 184, 0.3);
+  }
+  
+  .install-status h2 {
+    margin: 0 0 15px;
+    font-size: 24px;
   }
   
   .schedule-btn {
     display: inline-block;
-    padding: 14px 30px;
+    padding: 16px 40px;
     background: linear-gradient(135deg, #d3fb1b, #0ff0b8);
     color: #000;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-weight: 700;
     font-size: 16px;
-    margin-top: 15px;
+    margin-top: 20px;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(211, 251, 27, 0.3);
   }
   
   .schedule-btn:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(211, 251, 27, 0.5);
+  }
+
+  /* ORDERS TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  thead tr {
+    border-bottom: 2px solid #0ff0b8;
+  }
+  
+  th {
+    text-align: left;
+    padding: 12px;
+    color: #0ff0b8;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background 0.3s;
+  }
+  
+  tbody tr:hover {
+    background: rgba(15, 240, 184, 0.05);
+  }
+  
+  td {
+    padding: 14px 12px;
+    color: #b8bac0;
+  }
+  
+  td:first-child {
+    color: #0ff0b8;
+    font-weight: 600;
   }
 
   /* CONTACT BUTTON */
   .contact-btn {
     display: block;
     width: 100%;
-    background: #d3fb1b;
+    max-width: 400px;
+    margin: 20px auto 0;
+    background: linear-gradient(135deg, #0a95a8, #0ff0b8, #d3fb1b);
     color: #000;
     text-align: center;
-    padding: 16px;
-    border-radius: 10px;
+    padding: 18px;
+    border-radius: 12px;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     text-decoration: none;
-    margin-top: 15px;
-    transition: .3s;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(15, 240, 184, 0.3);
   }
+  
   .contact-btn:hover {
-    background: #c3eb18;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(15, 240, 184, 0.5);
   }
   
   /* LOADING & ERROR */
   .loading {
     text-align: center;
-    padding: 50px;
+    padding: 80px 20px;
     font-size: 18px;
-    color: #cfcfcf;
+    color: #0ff0b8;
+  }
+  
+  .loading::before {
+    content: '⏳';
+    display: block;
+    font-size: 48px;
+    margin-bottom: 20px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
   
   .error {
-    background: rgba(253, 38, 253, 0.1);
+    background: linear-gradient(135deg, rgba(253, 38, 253, 0.15), rgba(52, 97, 250, 0.1));
     border: 2px solid #fd26fd;
     color: #fd26fd;
-    padding: 20px;
-    border-radius: 12px;
+    padding: 40px;
+    border-radius: 16px;
     text-align: center;
-    margin: 30px 0;
+    margin: 40px 0;
+    box-shadow: 0 8px 30px rgba(253, 38, 253, 0.3);
+  }
+  
+  .error h2 {
+    margin: 0 0 15px;
+    font-size: 28px;
+    color: #fd26fd;
+  }
+  
+  .error a {
+    color: #0ff0b8;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  
+  .error a:hover {
+    text-decoration: underline;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .header {
+      padding: 20px 15px;
+    }
+    
+    .header h1 {
+      font-size: 18px;
+    }
+    
+    .header img {
+      max-width: 60px !important;
+    }
+    
+    .header p {
+      font-size: 12px;
+    }
+    
+    .container {
+      padding: 0 15px;
+    }
+    
+    .card {
+      padding: 20px;
+    }
+    
+    .stats-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .qr-box img {
+      width: 180px;
+      height: 180px;
+    }
+    
+    table {
+      font-size: 13px;
+    }
+    
+    th, td {
+      padding: 8px 6px;
+    }
   }
 </style>
 </head>
@@ -201,7 +393,10 @@
 <body>
 
 <div class="header">
-  <h1>The Legacy Lounge™ Partner Portal</h1>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
+    <img src="https://dopeleeprezzed-oss.github.io/dopelee-form/logo.png" alt="Dopelee Prezzed Logo" style="max-width: 80px; height: auto; border-radius: 12px; box-shadow: 0 4px 15px rgba(15, 240, 184, 0.4);">
+    <h1 style="margin: 0;">The Legacy Lounge™ Partner Portal</h1>
+  </div>
   <p>Your Display • Your Earnings • Your Impact</p>
 </div>
 
@@ -210,11 +405,18 @@
 </div>
 
 <script>
-const SUPABASE_URL = 'https://zgnceundsigimwujwrzu.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_Vdl9J8D_kkmxhPq1QwU33g__b1_AGNF';
-const CALENDAR_LINK = 'https://calendar.app.google/hHSCmkVBcuFM7oVe6';
+// ═══════════════════════════════════════════════════════════
+// CONFIGURATION
+// ═══════════════════════════════════════════════════════════
 
-/* GET PARTNER ID FROM URL */
+const SUPABASE_URL = 'https://dyehxtiozfwlexkbalvn.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5ZWh4dGlvemZ3bGV4a2JhbHZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NDYxMzMsImV4cCI6MjA4MTQyMjEzM30.dxd7otsV6WzD6dt41sWkYdseW94BRn0WI8MtFCqnAIs';
+const LANDING_PAGE_BASE = 'https://www.dopeleeprezzedbys.com/partner-landing';
+
+// ═══════════════════════════════════════════════════════════
+// GET PARTNER ID FROM URL
+// ═══════════════════════════════════════════════════════════
+
 const urlParams = new URLSearchParams(window.location.search);
 const partnerId = urlParams.get('partner');
 
@@ -222,65 +424,101 @@ if (!partnerId) {
   document.getElementById('content').innerHTML = `
     <div class="error">
       <h2>⚠️ Partner ID Missing</h2>
-      <p>Please use the link provided in your welcome email.</p>
-      <p>Need help? Call K.Smith: <a href="tel:8165301520" style="color:#d3fb1b">816-530-1520</a></p>
+      <p style="margin: 20px 0; font-size: 16px;">Please use the link provided in your welcome email.</p>
+      <p style="margin-top: 30px;">
+        Need help? Call K.Smith: <a href="tel:8165301520">816-530-1520</a>
+      </p>
     </div>
   `;
 } else {
   loadPartnerDashboard();
 }
 
-/* LOAD PARTNER DASHBOARD */
+// ═══════════════════════════════════════════════════════════
+// LOAD PARTNER DASHBOARD
+// ═══════════════════════════════════════════════════════════
+
 async function loadPartnerDashboard() {
   try {
-    // Fetch partner data from Supabase
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/partners?partner_id=eq.${partnerId}&select=*`, {
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+    console.log('🔍 Loading partner:', partnerId);
+    
+    // Fetch partner data
+    const partnerResponse = await fetch(
+      `${SUPABASE_URL}/rest/v1/partners?partner_id=eq.${partnerId}&select=*`,
+      {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
       }
-    });
+    );
     
-    const data = await response.json();
+    const partnerData = await partnerResponse.json();
     
-    if (!data || data.length === 0) {
+    if (!partnerData || partnerData.length === 0) {
       showError('Partner not found. Please contact K.Smith at 816-530-1520');
       return;
     }
     
-    const partner = data[0];
+    const partner = partnerData[0];
+    console.log('✅ Partner loaded:', partner.business_name);
     
     // Fetch orders for this partner
-    const ordersResponse = await fetch(`${SUPABASE_URL}/rest/v1/orders?partner_id=eq.${partnerId}&select=*&order=created_at.desc&limit=10`, {
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+    const ordersResponse = await fetch(
+      `${SUPABASE_URL}/rest/v1/orders?partner_id=eq.${partnerId}&select=*&order=created_at.desc&limit=20`,
+      {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        }
       }
-    });
+    );
     
     const orders = await ordersResponse.json() || [];
+    console.log(`📦 Loaded ${orders.length} orders`);
     
     renderDashboard(partner, orders);
     
   } catch (err) {
-    console.error('Error loading dashboard:', err);
-    showError('Error loading dashboard. Please try again or contact support.');
+    console.error('❌ Error loading dashboard:', err);
+    showError('Error loading dashboard. Please try again or contact support at 816-530-1520');
   }
 }
 
-/* RENDER DASHBOARD */
+// ═══════════════════════════════════════════════════════════
+// RENDER DASHBOARD
+// ═══════════════════════════════════════════════════════════
+
 function renderDashboard(partner, orders) {
   const status = partner.status || 'Pending';
   const installScheduled = partner.setup_scheduled_date || null;
   const installComplete = partner.setup_completed_date || null;
-  const isLive = status === 'Active' || status === 'Live';
+  const isLive = status === 'Active' || status === 'Live' || status === 'Scheduled';
+  
+  // CALCULATE REAL COMMISSIONS FROM ORDERS
+  let totalEarned = 0;
+  let thisMonthOrders = 0;
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  
+  orders.forEach(order => {
+    const orderTotal = parseFloat(order.order_total) || 0;
+    const commission = orderTotal * 0.10; // 10% commission
+    totalEarned += commission;
+    
+    const orderDate = new Date(order.created_at);
+    if (orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear) {
+      thisMonthOrders++;
+    }
+  });
   
   let html = `
     <!-- PARTNER INFO CARD -->
     <div class="card">
-      <h2>Welcome, ${partner.business_name}!</h2>
-      <p><strong>Contact Person:</strong> ${partner.contact_person || partner.contact_name || 'N/A'}</p>
+      <h2>👋 Welcome, ${partner.business_name}!</h2>
+      <p><strong>Contact Person:</strong> ${partner.contact_name || 'N/A'}</p>
       <p><strong>Email:</strong> ${partner.contact_email || 'N/A'}</p>
+      <p><strong>Phone:</strong> ${partner.contact_phone || 'N/A'}</p>
       <p><strong>Status:</strong> <span style="color:${isLive ? '#0ff0b8' : '#fd26fd'};font-weight:700">${status}</span></p>
     </div>
   `;
@@ -292,9 +530,10 @@ function renderDashboard(partner, orders) {
       <div class="${statusClass}">
         <h2 style="color:#d3fb1b;margin-top:0">📅 Installation ${installScheduled ? 'Scheduled' : 'Pending'}</h2>
         ${installScheduled ? 
-          `<p style="font-size:18px;margin:10px 0">Your installation is scheduled for:<br><strong style="color:#d3fb1b;font-size:24px">${new Date(installScheduled).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong></p>` :
-          `<p style="margin:10px 0">Schedule your installation to get started!</p>
-           <a href="${CALENDAR_LINK}" target="_blank" class="schedule-btn">📅 Schedule Now</a>`
+          `<p style="font-size:18px;margin:10px 0">Your installation is scheduled for:<br><strong style="color:#d3fb1b;font-size:24px">${new Date(installScheduled).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong></p>
+           <p style="margin-top:15px;color:#b8bac0;font-size:15px;">We'll bring everything needed for a professional setup. See you soon!</p>` :
+          `<p style="margin:10px 0;font-size:16px;color:#b8bac0;">Your installation date will be confirmed via email within 24-48 hours.</p>
+           <p style="margin-top:15px;">Questions? Call us at <a href="tel:8165301520" style="color:#d3fb1b;font-weight:700;text-decoration:none;">816-530-1520</a></p>`
         }
       </div>
     `;
@@ -302,53 +541,62 @@ function renderDashboard(partner, orders) {
     html += `
       <div class="install-status complete">
         <h2 style="color:#0ff0b8;margin-top:0">✅ Installation Complete!</h2>
-        <p>Installed on: <strong>${new Date(installComplete).toLocaleDateString()}</strong></p>
-        <p style="color:#d3fb1b;font-weight:700;font-size:18px;margin-top:10px">You're LIVE and earning! 🎉</p>
+        <p style="font-size:16px;">Installed on: <strong>${new Date(installComplete).toLocaleDateString()}</strong></p>
+        <p style="color:#d3fb1b;font-weight:700;font-size:20px;margin-top:15px;">You're LIVE and earning! 🎉</p>
       </div>
     `;
   }
   
   // COMMISSION DASHBOARD
-  const totalEarned = partner.commission_earned_total || 0;
-  const thisMonth = partner.orders_count_this_month || 0;
-  const totalOrders = partner.orders_count_total || orders.length || 0;
-  
   html += `
     <div class="card">
       <h2>💰 Commission Dashboard</h2>
+      <p style="margin-bottom:15px;">You earn 10% commission on every order. Commissions are paid monthly by the 10th via check.</p>
       <div class="stats-row">
         <div class="stat-box">
           <h3>Total Earned</h3>
-          <p>$${parseFloat(totalEarned).toFixed(2)}</p>
+          <p>$${totalEarned.toFixed(2)}</p>
         </div>
         <div class="stat-box">
           <h3>Orders This Month</h3>
-          <p>${thisMonth}</p>
+          <p>${thisMonthOrders}</p>
         </div>
         <div class="stat-box">
           <h3>Total Orders</h3>
-          <p>${totalOrders}</p>
+          <p>${orders.length}</p>
         </div>
       </div>
     </div>
   `;
   
-  // QR CODE
+  // QR CODE - LANDING PAGE FOR CUSTOMERS
+  const landingPageUrl = `${LANDING_PAGE_BASE}?id=${partner.partner_id}`;
   const qrCodeUrl = partner.qr_code_url || generateQRCodeUrl(partner.partner_id);
-  const landingPageUrl = `https://prezzedbeyond.com/partner.html?id=${partner.partner_id}`;
   
   html += `
     <div class="card qr-box">
-      <h2>📱 Your Legacy Lounge™ QR Code</h2>
-      <p>Display this QR code at your location and share it everywhere!</p>
+      <h2>📱 Your Customer QR Code</h2>
+      <p style="margin-bottom:10px;">This QR code takes customers to your product showcase page. Share it everywhere to boost your sales!</p>
       <img src="${qrCodeUrl}" alt="QR Code" id="qrImage">
       <div class="qr-buttons">
         <button class="qr-btn" onclick="downloadQR()">⬇️ Download QR</button>
         <button class="qr-btn" onclick="copyLink()">📋 Copy Link</button>
       </div>
-      <p style="font-size:12px;margin-top:15px;color:#b8bac0">
-        Your landing page: <a href="${landingPageUrl}" target="_blank" style="color:#d3fb1b">${landingPageUrl}</a>
+      <p style="font-size:12px;margin-top:20px;color:#666;word-break:break-all;">
+        Customer landing page:<br>
+        <a href="${landingPageUrl}" target="_blank" style="color:#0ff0b8;text-decoration:none;font-weight:600;">${landingPageUrl}</a>
       </p>
+      <div style="background:rgba(15,240,184,0.1);border:1px solid rgba(15,240,184,0.3);border-radius:10px;padding:15px;margin-top:20px;text-align:left;">
+        <p style="margin:0;font-size:14px;color:#0ff0b8;font-weight:700;">💡 Ways to Share Your QR Code:</p>
+        <ul style="margin:10px 0 0 20px;font-size:13px;color:#b8bac0;line-height:1.8;">
+          <li>Print on business cards to hand out</li>
+          <li>Share with staff to distribute to clients</li>
+          <li>Post in common areas of your location</li>
+          <li>Include in emails or newsletters</li>
+          <li>Share on social media</li>
+        </ul>
+        <p style="margin:10px 0 0;font-size:13px;color:#b8bac0;"><strong>Every order placed = 10% commission for you!</strong></p>
+      </div>
     </div>
   `;
   
@@ -358,13 +606,14 @@ function renderDashboard(partner, orders) {
       <div class="card">
         <h2>📦 Recent Orders</h2>
         <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;margin-top:15px">
+          <table>
             <thead>
-              <tr style="border-bottom:2px solid #d3fb1b">
-                <th style="text-align:left;padding:10px;color:#d3fb1b">Order #</th>
-                <th style="text-align:left;padding:10px;color:#d3fb1b">Date</th>
-                <th style="text-align:left;padding:10px;color:#d3fb1b">Total</th>
-                <th style="text-align:left;padding:10px;color:#d3fb1b">Status</th>
+              <tr>
+                <th>Order #</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Commission</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -373,15 +622,17 @@ function renderDashboard(partner, orders) {
     orders.forEach(order => {
       const last4 = order.order_id ? order.order_id.slice(-4) : 'N/A';
       const date = order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A';
-      const total = order.order_total ? `$${parseFloat(order.order_total).toFixed(2)}` : 'N/A';
+      const total = parseFloat(order.order_total) || 0;
+      const commission = total * 0.10;
       const status = order.status || 'Processing';
       
       html += `
-        <tr style="border-bottom:1px solid #292a30">
-          <td style="padding:10px">#${last4}</td>
-          <td style="padding:10px">${date}</td>
-          <td style="padding:10px;font-weight:700">${total}</td>
-          <td style="padding:10px">${status}</td>
+        <tr>
+          <td>#${last4}</td>
+          <td>${date}</td>
+          <td style="font-weight:700">$${total.toFixed(2)}</td>
+          <td style="color:#0ff0b8;font-weight:700">$${commission.toFixed(2)}</td>
+          <td>${status}</td>
         </tr>
       `;
     });
@@ -390,6 +641,15 @@ function renderDashboard(partner, orders) {
             </tbody>
           </table>
         </div>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="card">
+        <h2>📦 Orders</h2>
+        <p style="text-align:center;padding:40px 0;color:#666;font-size:16px;">
+          No orders yet! Share your QR code to start earning commissions. 💰
+        </p>
       </div>
     `;
   }
@@ -404,13 +664,15 @@ function renderDashboard(partner, orders) {
   document.getElementById('content').innerHTML = html;
 }
 
-/* GENERATE QR CODE URL */
+// ═══════════════════════════════════════════════════════════
+// HELPER FUNCTIONS
+// ═══════════════════════════════════════════════════════════
+
 function generateQRCodeUrl(partnerId) {
-  const landingPageUrl = `https://prezzedbeyond.com/partner.html?id=${partnerId}`;
+  const landingPageUrl = `${LANDING_PAGE_BASE}?id=${partnerId}`;
   return `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(landingPageUrl)}`;
 }
 
-/* DOWNLOAD QR CODE */
 function downloadQR() {
   const img = document.getElementById('qrImage');
   const link = document.createElement('a');
@@ -419,22 +681,22 @@ function downloadQR() {
   link.click();
 }
 
-/* COPY LINK */
 function copyLink() {
-  const landingPageUrl = `https://prezzedbeyond.com/partner.html?id=${partnerId}`;
+  const landingPageUrl = `${LANDING_PAGE_BASE}?id=${partnerId}`;
   navigator.clipboard.writeText(landingPageUrl).then(() => {
     alert('✅ Link copied to clipboard!');
+  }).catch(() => {
+    prompt('Copy this link:', landingPageUrl);
   });
 }
 
-/* SHOW ERROR */
 function showError(message) {
   document.getElementById('content').innerHTML = `
     <div class="error">
       <h2>⚠️ Error</h2>
-      <p>${message}</p>
-      <p style="margin-top:20px">
-        Need help? Call K.Smith: <a href="tel:8165301520" style="color:#d3fb1b;font-weight:700">816-530-1520</a>
+      <p style="margin: 20px 0; font-size: 16px;">${message}</p>
+      <p style="margin-top: 30px;">
+        Need help? Call K.Smith: <a href="tel:8165301520">816-530-1520</a>
       </p>
     </div>
   `;
