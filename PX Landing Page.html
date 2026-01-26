@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dopelee Prezzed by S™ | Fort Leavenworth PX</title>
+  
+  <style>
+    :root {
+      --bg-primary: #000;
+      --bg-secondary: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text-primary: #fff;
+      --text-muted: #b8bac0;
+      --accent-gold: #d3fb1b;
+      --accent-cyan: #0ff0b8;
+      --accent-blue: #0a95a8;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* ANIMATED HEADER */
+    .header {
+      background: #000;
+      padding: 2rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 2px solid #d4af37;
+      border-bottom: 2px solid #d4af37;
+    }
+    
+    .header::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: 
+        radial-gradient(circle at 25% 35%, rgba(15, 240, 184, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 65%, rgba(10, 149, 168, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+      animation: heroBling 5s ease-in-out infinite;
+    }
+    
+    @keyframes heroBling {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: bubbleRise 8s infinite ease-in-out;
+      pointer-events: none;
+      box-shadow: 0 0 30px currentColor;
+      filter: blur(1px);
+    }
+    
+    @keyframes bubbleRise {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+    
+    .header .bubble:nth-child(1) { left: 10%; width: 40px; height: 40px; background: #0ff0b8; animation-delay: 0s; animation-duration: 10s; }
+    .header .bubble:nth-child(2) { left: 25%; width: 60px; height: 60px; background: #d3fb1b; animation-delay: 2s; animation-duration: 12s; }
+    .header .bubble:nth-child(3) { left: 45%; width: 50px; height: 50px; background: #fd26fd; animation-delay: 1s; animation-duration: 11s; }
+    .header .bubble:nth-child(4) { left: 65%; width: 35px; height: 35px; background: #3461fa; animation-delay: 3s; animation-duration: 9s; }
+    .header .bubble:nth-child(5) { left: 80%; width: 55px; height: 55px; background: #0a95a8; animation-delay: 4s; animation-duration: 13s; }
+    
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+    
+    @keyframes logoGlow {
+      0%, 100% { filter: drop-shadow(0 0 30px rgba(211, 251, 27, 0.6)) drop-shadow(0 0 60px rgba(15, 240, 184, 0.4)); }
+      50% { filter: drop-shadow(0 0 50px rgba(253, 38, 253, 0.8)) drop-shadow(0 0 80px rgba(52, 97, 250, 0.6)); }
+    }
+    
+    .logo-container {
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .logo-container img {
+      max-width: 180px;
+      height: auto;
+      border-radius: 15px;
+      animation: logoFloat 4s ease-in-out infinite, logoGlow 3s ease-in-out infinite;
+    }
+    
+    .header h1 {
+      color: #fff;
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 0.3rem;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 20px rgba(15, 240, 184, 0.5);
+      position: relative;
+      z-index: 2;
+    }
+    
+    .header .tagline {
+      color: #0ff0b8;
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-style: italic;
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* MILITARY LOCATION BANNER */
+    .location-banner {
+      background: linear-gradient(135deg, #1a2a1a, #2a3a2a);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      border-bottom: 3px solid #ffd700;
+    }
+    
+    .location-banner .flag { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    
+    .location-banner h2 {
+      color: #ffd700;
+      font-size: 1.6rem;
+      margin-bottom: 0.3rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .location-banner p { color: #b8bac0; font-size: 1rem; }
+    
+    .location-banner .military-badge {
+      display: inline-block;
+      background: rgba(255, 215, 0, 0.15);
+      border: 1px solid #ffd700;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #ffd700;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    /* VIP SECTION */
+    .vip-section {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(212, 175, 55, 0.15));
+      border: 2px solid #ffd700;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    
+    .vip-section::before {
+      content: '★';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3rem;
+      color: #ffd700;
+    }
+    
+    .vip-section h3 { color: #ffd700; font-size: 1.8rem; margin-bottom: 1rem; }
+    
+    .vip-section p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+    
+    .vip-features {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    
+    .vip-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #ffd700;
+      font-weight: 600;
+    }
+    
+    .btn-vip {
+      display: inline-block;
+      padding: 1.2rem 3rem;
+      background: linear-gradient(135deg, #d4af37, #ffd700);
+      color: #000;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 25px rgba(255, 215, 0, 0.4);
+      text-transform: uppercase;
+    }
+    
+    .btn-vip:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 35px rgba(255, 215, 0, 0.6);
+    }
+    
+    /* INTRO SECTION */
+    .intro-section {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    
+    .intro-section h3 {
+      background: linear-gradient(90deg, #0a95a8, #0ff0b8, #d3fb1b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    
+    .intro-section p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    /* PRODUCTS GRID */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .product-card {
+      background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(15, 240, 184, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .product-card:hover {
+      border-color: rgba(15, 240, 184, 0.6);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(15, 240, 184, 0.25);
+    }
+    
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(15, 240, 184, 0.2);
+      background: #111;
+    }
+    
+    .product-content { padding: 1.25rem; }
+    
+    .product-content h4 {
+      color: #d3fb1b;
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+    }
+    
+    .product-content p {
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+      font-size: 0.9rem;
+    }
+    
+    .product-price {
+      color: #0ff0b8;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+    
+    .btn-order {
+      display: block;
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, #0a95a8, #0ff0b8);
+      color: #000;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(15, 240, 184, 0.3);
+    }
+    
+    .btn-order:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(15, 240, 184, 0.5);
+    }
+    
+    /* SAYINGS SECTION */
+    .sayings-section {
+      background: linear-gradient(135deg, rgba(75, 83, 32, 0.1), rgba(42, 58, 42, 0.15));
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+    
+    .sayings-section h3 { color: #ffd700; font-size: 1.4rem; margin-bottom: 1rem; }
+    
+    .sayings-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      justify-content: center;
+    }
+    
+    .saying-tag {
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #ffd700;
+    }
+    
+    /* FOOTER */
+    .footer {
+      background: var(--bg-secondary);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin-top: 3rem;
+      border-top: 2px solid rgba(15, 240, 184, 0.2);
+    }
+    
+    .footer h4 {
+      background: linear-gradient(90deg, #0a95a8, #0ff0b8, #d3fb1b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.8rem;
+      font-size: 1.3rem;
+    }
+    
+    .footer p { color: var(--text-muted); margin: 0.4rem 0; font-size: 0.95rem; }
+    .footer a { color: #0ff0b8; text-decoration: none; font-weight: 600; }
+    .footer a:hover { color: #d3fb1b; }
+    
+    .loading {
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: 1.3rem;
+      color: #0ff0b8;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.5rem; }
+      .location-banner h2 { font-size: 1.3rem; }
+      .vip-section h3 { font-size: 1.5rem; }
+      .vip-features { gap: 1rem; }
+      .products-grid { grid-template-columns: 1fr; }
+      .btn-vip { padding: 1rem 2rem; font-size: 1rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    
+    <div class="logo-container">
+      <img src="https://dopeleeprezzed-oss.github.io/dopelee-form/logo.png" alt="Dopelee Prezzed by S">
+    </div>
+    <h1>DOPELEE PREZZED BY S™</h1>
+    <p class="tagline">Luxury Keepsakes • Timelessly Crafted</p>
+  </div>
+
+  <!-- MILITARY LOCATION BANNER -->
+  <div class="location-banner">
+    <div class="flag">🇺🇸</div>
+    <h2>Fort Leavenworth PX</h2>
+    <p>Exclusive Memorial Keepsakes for Our Military Families</p>
+    <div class="military-badge">🎖️ Proudly Serving Those Who Serve</div>
+  </div>
+
+  <!-- LOADING -->
+  <div id="loadingState" class="loading">Loading products...</div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container" id="mainContent" style="display:none;">
+    
+    <!-- VIP SECTION -->
+    <div class="vip-section">
+      <h3>👑 VIP Memorial Experience</h3>
+      <p>
+        Honor your loved one with our premium VIP service. We handle everything from 
+        gathering photos to creating a complete memorial package tailored just for you.
+      </p>
+      <div class="vip-features">
+        <div class="vip-feature">✓ Personal Concierge</div>
+        <div class="vip-feature">✓ Photo Gathering Service</div>
+        <div class="vip-feature">✓ Rush Production</div>
+        <div class="vip-feature">✓ Military Family Priority</div>
+      </div>
+      <a href="https://www.dopeleeprezzedbys.com/vip?source=PX-FTLVN" class="btn-vip" id="vipButton">
+        Start VIP Experience →
+      </a>
+    </div>
+    
+    <!-- INTRO -->
+    <div class="intro-section">
+      <h3>🖤 Preserving What Matters Most</h3>
+      <p>
+        Each piece is handcrafted with care and precision to celebrate the life of your loved one. 
+        Create a lasting tribute that brings comfort and keeps their memory close.
+      </p>
+    </div>
+
+    <!-- PRODUCTS - Loaded from Supabase -->
+    <div class="products-grid" id="productsGrid"></div>
+
+    <!-- POPULAR SAYINGS -->
+    <div class="sayings-section">
+      <h3>🎖️ Popular Military Memorial Sayings</h3>
+      <div class="sayings-grid" id="sayingsGrid"></div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <h4>DOPELEE PREZZED BY S™</h4>
+    <p>Luxury Keepsakes • Timelessly Crafted</p>
+    <p style="margin-top: 1rem;">
+      <a href="https://www.dopeleeprezzedbys.com" target="_blank">Website</a> • 
+      <a href="mailto:info@dopeleeprezzedbys.com">Email</a> • 
+      <a href="tel:8165301520">816-530-1520</a>
+    </p>
+    <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.7;">📍 Available at Fort Leavenworth PX</p>
+    <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.6;">© 2026 Dopelee Prezzed by S LLC</p>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    // CONFIGURATION
+    // ═══════════════════════════════════════════════════════════════
+    const SUPABASE_URL = 'https://dyehxtiozfwlexkbalvn.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5ZWh4dGlvemZ3bGV4a2JhbHZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NDYxMzMsImV4cCI6MjA4MTQyMjEzM30.dxd7otsV6WzD6dt41sWkYdseW94BRn0WI8MtFCqnAIs';
+    
+    // PX Location Code for tracking
+    const PX_LOCATION_CODE = 'PX-FTLVN';
+    
+    // Fallback sayings if database is empty
+    const DEFAULT_SAYINGS = [
+      "Forever in Our Hearts",
+      "Gone But Never Forgotten", 
+      "All Gave Some, Some Gave All",
+      "Until We Meet Again",
+      "A True American Hero",
+      "Served with Honor"
+    ];
+    
+    // ═══════════════════════════════════════════════════════════════
+    // LOAD PRODUCTS FROM SUPABASE
+    // ═══════════════════════════════════════════════════════════════
+    async function loadProducts() {
+      const grid = document.getElementById('productsGrid');
+      
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/products?is_active=eq.true&order=sort_order.asc`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          }
+        );
+        
+        const products = await response.json();
+        
+        if (!products || products.length === 0 || products.error) {
+          console.warn('No products found in database, check Supabase');
+          grid.innerHTML = '<p style="text-align:center; color:#ff6666;">Products loading... Please refresh.</p>';
+          return;
+        }
+        
+        grid.innerHTML = products.map(product => `
+          <div class="product-card">
+            <img src="${product.image_url}" alt="${product.name}" class="product-image" 
+                 onerror="this.src='https://via.placeholder.com/300x200?text=Product'">
+            <div class="product-content">
+              <h4>${product.name}</h4>
+              <p>${product.description}</p>
+              <div class="product-price">${product.price}</div>
+              <a href="${product.square_link}?source=${PX_LOCATION_CODE}" 
+                 class="btn-order" target="_blank">
+                Order Now →
+              </a>
+            </div>
+          </div>
+        `).join('');
+        
+        console.log(`✅ Loaded ${products.length} products from Supabase`);
+        
+      } catch (err) {
+        console.error('Error loading products:', err);
+        grid.innerHTML = '<p style="text-align:center; color:#ff6666;">Error loading products</p>';
+      }
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // LOAD SAYINGS FROM SUPABASE
+    // ═══════════════════════════════════════════════════════════════
+    async function loadSayings() {
+      const grid = document.getElementById('sayingsGrid');
+      
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/px_sayings?is_active=eq.true&is_popular=eq.true&select=saying&limit=8`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          }
+        );
+        
+        const data = await response.json();
+        
+        if (data && data.length > 0 && !data.error) {
+          grid.innerHTML = data.map(s => `<span class="saying-tag">"${s.saying}"</span>`).join('');
+        } else {
+          grid.innerHTML = DEFAULT_SAYINGS.map(s => `<span class="saying-tag">"${s}"</span>`).join('');
+        }
+      } catch (err) {
+        console.error('Error loading sayings:', err);
+        grid.innerHTML = DEFAULT_SAYINGS.map(s => `<span class="saying-tag">"${s}"</span>`).join('');
+      }
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // INITIALIZE
+    // ═══════════════════════════════════════════════════════════════
+    async function init() {
+      console.log('🇺🇸 PX Landing Page - ' + PX_LOCATION_CODE);
+      
+      await Promise.all([
+        loadProducts(),
+        loadSayings()
+      ]);
+      
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+    }
+    
+    init();
+  </script>
+
+</body>
+</html>
