@@ -7,11 +7,7 @@
   <title>The Legacy Lounge™ | Dopelee Prezzed by S™</title>
   
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -23,8 +19,7 @@
     }
 
     /* GOLD ACCENT LINES */
-    body::before,
-    body::after {
+    body::before, body::after {
       content: '';
       position: fixed;
       left: 0;
@@ -60,7 +55,7 @@
 
     /* MAIN CONTAINER */
     .portal-container {
-      max-width: 600px;
+      max-width: 500px;
       margin: 0 auto;
       padding: 40px 20px;
       position: relative;
@@ -73,19 +68,19 @@
     /* LOGO HEADER */
     .logo-header {
       text-align: center;
-      padding: 30px 0 10px;
+      padding: 20px 0 10px;
     }
 
     .logo {
-      width: 240px;
-      height: 240px;
+      width: 180px;
+      height: 180px;
       margin: 0 auto;
       background: url('https://25zppb-bv.myshopify.com/cdn/shop/files/dopelee_prezzed_logo.png?v=1755138398&width=450') center/contain no-repeat;
       filter: drop-shadow(0 0 25px rgba(211, 251, 27, 0.5));
     }
 
     .lounge-title {
-      margin-top: 0;
+      margin-top: 5px;
       font-size: 0.9rem;
       color: #d4af37;
       text-transform: uppercase;
@@ -96,51 +91,241 @@
 
     .lounge-tagline {
       margin-top: 8px;
-      font-size: 1.05rem;
-      color: rgba(255, 255, 255, 0.55);
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-style: italic;
-      letter-spacing: 0.5px;
-    }
-    
-    /* WELCOME SECTION */
-    .welcome-greeting {
-      text-align: center;
-      margin: 30px 0 20px;
-    }
-    
-    .welcome-name {
-      font-size: 1.6rem;
-      font-weight: 300;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-    
-    .welcome-name span {
-      color: #e9ff60;
-      font-weight: 500;
-    }
-    
-    .welcome-subtitle {
       font-size: 1rem;
       color: rgba(255, 255, 255, 0.5);
       font-family: 'Georgia', 'Times New Roman', serif;
       font-style: italic;
     }
 
-    /* STATUS HERO - Shows current stage clearly */
+    /* STATES */
+    .state { display: none; }
+    .state.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* LOGIN CARD */
+    .login-card {
+      background: rgba(20, 20, 20, 0.9);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 40px 30px;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      margin-top: 30px;
+    }
+
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 16px 18px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(212, 175, 55, 0.25);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* PIN INPUT */
+    .pin-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .pin-input {
+      width: 60px;
+      height: 70px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      border-radius: 12px;
+      color: #e9ff60;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .pin-input:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    .pin-input.error {
+      border-color: #ff6b6b;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .pin-hint {
+      text-align: center;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 12px;
+    }
+
+    /* BUTTONS */
+    .btn {
+      width: 100%;
+      padding: 18px 24px;
+      background: linear-gradient(135deg, #d4af37, #e9ff60);
+      border: none;
+      border-radius: 14px;
+      color: #000;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 25px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      margin-top: 12px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: none;
+    }
+
+    /* ERROR MESSAGE */
+    .error-box {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.3);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .error-box.show { display: block; }
+
+    .error-text {
+      color: #ff6b6b;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* LOADING */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 0;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(212, 175, 55, 0.2);
+      border-top-color: #d4af37;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* WELCOME SECTION */
+    .welcome-section {
+      text-align: center;
+      margin: 30px 0 25px;
+    }
+
+    .welcome-text {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #fff;
+    }
+
+    .welcome-name {
+      color: #e9ff60;
+      font-weight: 600;
+    }
+
+    .welcome-subtitle {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      margin-top: 8px;
+    }
+
+    /* STATUS HERO */
     .status-hero {
-      margin: 30px 0;
-      padding: 28px;
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(233, 255, 96, 0.06));
       border: 2px solid rgba(212, 175, 55, 0.4);
       border-radius: 20px;
+      padding: 28px;
       text-align: center;
+      margin-bottom: 25px;
     }
 
     .status-label {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
       text-transform: uppercase;
       letter-spacing: 2px;
       margin-bottom: 10px;
@@ -155,58 +340,30 @@
 
     .status-description {
       font-size: 0.95rem;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.5;
-    }
-
-    .status-action-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 14px 32px;
-      background: linear-gradient(135deg, #d4af37, #e9ff60);
-      color: #000;
-      border: none;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    .status-action-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+      color: rgba(255, 255, 255, 0.7);
     }
 
     /* JOURNEY SECTIONS */
     .journey-section {
       background: rgba(20, 20, 20, 0.85);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 0;
-      margin-bottom: 16px;
+      border-radius: 16px;
+      margin-bottom: 12px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       overflow: hidden;
-      transition: all 0.4s ease;
+      transition: all 0.3s ease;
     }
 
     .journey-section.highlight {
       border-color: rgba(212, 175, 55, 0.5);
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.1);
     }
 
     .section-header {
-      padding: 20px 24px;
+      padding: 18px 22px;
       display: flex;
       align-items: center;
       gap: 14px;
       cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .section-header:hover {
-      background: rgba(255, 255, 255, 0.02);
     }
 
     .section-number {
@@ -219,42 +376,35 @@
       font-weight: 700;
       font-size: 0.85rem;
       flex-shrink: 0;
-      transition: all 0.3s ease;
     }
 
     .section-number.pending {
       background: rgba(255, 255, 255, 0.08);
       color: rgba(255, 255, 255, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .section-number.active {
       background: linear-gradient(135deg, #d4af37, #e9ff60);
       color: #000;
-      border: none;
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
     }
 
     .section-number.complete {
       background: linear-gradient(135deg, #0ff0b8, #0a95a8);
       color: #000;
-      border: none;
     }
 
-    .section-info {
-      flex: 1;
-    }
+    .section-info { flex: 1; }
 
     .section-title {
       font-size: 1rem;
       font-weight: 600;
       color: #fff;
-      margin-bottom: 2px;
     }
 
     .section-subtitle {
       font-size: 0.8rem;
-      color: rgba(255, 255, 255, 0.45);
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 2px;
     }
 
     .section-status {
@@ -263,52 +413,30 @@
       border-radius: 20px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .status-pending { background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.5); }
     .status-action { background: linear-gradient(135deg, #d4af37, #e9ff60); color: #000; }
     .status-complete { background: rgba(15, 240, 184, 0.15); color: #0ff0b8; }
 
-    /* EXPANDED CONTENT */
     .section-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.4s ease;
+      transition: max-height 0.4s ease;
     }
 
     .section-content.expanded {
       max-height: 600px;
-      padding: 0 24px 24px;
+      padding: 0 22px 22px;
     }
 
     .content-divider {
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    /* INFO CARDS */
-    .info-card {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 12px;
-      padding: 18px;
-      margin-top: 14px;
-    }
-
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .info-row:last-child { border-bottom: none; }
-    .info-label { color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; }
-    .info-value { color: #fff; font-weight: 500; }
-
-    /* QR CODE BOX */
+    /* QR BOX */
     .qr-box {
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(233, 255, 96, 0.08));
       border: 2px solid rgba(212, 175, 55, 0.35);
@@ -334,6 +462,7 @@
     }
 
     .tracking-number { font-size: 1.3rem; font-weight: 700; color: #fff; letter-spacing: 2px; margin: 10px 0; }
+
     .tracking-btn {
       display: inline-block;
       padding: 12px 24px;
@@ -343,9 +472,7 @@
       text-decoration: none;
       font-weight: 600;
       margin-top: 10px;
-      transition: all 0.3s ease;
     }
-    .tracking-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(100, 149, 237, 0.35); }
 
     /* LOCATION CARD */
     .location-card {
@@ -359,69 +486,24 @@
     .location-title { color: #e9ff60; font-weight: 600; margin-bottom: 10px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
     .location-text { color: rgba(255, 255, 255, 0.8); line-height: 1.7; font-size: 0.9rem; }
 
-    /* SEARCH SECTION */
-    .search-section {
-      background: rgba(20, 20, 20, 0.85);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 40px 28px;
-      border: 1px solid rgba(212, 175, 55, 0.15);
-      text-align: center;
-    }
-
-    .search-title { font-size: 1.4rem; font-weight: 400; color: #fff; margin-bottom: 8px; }
-    .search-subtitle { font-size: 0.9rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 28px; }
-
-    .search-input {
-      width: 100%;
-      padding: 16px 20px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 2px solid rgba(212, 175, 55, 0.25);
+    /* INFO CARD */
+    .info-card {
+      background: rgba(0, 0, 0, 0.3);
       border-radius: 12px;
-      color: #fff;
-      font-size: 1rem;
-      margin-bottom: 16px;
-      transition: all 0.3s ease;
+      padding: 18px;
+      margin-top: 14px;
     }
 
-    .search-input:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); }
-    .search-input::placeholder { color: rgba(255, 255, 255, 0.35); }
-
-    .action-btn {
-      display: block;
-      width: 100%;
-      padding: 16px 24px;
-      background: linear-gradient(135deg, #d4af37, #e9ff60);
-      border: none;
-      border-radius: 12px;
-      color: #000;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-      transition: all 0.3s ease;
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .action-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35); }
-    .action-btn.secondary { background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255, 255, 255, 0.15); }
-    .action-btn.secondary:hover { background: rgba(255, 255, 255, 0.12); box-shadow: none; }
-
-    /* ERROR */
-    .error-message {
-      background: rgba(255, 107, 107, 0.1);
-      border: 1px solid rgba(255, 107, 107, 0.25);
-      border-radius: 12px;
-      padding: 14px;
-      color: #ff6b6b;
-      margin-top: 16px;
-      text-align: center;
-    }
-
-    /* LOADING */
-    .loading-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; text-align: center; }
-    .spinner { width: 45px; height: 45px; border: 3px solid rgba(212, 175, 55, 0.2); border-top-color: #d4af37; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 16px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; }
+    .info-value { color: #fff; font-weight: 500; }
 
     /* FOOTER */
     .portal-footer {
@@ -433,14 +515,41 @@
     .footer-brand { font-size: 0.75rem; color: rgba(255, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 2px; }
     .footer-copyright { font-size: 0.7rem; color: rgba(255, 255, 255, 0.2); margin-top: 8px; }
 
+    /* ORDER BADGE */
+    .order-badge {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #d4af37;
+      margin-bottom: 20px;
+    }
+
+    /* ACTION BTN INSIDE SECTIONS */
+    .action-btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #d4af37, #e9ff60);
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 14px;
+    }
+
     /* RESPONSIVE */
     @media (max-width: 480px) {
       .portal-container { padding: 20px 16px; }
-      .section-header { padding: 18px 20px; }
-      .section-content.expanded { padding: 0 20px 20px; }
-      .logo { width: 120px; height: 120px; }
-      .status-current { font-size: 1.3rem; }
-      .qr-image img { width: 150px; height: 150px; }
+      .logo { width: 150px; height: 150px; }
+      .pin-input { width: 55px; height: 65px; font-size: 1.5rem; }
+      .login-card { padding: 30px 22px; }
     }
   </style>
 </head>
@@ -459,134 +568,74 @@
       <p class="lounge-tagline">giving your memories a place to live</p>
     </div>
 
-    <!-- LOADING STATE -->
-    <div id="loadingState" class="loading-container">
-      <div class="spinner"></div>
-      <p style="color: rgba(255,255,255,0.5);">Loading your journey...</p>
-    </div>
-
-    <!-- SEARCH STATE -->
-    <div id="searchState" style="display: none;">
-      <div class="search-section">
-        <h1 class="search-title">Welcome Back</h1>
-        <p class="search-subtitle">Enter your email to check your order status</p>
+    <!-- LOGIN STATE -->
+    <div id="loginState" class="state active">
+      <div class="login-card">
+        <h2 class="login-title">Welcome Back</h2>
+        <p class="login-subtitle">Enter your details to access your orders</p>
         
-        <form id="searchForm">
-          <input type="email" id="emailInput" class="search-input" placeholder="your@email.com" required>
-          <button type="submit" class="action-btn">Check Order Status</button>
+        <div id="errorBox" class="error-box">
+          <p class="error-text" id="errorText"></p>
+        </div>
+        
+        <form id="loginForm">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="emailInput" class="form-input" placeholder="your@email.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Your 4-Digit PIN</label>
+            <div class="pin-container">
+              <input type="tel" class="pin-input" maxlength="1" id="pin1" inputmode="numeric" required>
+              <input type="tel" class="pin-input" maxlength="1" id="pin2" inputmode="numeric" required>
+              <input type="tel" class="pin-input" maxlength="1" id="pin3" inputmode="numeric" required>
+              <input type="tel" class="pin-input" maxlength="1" id="pin4" inputmode="numeric" required>
+            </div>
+            <p class="pin-hint">Check your order confirmation email for your PIN</p>
+          </div>
+          
+          <button type="submit" class="btn" id="loginBtn">Enter The Legacy Lounge™</button>
         </form>
-        
-        <div id="searchError" class="error-message" style="display: none;"></div>
       </div>
     </div>
 
-    <!-- ORDER JOURNEY -->
-    <div id="journeyState" style="display: none;">
-      
-      <!-- PERSONALIZED WELCOME -->
-      <div class="welcome-greeting">
-        <p class="welcome-name">Welcome, <span id="customerName">Friend</span></p>
-        <p class="welcome-subtitle">your keepsake journ<i>ii</i> begins here</p>
+    <!-- LOADING STATE -->
+    <div id="loadingState" class="state">
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p style="color: rgba(255,255,255,0.5);">Unlocking your Legacy Lounge™...</p>
       </div>
+    </div>
+
+    <!-- ORDERS STATE -->
+    <div id="ordersState" class="state">
       
-      <!-- STATUS HERO - Shows current stage clearly! -->
+      <!-- WELCOME -->
+      <div class="welcome-section">
+        <p class="welcome-text">Welcome, <span class="welcome-name" id="customerName">Friend</span></p>
+        <p class="welcome-subtitle">your keepsake journ<i>ii</i> awaits</p>
+      </div>
+
+      <!-- STATUS HERO -->
       <div class="status-hero">
         <div class="status-label">Your Order Status</div>
         <div class="status-current" id="currentStatus">Loading...</div>
-        <div class="status-description" id="statusDescription">Checking your order...</div>
-        <a href="#" id="statusActionBtn" class="status-action-btn" target="_blank" style="display: none;">Take Action</a>
+        <div class="status-description" id="statusDescription"></div>
       </div>
 
-      <!-- ORDER INFO -->
-      <div style="text-align: center; margin-bottom: 24px;">
-        <span id="orderBadge" style="display: inline-block; padding: 8px 20px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; font-size: 0.85rem; color: #d4af37;">#0000 • Keepsake</span>
+      <!-- ORDER BADGE -->
+      <div style="text-align: center;">
+        <span class="order-badge" id="orderBadge">#0000 • Keepsake</span>
       </div>
 
-      <!-- STEP 1: ORDER CONFIRMED -->
-      <div class="journey-section" id="step1">
-        <div class="section-header" onclick="toggleSection(1)">
-          <div class="section-number" id="step1Number">1</div>
-          <div class="section-info">
-            <div class="section-title">Order Received</div>
-            <div class="section-subtitle">Payment confirmed</div>
-          </div>
-          <span class="section-status" id="step1Status">Pending</span>
-        </div>
-        <div class="section-content" id="step1Content">
-          <div class="content-divider"></div>
-          <p style="color: rgba(255,255,255,0.65); line-height: 1.6; font-size: 0.9rem;">Your order has been received. Thank you for trusting us with your legacy piece.</p>
-          <div class="info-card" id="orderDetails"></div>
-        </div>
+      <!-- JOURNEY STEPS -->
+      <div id="journeySteps">
+        <!-- Dynamically populated -->
       </div>
 
-      <!-- STEP 2: PERSONALIZATION -->
-      <div class="journey-section" id="step2">
-        <div class="section-header" onclick="toggleSection(2)">
-          <div class="section-number" id="step2Number">2</div>
-          <div class="section-info">
-            <div class="section-title">Personalization</div>
-            <div class="section-subtitle">Tell us your story</div>
-          </div>
-          <span class="section-status" id="step2Status">Pending</span>
-        </div>
-        <div class="section-content" id="step2Content">
-          <div class="content-divider"></div>
-          <div id="personalizationAction"></div>
-        </div>
-      </div>
-
-      <!-- STEP 3: CRAFTING -->
-      <div class="journey-section" id="step3">
-        <div class="section-header" onclick="toggleSection(3)">
-          <div class="section-number" id="step3Number">3</div>
-          <div class="section-info">
-            <div class="section-title">Crafting Your Piece</div>
-            <div class="section-subtitle">Handcrafted with care</div>
-          </div>
-          <span class="section-status" id="step3Status">Pending</span>
-        </div>
-        <div class="section-content" id="step3Content">
-          <div class="content-divider"></div>
-          <p style="color: rgba(255,255,255,0.65); line-height: 1.6; font-size: 0.9rem;">Your keepsake is being carefully crafted by hand. Each piece is made with intention and love.</p>
-        </div>
-      </div>
-
-      <!-- STEP 4: DELIVERY/PICKUP -->
-      <div class="journey-section" id="step4">
-        <div class="section-header" onclick="toggleSection(4)">
-          <div class="section-number" id="step4Number">4</div>
-          <div class="section-info">
-            <div class="section-title" id="step4Title">On Its Way</div>
-            <div class="section-subtitle" id="step4Subtitle">Almost in your hands</div>
-          </div>
-          <span class="section-status" id="step4Status">Pending</span>
-        </div>
-        <div class="section-content" id="step4Content">
-          <div class="content-divider"></div>
-          <div id="deliveryContent"></div>
-        </div>
-      </div>
-
-      <!-- STEP 5: COMPLETE -->
-      <div class="journey-section" id="step5">
-        <div class="section-header" onclick="toggleSection(5)">
-          <div class="section-number" id="step5Number">5</div>
-          <div class="section-info">
-            <div class="section-title">Legacy Delivered</div>
-            <div class="section-subtitle">Your keepsake is home</div>
-          </div>
-          <span class="section-status" id="step5Status">Pending</span>
-        </div>
-        <div class="section-content" id="step5Content">
-          <div class="content-divider"></div>
-          <p style="color: rgba(255,255,255,0.65); line-height: 1.6; font-size: 0.9rem; margin-bottom: 16px;">Your legacy piece has arrived. Thank you for letting us be part of your story.</p>
-          <a href="https://tr.ee/3OJ5e4" target="_blank" class="action-btn">⭐ Share Your Experience</a>
-        </div>
-      </div>
-
-      <!-- BACK BUTTON -->
-      <button id="backBtn" class="action-btn secondary" style="margin-top: 10px; display: none;">← View All Orders</button>
-
+      <!-- LOGOUT -->
+      <button class="btn btn-secondary" onclick="logout()" style="margin-top: 20px;">← Sign Out</button>
     </div>
 
     <!-- FOOTER -->
@@ -598,332 +647,345 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://dyehxtiozfwlexkbalvn.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5ZWh4dGlvemZ3bGV4a2JhbHZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NDYxMzMsImV4cCI6MjA4MTQyMjEzM30.dxd7otsV6WzD6dt41sWkYdseW94BRn0WI8MtFCqnAIs';
+    // ═══════════════════════════════════════════════════════════
+    // CONFIGURATION
+    // ═══════════════════════════════════════════════════════════
+    const SUPABASE_PROJECT_ID = 'dyehxtiozfwlexkbalvn';
+    const EDGE_FUNCTION_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/verify-portal-pin`;
+    const FORM_BASE_URL = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
 
-    let currentOrder = null;
-    let allOrders = [];
+    let currentOrders = [];
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const orderId = params.get('order');
+    // ═══════════════════════════════════════════════════════════
+    // PIN INPUT AUTO-ADVANCE
+    // ═══════════════════════════════════════════════════════════
+    document.querySelectorAll('.pin-input').forEach((input, index, inputs) => {
+      input.addEventListener('input', (e) => {
+        // Clear error state
+        inputs.forEach(i => i.classList.remove('error'));
+        document.getElementById('errorBox').classList.remove('show');
+        
+        if (e.target.value.length === 1 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
       
-      if (orderId) {
-        fetchSingleOrder(orderId);
-      } else {
-        showSearch();
-      }
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+          inputs[index - 1].focus();
+        }
+      });
+      
+      // Select all on focus
+      input.addEventListener('focus', () => input.select());
     });
 
-    document.getElementById('searchForm').addEventListener('submit', async (e) => {
+    // ═══════════════════════════════════════════════════════════
+    // LOGIN FORM
+    // ═══════════════════════════════════════════════════════════
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      
       const email = document.getElementById('emailInput').value.trim();
-      await searchOrders(email);
+      const pin = 
+        document.getElementById('pin1').value +
+        document.getElementById('pin2').value +
+        document.getElementById('pin3').value +
+        document.getElementById('pin4').value;
+      
+      if (pin.length !== 4) {
+        showError('Please enter your complete 4-digit PIN');
+        document.querySelectorAll('.pin-input').forEach(i => i.classList.add('error'));
+        return;
+      }
+      
+      await verifyAndLoadOrders(email, pin);
     });
 
-    async function fetchSingleOrder(orderId) {
-      showLoading();
+    // ═══════════════════════════════════════════════════════════
+    // VERIFY PIN & LOAD ORDERS
+    // ═══════════════════════════════════════════════════════════
+    async function verifyAndLoadOrders(email, pin) {
+      showState('loading');
       
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderId}&select=*`, {
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        const response = await fetch(EDGE_FUNCTION_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, pin })
         });
         
-        const orders = await res.json();
+        const data = await response.json();
         
-        if (orders && orders.length > 0) {
-          currentOrder = orders[0];
-          showJourney(currentOrder);
+        if (data.success && data.orders && data.orders.length > 0) {
+          currentOrders = data.orders;
+          displayOrders(data.customer_name, data.orders);
+          showState('orders');
         } else {
-          showSearch();
-          showError('Order not found. Try searching by email.');
+          showState('login');
+          showError(data.error || 'Invalid email or PIN. Please try again.');
+          document.querySelectorAll('.pin-input').forEach(i => {
+            i.classList.add('error');
+            i.value = '';
+          });
+          document.getElementById('pin1').focus();
         }
       } catch (error) {
         console.error('Error:', error);
-        showSearch();
+        showState('login');
+        showError('Connection error. Please try again.');
       }
     }
 
-    async function searchOrders(email) {
-      showLoading();
-      
-      try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?customer_email=eq.${encodeURIComponent(email)}&select=*&order=created_at.desc`, {
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-        });
-        
-        const orders = await res.json();
-        
-        if (orders && orders.length > 0) {
-          allOrders = orders;
-          currentOrder = orders[0];
-          showJourney(currentOrder);
-          
-          if (orders.length > 1) {
-            document.getElementById('backBtn').style.display = 'block';
-          }
-        } else {
-          showSearch();
-          showError('No orders found for this email.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        showSearch();
-        showError('Something went wrong. Please try again.');
-      }
-    }
-
-    function showLoading() {
-      document.getElementById('loadingState').style.display = 'flex';
-      document.getElementById('searchState').style.display = 'none';
-      document.getElementById('journeyState').style.display = 'none';
-    }
-
-    function showSearch() {
-      document.getElementById('loadingState').style.display = 'none';
-      document.getElementById('searchState').style.display = 'block';
-      document.getElementById('journeyState').style.display = 'none';
-      document.getElementById('searchError').style.display = 'none';
-    }
-
-    function showError(message) {
-      document.getElementById('searchError').style.display = 'block';
-      document.getElementById('searchError').textContent = message;
-    }
-
-    function showJourney(order) {
-      document.getElementById('loadingState').style.display = 'none';
-      document.getElementById('searchState').style.display = 'none';
-      document.getElementById('journeyState').style.display = 'block';
-      
+    // ═══════════════════════════════════════════════════════════
+    // DISPLAY ORDERS
+    // ═══════════════════════════════════════════════════════════
+    function displayOrders(customerName, orders) {
       // Set customer name
-      const firstName = order.customer_name ? order.customer_name.split(' ')[0] : 'Friend';
-      document.getElementById('customerName').textContent = firstName;
+      document.getElementById('customerName').textContent = customerName || 'Friend';
+      
+      // Use first order for main display
+      const order = orders[0];
       
       // Set order badge
-      const orderId = order.order_id ? `#${order.order_id.slice(-4)}` : '#0000';
-      const product = order.product_type || 'Keepsake';
-      document.getElementById('orderBadge').textContent = `${orderId} • ${product}`;
+      document.getElementById('orderBadge').textContent = 
+        `${order.order_id_short || '#0000'} • ${order.product_type || 'Keepsake'}`;
       
-      // Set order details
-      document.getElementById('orderDetails').innerHTML = `
-        <div class="info-row">
-          <span class="info-label">Customer</span>
-          <span class="info-value">${order.customer_name || 'N/A'}</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Order Date</span>
-          <span class="info-value">${order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A'}</span>
-        </div>
-        ${order.honored_name ? `
-        <div class="info-row">
-          <span class="info-label">Honoring</span>
-          <span class="info-value">${order.honored_name}</span>
-        </div>
-        ` : ''}
-        <div class="info-row">
-          <span class="info-label">Total</span>
-          <span class="info-value" style="color: #e9ff60; font-weight: 600;">$${(order.order_total || 0).toFixed(2)}</span>
-        </div>
-      `;
-      
-      updateJourneySteps(order);
-    }
-
-    function updateJourneySteps(order) {
+      // Determine status
       const status = (order.status || '').toLowerCase();
       const formComplete = order.form_completed;
       const fulfillment = order.fulfillment_method || 'shipping';
       
-      // Determine current step & status message
       let currentStep = 1;
       let statusText = 'Order Received';
-      let statusDesc = 'We have your order and payment is confirmed.';
-      let actionBtn = null;
+      let statusDesc = 'We have your order!';
       
       if (status.includes('delivered') || status.includes('picked up')) {
         currentStep = 5;
         statusText = '🎉 Delivered!';
-        statusDesc = 'Your legacy keepsake has arrived. Enjoy!';
+        statusDesc = 'Your legacy keepsake has arrived.';
       } else if (status.includes('shipped')) {
         currentStep = 4;
         statusText = '📦 Shipped!';
-        statusDesc = 'Your keepsake is on its way to you.';
+        statusDesc = 'Your keepsake is on its way.';
       } else if (status.includes('ready')) {
         currentStep = 4;
         statusText = '✅ Ready for Pickup!';
-        statusDesc = 'Your keepsake is ready. Come get it!';
+        statusDesc = 'Your keepsake is waiting for you.';
       } else if (status.includes('production')) {
         currentStep = 3;
         statusText = '🔨 In Production';
-        statusDesc = 'Your keepsake is being handcrafted with care.';
-      } else if (formComplete || status.includes('form')) {
+        statusDesc = 'Being crafted with care.';
+      } else if (formComplete) {
         currentStep = 3;
         statusText = '🔨 In Production';
-        statusDesc = 'Your keepsake is being handcrafted with care.';
+        statusDesc = 'Being crafted with care.';
       } else {
         currentStep = 2;
         statusText = '📝 Action Needed';
-        statusDesc = 'Please complete your personalization form.';
-        actionBtn = { text: 'Complete Form Now', url: buildFormUrl(order) };
+        statusDesc = 'Complete your personalization.';
       }
       
-      // Update status hero
       document.getElementById('currentStatus').textContent = statusText;
       document.getElementById('statusDescription').textContent = statusDesc;
       
-      const actionBtnEl = document.getElementById('statusActionBtn');
-      if (actionBtn) {
-        actionBtnEl.textContent = actionBtn.text;
-        actionBtnEl.href = actionBtn.url;
-        actionBtnEl.style.display = 'inline-block';
-      } else {
-        actionBtnEl.style.display = 'none';
-      }
+      // Build journey steps
+      buildJourneySteps(order, currentStep, fulfillment);
+    }
+
+    function buildJourneySteps(order, currentStep, fulfillment) {
+      const container = document.getElementById('journeySteps');
       
-      // Update step 1 - always complete
-      setStepStatus(1, 'complete');
+      const steps = [
+        { num: 1, title: 'Order Received', subtitle: 'Payment confirmed', content: getStep1Content(order) },
+        { num: 2, title: 'Personalization', subtitle: 'Tell us your story', content: getStep2Content(order) },
+        { num: 3, title: 'Crafting Your Piece', subtitle: 'Handcrafted with care', content: getStep3Content() },
+        { num: 4, title: fulfillment === 'pickup' ? 'Ready for Pickup' : 'On Its Way', subtitle: fulfillment === 'pickup' ? 'Come get your keepsake' : 'Almost in your hands', content: getStep4Content(order, fulfillment) },
+        { num: 5, title: 'Legacy Delivered', subtitle: 'Your keepsake is home', content: getStep5Content() }
+      ];
       
-      // Update step 2 - Personalization
-      if (formComplete || currentStep > 2) {
-        setStepStatus(2, 'complete');
-        document.getElementById('personalizationAction').innerHTML = `
-          <div style="background: rgba(15, 240, 184, 0.1); border-radius: 10px; padding: 14px; text-align: center;">
+      container.innerHTML = steps.map(step => {
+        let numberClass = 'pending';
+        let statusClass = 'status-pending';
+        let statusText = 'Upcoming';
+        let isHighlight = false;
+        let isExpanded = false;
+        
+        if (step.num < currentStep || (step.num === 1)) {
+          numberClass = 'complete';
+          statusClass = 'status-complete';
+          statusText = 'Done';
+        } else if (step.num === currentStep) {
+          numberClass = 'active';
+          statusClass = 'status-action';
+          statusText = 'Current';
+          isHighlight = true;
+          isExpanded = true;
+        }
+        
+        return `
+          <div class="journey-section ${isHighlight ? 'highlight' : ''}" id="step${step.num}">
+            <div class="section-header" onclick="toggleSection(${step.num})">
+              <div class="section-number ${numberClass}">${numberClass === 'complete' ? '✓' : step.num}</div>
+              <div class="section-info">
+                <div class="section-title">${step.title}</div>
+                <div class="section-subtitle">${step.subtitle}</div>
+              </div>
+              <span class="section-status ${statusClass}">${statusText}</span>
+            </div>
+            <div class="section-content ${isExpanded ? 'expanded' : ''}" id="step${step.num}Content">
+              <div class="content-divider"></div>
+              ${step.content}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getStep1Content(order) {
+      return `
+        <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-bottom: 14px;">Your order has been received. Thank you for trusting us with your legacy piece.</p>
+        <div class="info-card">
+          <div class="info-row">
+            <span class="info-label">Order Date</span>
+            <span class="info-value">${order.order_date || 'N/A'}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Product</span>
+            <span class="info-value">${order.product_type || 'Keepsake'}</span>
+          </div>
+          ${order.honored_name ? `
+          <div class="info-row">
+            <span class="info-label">Honoring</span>
+            <span class="info-value">${order.honored_name}</span>
+          </div>
+          ` : ''}
+          ${order.order_total ? `
+          <div class="info-row">
+            <span class="info-label">Total</span>
+            <span class="info-value" style="color: #e9ff60;">$${parseFloat(order.order_total).toFixed(2)}</span>
+          </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function getStep2Content(order) {
+      if (order.form_completed) {
+        return `
+          <div style="background: rgba(15, 240, 184, 0.1); border-radius: 10px; padding: 16px; text-align: center;">
             <span style="color: #0ff0b8; font-weight: 600;">✓ Personalization Complete</span>
           </div>
         `;
-      } else {
-        setStepStatus(2, 'active');
-        document.getElementById('step2').classList.add('highlight');
-        toggleSection(2, true);
-        const formUrl = buildFormUrl(order);
-        document.getElementById('personalizationAction').innerHTML = `
-          <p style="color: rgba(255,255,255,0.65); line-height: 1.6; font-size: 0.9rem; margin-bottom: 14px;">Share the details that make your keepsake uniquely yours.</p>
-          <a href="${formUrl}" target="_blank" rel="noopener noreferrer" class="action-btn" onclick="window.open('${formUrl}', '_blank'); return false;">Complete Personalization</a>
-        `;
       }
       
-      // Update step 3 - Crafting
-      if (currentStep === 3) {
-        setStepStatus(3, 'active');
-        document.getElementById('step3').classList.add('highlight');
-        toggleSection(3, true);
-      } else if (currentStep > 3) {
-        setStepStatus(3, 'complete');
-      } else {
-        setStepStatus(3, 'pending');
-      }
+      const formUrl = `${FORM_BASE_URL}?order=${order.order_id}`;
+      return `
+        <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-bottom: 14px;">Share the details that make your keepsake uniquely yours.</p>
+        <a href="${formUrl}" target="_blank" class="action-btn" onclick="window.open('${formUrl}', '_blank'); return false;">Complete Personalization →</a>
+      `;
+    }
+
+    function getStep3Content() {
+      return `
+        <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem;">Your keepsake is being carefully crafted by hand. Each piece is made with intention and love.</p>
+      `;
+    }
+
+    function getStep4Content(order, fulfillment) {
+      const status = (order.status || '').toLowerCase();
       
-      // Update step 4 - Delivery/Pickup
-      if (fulfillment === 'pickup') {
-        document.getElementById('step4Title').textContent = 'Ready for Pickup';
-        document.getElementById('step4Subtitle').textContent = 'Come get your keepsake';
-      }
-      
-      if (currentStep === 4) {
-        setStepStatus(4, 'active');
-        document.getElementById('step4').classList.add('highlight');
-        toggleSection(4, true);
+      if (fulfillment === 'pickup' && status.includes('ready')) {
+        const pickupUrl = `https://dopeleeprezzed-oss.github.io/dopelee-form/Confirm%20pickup.html?order=${order.order_id}`;
+        const qrUrl = order.pickup_qr_code || `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(pickupUrl)}`;
         
-        if (fulfillment === 'pickup') {
-          const pickupUrl = `https://dopeleeprezzed-oss.github.io/dopelee-form/Confirm%20pickup.html?order=${order.order_id}`;
-          const qrUrl = order.pickup_qr_code || `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(pickupUrl)}`;
-          
-          document.getElementById('deliveryContent').innerHTML = `
-            <div class="qr-box">
-              <div class="qr-title">Your Pickup QR Code</div>
-              <div class="qr-image"><img src="${qrUrl}" alt="Pickup QR Code"></div>
-              <p class="qr-instructions">Show this code when you arrive</p>
+        return `
+          <div class="qr-box">
+            <div class="qr-title">Your Pickup QR Code</div>
+            <div class="qr-image"><img src="${qrUrl}" alt="Pickup QR Code"></div>
+            <p class="qr-instructions">Show this code when you arrive</p>
+          </div>
+          <div class="location-card">
+            <div class="location-title">📍 Pickup Location</div>
+            <div class="location-text">
+              Fort Leavenworth PX<br>
+              Suite ${order.pickup_suite || 'TBD'}<br>
+              330 Kansas Ave, Fort Leavenworth, KS 66027<br><br>
+              <strong>Hours:</strong> Mon-Sat 10am - 6pm
             </div>
-            <div class="location-card">
-              <div class="location-title">📍 Pickup Location</div>
-              <div class="location-text">
-                Fort Leavenworth PX<br>
-                Suite ${order.pickup_suite || 'TBD'}<br>
-                330 Kansas Ave, Fort Leavenworth, KS 66027<br><br>
-                <strong>Hours:</strong> Mon-Sat 10am - 6pm
-              </div>
-            </div>
-          `;
-        } else if (order.tracking_number) {
-          document.getElementById('deliveryContent').innerHTML = `
-            <div class="tracking-box">
-              <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Your tracking number:</p>
-              <div class="tracking-number">${order.tracking_number}</div>
-              <a href="${order.tracking_url || `https://tools.usps.com/go/TrackConfirmAction?tLabels=${order.tracking_number}`}" target="_blank" class="tracking-btn">Track Package →</a>
-            </div>
-          `;
-        } else {
-          document.getElementById('deliveryContent').innerHTML = `
-            <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem;">Your order is being prepared for shipment. Tracking info will appear here soon.</p>
-          `;
-        }
-      } else if (currentStep > 4) {
-        setStepStatus(4, 'complete');
-      } else {
-        setStepStatus(4, 'pending');
-        document.getElementById('deliveryContent').innerHTML = `
-          <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">Delivery details will appear here when your order ships.</p>
+          </div>
         `;
       }
       
-      // Update step 5 - Complete
-      if (currentStep === 5) {
-        setStepStatus(5, 'complete');
-        document.getElementById('step5').classList.add('highlight');
-        toggleSection(5, true);
-      } else {
-        setStepStatus(5, 'pending');
+      if (order.tracking_number) {
+        return `
+          <div class="tracking-box">
+            <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Your tracking number:</p>
+            <div class="tracking-number">${order.tracking_number}</div>
+            <a href="${order.tracking_url || `https://tools.usps.com/go/TrackConfirmAction?tLabels=${order.tracking_number}`}" target="_blank" class="tracking-btn">Track Package →</a>
+          </div>
+        `;
       }
+      
+      return `
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">Delivery details will appear here when your order is ready.</p>
+      `;
     }
 
-    function setStepStatus(step, status) {
-      const number = document.getElementById(`step${step}Number`);
-      const statusEl = document.getElementById(`step${step}Status`);
-      
-      number.className = 'section-number ' + status;
-      
-      if (status === 'complete') {
-        number.innerHTML = '✓';
-        statusEl.className = 'section-status status-complete';
-        statusEl.textContent = 'Done';
-      } else if (status === 'active') {
-        statusEl.className = 'section-status status-action';
-        statusEl.textContent = 'Current';
-      } else {
-        statusEl.className = 'section-status status-pending';
-        statusEl.textContent = 'Upcoming';
-      }
+    function getStep5Content() {
+      return `
+        <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-bottom: 16px;">Your legacy piece has arrived. Thank you for letting us be part of your story.</p>
+        <a href="https://tr.ee/3OJ5e4" target="_blank" class="action-btn">⭐ Share Your Experience</a>
+      `;
     }
 
-    function toggleSection(step, forceOpen = false) {
-      const content = document.getElementById(`step${step}Content`);
+    function toggleSection(num) {
+      const content = document.getElementById(`step${num}Content`);
+      const isExpanded = content.classList.contains('expanded');
       
-      if (forceOpen || !content.classList.contains('expanded')) {
-        document.querySelectorAll('.section-content').forEach(c => c.classList.remove('expanded'));
+      // Close all
+      document.querySelectorAll('.section-content').forEach(c => c.classList.remove('expanded'));
+      
+      // Toggle this one
+      if (!isExpanded) {
         content.classList.add('expanded');
-      } else {
-        content.classList.remove('expanded');
       }
     }
 
-    function buildFormUrl(order) {
-      const baseUrl = 'https://dopeleeprezzedbys-oss.github.io/dopelee-form/';
-      const params = new URLSearchParams({
-        orderId: order.order_id || '',
-        email: order.customer_email || '',
-        name: order.customer_name || '',
-        phone: order.customer_phone || '',
-        product: order.product_type || '',
-        honoredName: order.honored_name || '',
-        dates: order.dates || '',
-        projectType: order.type || 'keepsake'
-      });
-      return `${baseUrl}?${params.toString()}`;
+    // ═══════════════════════════════════════════════════════════
+    // UI HELPERS
+    // ═══════════════════════════════════════════════════════════
+    function showState(state) {
+      document.querySelectorAll('.state').forEach(s => s.classList.remove('active'));
+      document.getElementById(`${state}State`).classList.add('active');
     }
 
-    document.getElementById('backBtn').addEventListener('click', () => {
-      showSearch();
+    function showError(message) {
+      const errorBox = document.getElementById('errorBox');
+      document.getElementById('errorText').textContent = message;
+      errorBox.classList.add('show');
+    }
+
+    function logout() {
+      currentOrders = [];
+      document.getElementById('emailInput').value = '';
+      document.querySelectorAll('.pin-input').forEach(i => i.value = '');
+      showState('login');
+      document.getElementById('emailInput').focus();
+    }
+
+    // Check URL for order parameter (for direct links)
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get('order');
+      
+      // If order ID in URL, show login with hint
+      if (orderId) {
+        // Could pre-fill or show a message
+        console.log('Order ID from URL:', orderId);
+      }
+      
+      document.getElementById('emailInput').focus();
     });
   </script>
 
