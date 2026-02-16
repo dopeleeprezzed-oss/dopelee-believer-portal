@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dopelee Order Portal</title>
+  <title>The Legacy Lounge™ | Dopelee Prezzed by S™</title>
   
   <style>
     * {
@@ -18,7 +18,6 @@
       background: #000000;
       color: #e8e8ec;
       min-height: 100vh;
-      padding: 20px;
       position: relative;
       overflow-x: hidden;
     }
@@ -35,1272 +34,882 @@
       box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
       z-index: 1000;
     }
+    body::before { top: 0; }
+    body::after { bottom: 0; }
 
-    body::before {
-      top: 0;
-    }
-
-    body::after {
-      bottom: 0;
-    }
-
-    /* SHIMMERY FLOATING BUBBLES - More visible and animated */
+    /* FLOATING ORBS */
     .orb {
       position: fixed;
       border-radius: 50%;
       pointer-events: none;
       z-index: 0;
       filter: blur(80px);
-      opacity: 0.6;
-      animation: shimmer 6s infinite ease-in-out, float 20s infinite ease-in-out;
-    }
-
-    @keyframes shimmer {
-      0%, 100% { opacity: 0.6; filter: blur(80px) brightness(1); }
-      50% { opacity: 0.8; filter: blur(60px) brightness(1.3); }
+      opacity: 0.5;
+      animation: float 25s infinite ease-in-out;
     }
 
     @keyframes float {
       0%, 100% { transform: translate(0, 0) scale(1); }
-      25% { transform: translate(50px, -50px) scale(1.1); }
-      50% { transform: translate(-30px, 30px) scale(0.9); }
-      75% { transform: translate(30px, 20px) scale(1.05); }
+      33% { transform: translate(30px, -30px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.95); }
     }
 
-    .orb1 { 
-      width: 400px; 
-      height: 400px; 
-      top: 5%; 
-      left: -5%; 
-      animation-delay: 0s, 0s;
-      background: radial-gradient(circle, rgba(100, 149, 237, 0.8), rgba(70, 130, 180, 0.3)); 
-    }
-    
-    .orb2 { 
-      width: 350px; 
-      height: 350px; 
-      top: 50%; 
-      right: -5%; 
-      animation-delay: 2s, 5s;
-      background: radial-gradient(circle, rgba(147, 112, 219, 0.8), rgba(138, 43, 226, 0.3)); 
-    }
-    
-    .orb3 { 
-      width: 300px; 
-      height: 300px; 
-      bottom: 10%; 
-      left: 20%; 
-      animation-delay: 4s, 10s;
-      background: radial-gradient(circle, rgba(255, 105, 180, 0.7), rgba(255, 20, 147, 0.3)); 
-    }
-    
-    .orb4 { 
-      width: 280px; 
-      height: 280px; 
-      top: 30%; 
-      right: 40%; 
-      animation-delay: 6s, 15s;
-      background: radial-gradient(circle, rgba(135, 206, 250, 0.7), rgba(70, 130, 180, 0.3)); 
-    }
+    .orb1 { width: 350px; height: 350px; top: 5%; left: -5%; background: radial-gradient(circle, rgba(100, 149, 237, 0.6), transparent); }
+    .orb2 { width: 300px; height: 300px; top: 50%; right: -5%; background: radial-gradient(circle, rgba(147, 112, 219, 0.6), transparent); animation-delay: 8s; }
+    .orb3 { width: 250px; height: 250px; bottom: 10%; left: 20%; background: radial-gradient(circle, rgba(255, 105, 180, 0.5), transparent); animation-delay: 16s; }
 
-    .container {
-      max-width: 900px;
+    /* MAIN CONTAINER */
+    .portal-container {
+      max-width: 600px;
       margin: 0 auto;
+      padding: 40px 20px;
       position: relative;
       z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* HERO HEADER */
-    .hero-header {
+    /* LOGO HEADER */
+    .logo-header {
       text-align: center;
-      margin-bottom: 40px;
-      padding: 60px 20px;
-      position: relative;
-      border-radius: 24px;
-      background: transparent;
-      border: 2px solid #d4af37;
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 30px rgba(212, 175, 55, 0.1);
-    }
-
-    .hero-header.personalized {
-      padding: 40px 20px;
-    }
-
-    .personal-greeting {
-      font-size: 2rem;
-      font-weight: 300;
-      color: #fff;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-    }
-
-    .personal-greeting .name {
-      color: #e9ff60;
-      font-weight: 600;
+      padding: 30px 0 10px;
     }
 
     .logo {
-      width: 180px;
-      height: 180px;
-      margin: 0 auto 30px;
+      width: 240px;
+      height: 240px;
+      margin: 0 auto;
       background: url('https://25zppb-bv.myshopify.com/cdn/shop/files/dopelee_prezzed_logo.png?v=1755138398&width=450') center/contain no-repeat;
-      filter: drop-shadow(0 0 30px rgba(211, 251, 27, 0.5)) drop-shadow(0 0 60px rgba(233, 255, 96, 0.3));
-      animation: logoGlow 3s infinite ease-in-out;
+      filter: drop-shadow(0 0 25px rgba(211, 251, 27, 0.5));
     }
 
-    @keyframes logoGlow {
-      0%, 100% { 
-        filter: drop-shadow(0 0 30px rgba(211, 251, 27, 0.5)) drop-shadow(0 0 60px rgba(233, 255, 96, 0.3));
-        transform: scale(1);
-      }
-      50% { 
-        filter: drop-shadow(0 0 50px rgba(211, 251, 27, 0.7)) drop-shadow(0 0 80px rgba(233, 255, 96, 0.5));
-        transform: scale(1.02);
-      }
+    .lounge-title {
+      margin-top: 0;
+      font-size: 0.9rem;
+      color: #d4af37;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-weight: 600;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
     }
 
-    .hero-title {
-      font-size: 2.5rem;
+    .lounge-tagline {
+      margin-top: 8px;
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.55);
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-style: italic;
+      letter-spacing: 0.5px;
+    }
+    
+    /* WELCOME SECTION */
+    .welcome-greeting {
+      text-align: center;
+      margin: 30px 0 20px;
+    }
+    
+    .welcome-name {
+      font-size: 1.6rem;
       font-weight: 300;
       color: #fff;
-      margin-bottom: 16px;
-      letter-spacing: 1px;
+      margin-bottom: 6px;
     }
-
-    .hero-tagline {
-      font-size: 1.2rem;
-      color: #d3fb1b;
-      font-weight: 300;
-      letter-spacing: 3px;
-      margin-bottom: 12px;
+    
+    .welcome-name span {
+      color: #e9ff60;
+      font-weight: 500;
     }
-
-    .hero-subtitle {
+    
+    .welcome-subtitle {
       font-size: 1rem;
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 400;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* SEARCH SECTION */
-    .search-section {
-      background: rgba(20, 20, 20, 0.8);
-      backdrop-filter: blur(20px);
-      padding: 40px;
-      border-radius: 24px;
-      margin-bottom: 40px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-    }
-
-    .search-title {
-      font-size: 1.8rem;
-      font-weight: 300;
-      margin-bottom: 24px;
-      color: #fff;
-      text-align: center;
-      letter-spacing: 1px;
-    }
-
-    .search-form {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .search-input {
-      flex: 1;
-      min-width: 250px;
-      padding: 18px 24px;
-      background: rgba(40, 40, 40, 0.6);
-      border: 2px solid rgba(212, 175, 55, 0.3);
-      border-radius: 16px;
-      color: #fff;
-      font-size: 16px;
-      transition: all 0.3s ease;
-    }
-
-    .search-input::placeholder {
       color: rgba(255, 255, 255, 0.5);
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-style: italic;
     }
 
-    .search-input:focus {
-      outline: none;
-      border-color: #d4af37;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-      background: rgba(40, 40, 40, 0.8);
-    }
-
-    .search-btn {
-      padding: 18px 40px;
-      background: linear-gradient(135deg, #6495ED, #9370DB, #FF69B4);
-      border: none;
-      border-radius: 16px;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 20px rgba(100, 149, 237, 0.4);
-    }
-
-    .search-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 30px rgba(100, 149, 237, 0.6);
-    }
-
-    .search-btn:active {
-      transform: translateY(-1px);
-    }
-
-    /* LIST VIEW */
-    .list-view {
-      display: none;
-    }
-
-    .list-view.active {
-      display: block;
-    }
-
-    .orders-header {
-      font-size: 2rem;
-      font-weight: 300;
-      margin-bottom: 32px;
-      color: #fff;
-      text-align: center;
-      letter-spacing: 1px;
-    }
-
-    .order-card {
-      background: rgba(20, 20, 20, 0.8);
-      backdrop-filter: blur(20px);
+    /* STATUS HERO - Shows current stage clearly */
+    .status-hero {
+      margin: 30px 0;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(233, 255, 96, 0.06));
+      border: 2px solid rgba(212, 175, 55, 0.4);
       border-radius: 20px;
-      padding: 32px;
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid rgba(212, 175, 55, 0.3);
-      position: relative;
-      overflow: hidden;
+      text-align: center;
     }
 
-    .order-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(147, 112, 219, 0.1));
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 0;
+    .status-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
     }
 
-    .order-card:hover::before {
-      opacity: 1;
-    }
-
-    .order-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(212, 175, 55, 0.4);
-      border-color: #d4af37;
-    }
-
-    .order-card-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .order-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .order-id {
+    .status-current {
       font-size: 1.5rem;
       font-weight: 700;
       color: #e9ff60;
-      text-shadow: 0 0 10px rgba(233, 255, 96, 0.5);
-    }
-
-    .order-type-badge {
-      padding: 8px 20px;
-      background: linear-gradient(135deg, rgba(100, 149, 237, 0.3), rgba(147, 112, 219, 0.3));
-      border-radius: 24px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #6495ED;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      border: 1px solid rgba(100, 149, 237, 0.4);
-    }
-
-    .order-status-badge {
-      display: inline-block;
-      padding: 10px 24px;
-      border-radius: 24px;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .status-payment {
-      background: rgba(147, 112, 219, 0.3);
-      color: #9370db;
-      border: 1px solid rgba(147, 112, 219, 0.5);
-    }
-
-    .status-form {
-      background: rgba(211, 251, 27, 0.3);
-      color: #d3fb1b;
-      border: 1px solid rgba(211, 251, 27, 0.5);
-    }
-
-    .status-production {
-      background: rgba(255, 165, 0, 0.3);
-      color: #ffa500;
-      border: 1px solid rgba(255, 165, 0, 0.5);
-    }
-
-    .status-shipped {
-      background: rgba(32, 178, 170, 0.3);
-      color: #20b2aa;
-      border: 1px solid rgba(32, 178, 170, 0.5);
-    }
-
-    .status-delivered {
-      background: rgba(0, 255, 0, 0.3);
-      color: #00ff00;
-      border: 1px solid rgba(0, 255, 0, 0.5);
-    }
-
-    .order-info {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 16px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .order-info-item {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .order-info-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      opacity: 0.6;
-      color: #e9ff60;
-    }
-
-    .order-info-value {
-      font-size: 16px;
-      font-weight: 600;
-      color: #fff;
-    }
-
-    /* MINI PROGRESS PREVIEW */
-    .mini-progress {
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(212, 175, 55, 0.3);
-    }
-
-    .mini-progress-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-    }
-
-    .mini-progress-bar::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: rgba(212, 175, 55, 0.2);
-      transform: translateY(-50%);
-      z-index: 0;
-    }
-
-    .mini-step {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(20, 20, 20, 0.9);
-      border: 2px solid rgba(212, 175, 55, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 700;
-      position: relative;
-      z-index: 1;
-      transition: all 0.3s ease;
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .mini-step.active {
-      background: linear-gradient(135deg, #6495ED, #9370DB);
-      border-color: #d4af37;
-      color: #fff;
-      box-shadow: 0 0 20px rgba(100, 149, 237, 0.6);
-    }
-
-    /* DETAIL VIEW */
-    .detail-view {
-      display: none;
-    }
-
-    .detail-view.active {
-      display: block;
-    }
-
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 28px;
-      background: rgba(20, 20, 20, 0.8);
-      backdrop-filter: blur(20px);
-      border: 2px solid rgba(212, 175, 55, 0.3);
-      border-radius: 16px;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-bottom: 32px;
-    }
-
-    .back-btn:hover {
-      border-color: #d4af37;
-      transform: translateX(-4px);
-      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
-    }
-
-    .detail-card {
-      background: rgba(20, 20, 20, 0.8);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
-      padding: 48px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-      border: 2px solid rgba(212, 175, 55, 0.3);
-    }
-
-    .detail-header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .detail-title {
-      font-size: 2rem;
-      font-weight: 300;
-      margin-bottom: 16px;
-      color: #fff;
-      letter-spacing: 1px;
-    }
-
-    .detail-order-id {
-      font-size: 1.1rem;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .detail-order-id strong {
-      color: #d3fb1b;
-      font-weight: 700;
-      text-shadow: 0 0 10px rgba(211, 251, 27, 0.5);
-    }
-
-    /* ACTION BUTTONS */
-    .action-buttons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 48px;
-    }
-
-    .action-btn {
-      padding: 18px 28px;
-      border-radius: 16px;
-      font-size: 16px;
-      font-weight: 700;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .action-btn-primary {
-      background: linear-gradient(135deg, #6495ED, #9370DB, #FF69B4);
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(100, 149, 237, 0.4);
-    }
-
-    .action-btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 30px rgba(100, 149, 237, 0.6);
-    }
-
-    .action-btn-secondary {
-      background: transparent;
-      border-color: rgba(233, 255, 96, 0.5);
-      color: #e9ff60;
-    }
-
-    .action-btn-secondary:hover {
-      background: rgba(233, 255, 96, 0.1);
-      border-color: #e9ff60;
-      transform: translateY(-3px);
-      box-shadow: 0 4px 20px rgba(233, 255, 96, 0.3);
-    }
-
-    /* COMPLETION STATUS BOX */
-    .completion-status {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 24px;
-      background: rgba(0, 255, 0, 0.1);
-      border: 2px solid rgba(0, 255, 0, 0.3);
-      border-radius: 16px;
-      margin-bottom: 16px;
-    }
-
-    .completion-status-title {
-      color: #00ff00;
-      font-size: 1.2rem;
-      font-weight: 700;
       margin-bottom: 8px;
     }
 
-    .completion-status-message {
-      color: rgba(255, 255, 255, 0.8);
+    .status-description {
       font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
     }
 
-    /* TIMELINE */
-    .timeline {
-      margin: 48px 0;
+    .status-action-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #d4af37, #e9ff60);
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
 
-    .timeline-title {
-      font-size: 1.5rem;
-      font-weight: 300;
-      margin-bottom: 32px;
-      text-align: center;
-      color: #fff;
-      letter-spacing: 1px;
+    .status-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
     }
 
-    .progress-tracker {
+    /* JOURNEY SECTIONS */
+    .journey-section {
+      background: rgba(20, 20, 20, 0.85);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 0;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .journey-section.highlight {
+      border-color: rgba(212, 175, 55, 0.5);
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+    }
+
+    .section-header {
+      padding: 20px 24px;
       display: flex;
-      justify-content: space-between;
-      position: relative;
-      margin: 48px 0;
-      flex-wrap: wrap;
-    }
-
-    .progress-line {
-      position: absolute;
-      top: 30px;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: rgba(212, 175, 55, 0.2);
-      z-index: 0;
-    }
-
-    .progress-line-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #6495ED, #9370DB, #FF69B4);
-      transition: width 0.8s ease;
-      box-shadow: 0 0 20px rgba(100, 149, 237, 0.6);
-    }
-
-    .progress-step {
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      position: relative;
-      z-index: 1;
-      flex: 1;
-      min-width: 80px;
+      gap: 14px;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
-    .progress-circle {
-      width: 60px;
-      height: 60px;
+    .section-header:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .section-number {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: rgba(20, 20, 20, 0.9);
-      border: 3px solid rgba(212, 175, 55, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      transition: all 0.3s ease;
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .progress-step.completed .progress-circle {
-      background: linear-gradient(135deg, #6495ED, #4682B4);
-      border-color: #d4af37;
-      color: #fff;
-      box-shadow: 0 0 30px rgba(100, 149, 237, 0.6);
-    }
-
-    .progress-step.active .progress-circle {
-      background: linear-gradient(135deg, #9370DB, #FF69B4);
-      border-color: #e9ff60;
-      color: #fff;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(147, 112, 219, 0.6); transform: scale(1); }
-      50% { box-shadow: 0 0 40px rgba(147, 112, 219, 0.8); transform: scale(1.05); }
-    }
-
-    .progress-label {
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .progress-step.completed .progress-label,
-    .progress-step.active .progress-label {
-      color: #fff;
-    }
-
-    /* ORDER DETAILS */
-    .order-details {
-      background: rgba(10, 10, 10, 0.5);
-      border-radius: 20px;
-      padding: 40px;
-      margin-top: 40px;
-      border: 1px solid rgba(212, 175, 55, 0.2);
-    }
-
-    .details-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-    }
-
-    .detail-section {
-      padding: 24px;
-      background: rgba(20, 20, 20, 0.7);
-      border-radius: 16px;
-      border-left: 4px solid #d4af37;
-    }
-
-    .detail-section-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #e9ff60;
-      margin-bottom: 12px;
       font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
     }
 
-    .detail-section-content {
-      font-size: 16px;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.9);
+    .section-number.pending {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    .detail-section-content strong {
-      display: block;
-      margin-bottom: 6px;
-      color: #fff;
+    .section-number.active {
+      background: linear-gradient(135deg, #d4af37, #e9ff60);
+      color: #000;
+      border: none;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+    }
+
+    .section-number.complete {
+      background: linear-gradient(135deg, #0ff0b8, #0a95a8);
+      color: #000;
+      border: none;
+    }
+
+    .section-info {
+      flex: 1;
+    }
+
+    .section-title {
+      font-size: 1rem;
       font-weight: 600;
+      color: #fff;
+      margin-bottom: 2px;
     }
 
-    /* TRACKING */
-    .tracking-box {
-      background: linear-gradient(135deg, rgba(100, 149, 237, 0.2), rgba(147, 112, 219, 0.2));
-      border: 2px solid rgba(212, 175, 55, 0.4);
+    .section-subtitle {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .section-status {
+      font-size: 0.7rem;
+      padding: 5px 10px;
       border-radius: 20px;
-      padding: 32px;
-      margin-top: 40px;
-      text-align: center;
-    }
-
-    .tracking-title {
-      font-size: 1.3rem;
       font-weight: 600;
-      color: #e9ff60;
-      margin-bottom: 16px;
-      letter-spacing: 1px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .tracking-number {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 24px;
-      letter-spacing: 3px;
-      text-shadow: 0 0 10px rgba(100, 149, 237, 0.5);
+    .status-pending { background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.5); }
+    .status-action { background: linear-gradient(135deg, #d4af37, #e9ff60); color: #000; }
+    .status-complete { background: rgba(15, 240, 184, 0.15); color: #0ff0b8; }
+
+    /* EXPANDED CONTENT */
+    .section-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
     }
 
+    .section-content.expanded {
+      max-height: 600px;
+      padding: 0 24px 24px;
+    }
+
+    .content-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+      margin-bottom: 20px;
+    }
+
+    /* INFO CARDS */
+    .info-card {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 14px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: rgba(255, 255, 255, 0.5); font-size: 0.85rem; }
+    .info-value { color: #fff; font-weight: 500; }
+
+    /* QR CODE BOX */
+    .qr-box {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.12), rgba(233, 255, 96, 0.08));
+      border: 2px solid rgba(212, 175, 55, 0.35);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .qr-title { font-size: 0.95rem; color: #d4af37; margin-bottom: 16px; font-weight: 600; }
+    .qr-image { background: #fff; padding: 14px; border-radius: 12px; display: inline-block; }
+    .qr-image img { width: 180px; height: 180px; display: block; }
+    .qr-instructions { margin-top: 14px; font-size: 0.85rem; color: rgba(255, 255, 255, 0.65); }
+
+    /* TRACKING BOX */
+    .tracking-box {
+      background: linear-gradient(135deg, rgba(100, 149, 237, 0.12), rgba(147, 112, 219, 0.08));
+      border: 2px solid rgba(100, 149, 237, 0.35);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .tracking-number { font-size: 1.3rem; font-weight: 700; color: #fff; letter-spacing: 2px; margin: 10px 0; }
     .tracking-btn {
       display: inline-block;
-      padding: 16px 40px;
+      padding: 12px 24px;
       background: linear-gradient(135deg, #6495ED, #9370DB);
       color: #fff;
-      border-radius: 16px;
+      border-radius: 10px;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 600;
+      margin-top: 10px;
       transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 20px rgba(100, 149, 237, 0.4);
+    }
+    .tracking-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(100, 149, 237, 0.35); }
+
+    /* LOCATION CARD */
+    .location-card {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 14px;
+      border-left: 3px solid #d4af37;
     }
 
-    .tracking-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 30px rgba(100, 149, 237, 0.6);
-    }
+    .location-title { color: #e9ff60; font-weight: 600; margin-bottom: 10px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+    .location-text { color: rgba(255, 255, 255, 0.8); line-height: 1.7; font-size: 0.9rem; }
 
-    /* LOADING & ERROR */
-    .loading {
+    /* SEARCH SECTION */
+    .search-section {
+      background: rgba(20, 20, 20, 0.85);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 40px 28px;
+      border: 1px solid rgba(212, 175, 55, 0.15);
       text-align: center;
-      padding: 80px 20px;
     }
 
-    .spinner {
-      width: 60px;
-      height: 60px;
-      border: 4px solid rgba(211, 251, 27, 0.2);
-      border-top-color: #d3fb1b;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 24px;
+    .search-title { font-size: 1.4rem; font-weight: 400; color: #fff; margin-bottom: 8px; }
+    .search-subtitle { font-size: 0.9rem; color: rgba(255, 255, 255, 0.5); margin-bottom: 28px; }
+
+    .search-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(212, 175, 55, 0.25);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    .search-input:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); }
+    .search-input::placeholder { color: rgba(255, 255, 255, 0.35); }
 
-    .error {
-      background: rgba(255, 0, 0, 0.2);
-      border: 2px solid rgba(255, 0, 0, 0.5);
-      border-radius: 20px;
-      padding: 40px;
+    .action-btn {
+      display: block;
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, #d4af37, #e9ff60);
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
       text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .action-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35); }
+    .action-btn.secondary { background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255, 255, 255, 0.15); }
+    .action-btn.secondary:hover { background: rgba(255, 255, 255, 0.12); box-shadow: none; }
+
+    /* ERROR */
+    .error-message {
+      background: rgba(255, 107, 107, 0.1);
+      border: 1px solid rgba(255, 107, 107, 0.25);
+      border-radius: 12px;
+      padding: 14px;
       color: #ff6b6b;
+      margin-top: 16px;
+      text-align: center;
     }
+
+    /* LOADING */
+    .loading-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; text-align: center; }
+    .spinner { width: 45px; height: 45px; border: 3px solid rgba(212, 175, 55, 0.2); border-top-color: #d4af37; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* FOOTER */
+    .portal-footer {
+      margin-top: auto;
+      padding: 30px 0;
+      text-align: center;
+    }
+
+    .footer-brand { font-size: 0.75rem; color: rgba(255, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 2px; }
+    .footer-copyright { font-size: 0.7rem; color: rgba(255, 255, 255, 0.2); margin-top: 8px; }
 
     /* RESPONSIVE */
-    @media (max-width: 768px) {
-      body {
-        padding: 12px;
-      }
-
-      .logo {
-        width: 140px;
-        height: 140px;
-      }
-
-      .hero-title {
-        font-size: 1.8rem;
-      }
-
-      .hero-tagline {
-        font-size: 1rem;
-      }
-
-      .search-section {
-        padding: 24px;
-      }
-
-      .search-form {
-        flex-direction: column;
-      }
-
-      .search-input {
-        min-width: 100%;
-      }
-
-      .search-btn {
-        width: 100%;
-      }
-
-      .order-card {
-        padding: 20px;
-      }
-
-      .progress-tracker {
-        gap: 12px;
-      }
-
-      .progress-step {
-        flex-basis: 20%;
-        min-width: 60px;
-      }
-
-      .progress-circle {
-        width: 48px;
-        height: 48px;
-        font-size: 18px;
-      }
-
-      .progress-label {
-        font-size: 10px;
-      }
-
-      .details-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .detail-card {
-        padding: 24px;
-      }
-
-      .action-buttons {
-        grid-template-columns: 1fr;
-      }
-    }
-
     @media (max-width: 480px) {
-      .hero-title {
-        font-size: 1.5rem;
-      }
-
-      .orders-header {
-        font-size: 1.5rem;
-      }
-
-      .order-card-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .progress-step {
-        flex-basis: 33.333%;
-        margin-bottom: 24px;
-      }
+      .portal-container { padding: 20px 16px; }
+      .section-header { padding: 18px 20px; }
+      .section-content.expanded { padding: 0 20px 20px; }
+      .logo { width: 120px; height: 120px; }
+      .status-current { font-size: 1.3rem; }
+      .qr-image img { width: 150px; height: 150px; }
     }
   </style>
 </head>
 <body>
-  
-  <!-- SHIMMERY BUBBLES -->
+
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
-  <div class="orb orb4"></div>
 
-  <div class="container">
+  <div class="portal-container">
     
-    <!-- HERO HEADER -->
-    <div class="hero-header" id="heroHeader">
+    <!-- LOGO -->
+    <div class="logo-header">
       <div class="logo"></div>
-      <h1 class="hero-title" id="heroTitle">Preserving what matters most</h1>
-      <p class="hero-tagline">Luxury • Legacy • Keepsakes</p>
-    </div>
-
-    <!-- SEARCH SECTION -->
-    <div class="search-section" id="searchSection">
-      <h2 class="search-title">🔍 Track Your Order</h2>
-      <form class="search-form" id="searchForm">
-        <input 
-          type="email" 
-          class="search-input" 
-          id="emailInput" 
-          placeholder="Enter your email address"
-          required
-        />
-        <button type="submit" class="search-btn">Search</button>
-      </form>
+      <p class="lounge-title">The Legacy Lounge™</p>
+      <p class="lounge-tagline">giving your memories a place to live</p>
     </div>
 
     <!-- LOADING STATE -->
-    <div id="loadingState" class="loading" style="display: none;">
+    <div id="loadingState" class="loading-container">
       <div class="spinner"></div>
-      <p>Loading your orders...</p>
+      <p style="color: rgba(255,255,255,0.5);">Loading your journey...</p>
     </div>
 
-    <!-- ERROR STATE -->
-    <div id="errorState" class="error" style="display: none;">
-      <h2>⚠️ No Orders Found</h2>
-      <p id="errorMessage"></p>
-    </div>
-
-    <!-- LIST VIEW -->
-    <div id="listView" class="list-view">
-      <h2 class="orders-header">Your Orders (<span id="orderCount">0</span>)</h2>
-      <div id="ordersContainer"></div>
-    </div>
-
-    <!-- DETAIL VIEW -->
-    <div id="detailView" class="detail-view">
-      <button class="back-btn" id="backBtn">
-        ← Back to Orders
-      </button>
-      
-      <div class="detail-card">
-
-        <!-- ACTION BUTTONS -->
-        <div class="action-buttons">
-          <!-- Populated by JavaScript -->
-        </div>
-
-        <!-- TIMELINE -->
-        <div class="timeline">
-          <h3 class="timeline-title">Order Progress</h3>
-          <div class="progress-tracker">
-            <div class="progress-line">
-              <div class="progress-line-fill" id="progressFill" style="width: 20%"></div>
-            </div>
-            <div class="progress-step completed" data-step="1">
-              <div class="progress-circle">1</div>
-              <div class="progress-label">Payment</div>
-            </div>
-            <div class="progress-step" data-step="2">
-              <div class="progress-circle">2</div>
-              <div class="progress-label">Personalize</div>
-            </div>
-            <div class="progress-step" data-step="3">
-              <div class="progress-circle">3</div>
-              <div class="progress-label">Production</div>
-            </div>
-            <div class="progress-step" data-step="4">
-              <div class="progress-circle">4</div>
-              <div class="progress-label">Shipped</div>
-            </div>
-            <div class="progress-step" data-step="5">
-              <div class="progress-circle">5</div>
-              <div class="progress-label">Delivered</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TRACKING (if shipped) -->
-        <div id="trackingBox" class="tracking-box" style="display: none;">
-          <h3 class="tracking-title">📦 Track Your Package</h3>
-          <div class="tracking-number" id="trackingNumber">USPS1234567890</div>
-          <a href="#" id="trackingLink" target="_blank" class="tracking-btn">
-            Track Package →
-          </a>
-        </div>
-
-        <!-- ORDER DETAILS -->
-        <div class="order-details">
-          <div class="details-grid" id="detailsGrid">
-            <!-- Populated by JavaScript -->
-          </div>
-        </div>
-
+    <!-- SEARCH STATE -->
+    <div id="searchState" style="display: none;">
+      <div class="search-section">
+        <h1 class="search-title">Welcome Back</h1>
+        <p class="search-subtitle">Enter your email to check your order status</p>
+        
+        <form id="searchForm">
+          <input type="email" id="emailInput" class="search-input" placeholder="your@email.com" required>
+          <button type="submit" class="action-btn">Check Order Status</button>
+        </form>
+        
+        <div id="searchError" class="error-message" style="display: none;"></div>
       </div>
+    </div>
+
+    <!-- ORDER JOURNEY -->
+    <div id="journeyState" style="display: none;">
+      
+      <!-- PERSONALIZED WELCOME -->
+      <div class="welcome-greeting">
+        <p class="welcome-name">Welcome, <span id="customerName">Friend</span></p>
+        <p class="welcome-subtitle">your keepsake journ<i>ii</i> begins here</p>
+      </div>
+      
+      <!-- STATUS HERO - Shows current stage clearly! -->
+      <div class="status-hero">
+        <div class="status-label">Your Order Status</div>
+        <div class="status-current" id="currentStatus">Loading...</div>
+        <div class="status-description" id="statusDescription">Checking your order...</div>
+        <a href="#" id="statusActionBtn" class="status-action-btn" target="_blank" style="display: none;">Take Action</a>
+      </div>
+
+      <!-- ORDER INFO -->
+      <div style="text-align: center; margin-bottom: 24px;">
+        <span id="orderBadge" style="display: inline-block; padding: 8px 20px; background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 20px; font-size: 0.85rem; color: #d4af37;">#0000 • Keepsake</span>
+      </div>
+
+      <!-- STEP 1: ORDER CONFIRMED -->
+      <div class="journey-section" id="step1">
+        <div class="section-header" onclick="toggleSection(1)">
+          <div class="section-number" id="step1Number">1</div>
+          <div class="section-info">
+            <div class="section-title">Order Received</div>
+            <div class="section-subtitle">Payment confirmed</div>
+          </div>
+          <span class="section-status" id="step1Status">Pending</span>
+        </div>
+        <div class="section-content" id="step1Content">
+          <div class="content-divider"></div>
+          <p style="color: rgba(255,255,255,0.65); line-height: 1.6; font-size: 0.9rem;">Your order has been received. Thank you for trusting us with your legacy piece.</p>
+          <div class="info-card" id="orderDetails"></div>
+        </div>
+      </div>
+
+      <!-- STEP 2: PERSONALIZATION -->
+      <div class="journey-section" id="step2">
+        <div class="section-header" onclick="toggleSection(2)">
+          <div class="section-number" id="step2Number">2</div>
+          <div class="section-info">
+            <div class="section-title">Personalization</div>
+            <div class="section-subtitle">Tell us your story</div>
+          </div>
+          <span class="section-status" id="step2Status">Pending</span>
+        </div>
+        <div class="section-content" id="step2Content">
+          <div class="content-divider"></div>
+          <div id="personalizationAction"></div>
+        </div>
+      </div>
+
+      <!-- STEP 3: CRAFTING -->
+      <div class="journey-section" id="step3">
+        <div class="section-header" onclick="toggleSection(3)">
+          <div class="section-number" id="step3Number">3</div>
+          <div class="section-info">
+            <div class="section-title">Crafting Your Piece</div>
+            <div class="section-subtitle">Handcrafted with care</div>
+          </div>
+          <span class="section-status" id="step3Status">Pending</span>
+        </div>
+        <div class="section-content" id="step3Content">
+          <div class="content-divider"></div>
+          <p style="color: rgba(255,255,255,0.65); line-height: 1.6; font-size: 0.9rem;">Your keepsake is being carefully crafted by hand. Each piece is made with intention and love.</p>
+        </div>
+      </div>
+
+      <!-- STEP 4: DELIVERY/PICKUP -->
+      <div class="journey-section" id="step4">
+        <div class="section-header" onclick="toggleSection(4)">
+          <div class="section-number" id="step4Number">4</div>
+          <div class="section-info">
+            <div class="section-title" id="step4Title">On Its Way</div>
+            <div class="section-subtitle" id="step4Subtitle">Almost in your hands</div>
+          </div>
+          <span class="section-status" id="step4Status">Pending</span>
+        </div>
+        <div class="section-content" id="step4Content">
+          <div class="content-divider"></div>
+          <div id="deliveryContent"></div>
+        </div>
+      </div>
+
+      <!-- STEP 5: COMPLETE -->
+      <div class="journey-section" id="step5">
+        <div class="section-header" onclick="toggleSection(5)">
+          <div class="section-number" id="step5Number">5</div>
+          <div class="section-info">
+            <div class="section-title">Legacy Delivered</div>
+            <div class="section-subtitle">Your keepsake is home</div>
+          </div>
+          <span class="section-status" id="step5Status">Pending</span>
+        </div>
+        <div class="section-content" id="step5Content">
+          <div class="content-divider"></div>
+          <p style="color: rgba(255,255,255,0.65); line-height: 1.6; font-size: 0.9rem; margin-bottom: 16px;">Your legacy piece has arrived. Thank you for letting us be part of your story.</p>
+          <a href="https://tr.ee/3OJ5e4" target="_blank" class="action-btn">⭐ Share Your Experience</a>
+        </div>
+      </div>
+
+      <!-- BACK BUTTON -->
+      <button id="backBtn" class="action-btn secondary" style="margin-top: 10px; display: none;">← View All Orders</button>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="portal-footer">
+      <p class="footer-brand">Dopelee Prezzed by S™</p>
+      <p class="footer-copyright">© 2026 All Rights Reserved</p>
     </div>
 
   </div>
 
   <script>
-    // ═══════════════════════════════════════════════════════════════
-    // DOPELEE CUSTOMER PORTAL - BRANDED VERSION
-    // ═══════════════════════════════════════════════════════════════
-
     const SUPABASE_URL = 'https://dyehxtiozfwlexkbalvn.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5ZWh4dGlvemZ3bGV4a2JhbHZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NDYxMzMsImV4cCI6MjA4MTQyMjEzM30.dxd7otsV6WzD6dt41sWkYdseW94BRn0WI8MtFCqnAIs';
 
-    let allOrders = [];
     let currentOrder = null;
+    let allOrders = [];
 
-    // Check URL for order parameter on load
     window.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const orderId = params.get('order');
       
       if (orderId) {
         fetchSingleOrder(orderId);
-      }
-      
-      // Back button event listener
-      const backBtn = document.getElementById('backBtn');
-      if (backBtn) {
-        backBtn.addEventListener('click', () => {
-          if (allOrders.length > 1) {
-            showListView();
-          } else {
-            // Reset to search view
-            hideAll();
-            document.getElementById('searchSection').style.display = 'block';
-            const heroHeader = document.getElementById('heroHeader');
-            const heroTitle = document.getElementById('heroTitle');
-            heroHeader.classList.remove('personalized');
-            heroTitle.textContent = 'Track Your Orders';
-          }
-        });
+      } else {
+        showSearch();
       }
     });
 
-    // Search form submission
     document.getElementById('searchForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('emailInput').value.trim();
       await searchOrders(email);
     });
 
-    /**
-     * Search all tables for orders by email
-     */
-    async function searchOrders(email) {
-      showLoading();
-
-      try {
-        const [ordersRes, vipRes, photobooksRes] = await Promise.all([
-          fetch(`${SUPABASE_URL}/rest/v1/orders?customer_email=eq.${email}&select=*`, {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-          }),
-          fetch(`${SUPABASE_URL}/rest/v1/vip_intake?email=eq.${email}&select=*`, {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-          }),
-          fetch(`${SUPABASE_URL}/rest/v1/photobooks?customer_email=eq.${email}&select=*`, {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-          })
-        ]);
-
-        const orders = await ordersRes.json();
-        const vip = await vipRes.json();
-        const photobooks = await photobooksRes.json();
-
-        allOrders = [
-          ...orders.map(o => ({ ...o, type: 'keepsake' })),
-          ...vip.map(o => ({ ...o, type: 'vip', order_id: o.intake_id })),
-          ...photobooks.map(o => ({ ...o, type: 'photobook', order_id: o.id }))
-        ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-        if (allOrders.length === 0) {
-          showError('No orders found for this email address.');
-          return;
-        }
-
-        if (allOrders.length === 1) {
-          showDetailView(allOrders[0]);
-        } else {
-          showListView();
-        }
-
-      } catch (error) {
-        console.error('Search error:', error);
-        showError('Error loading orders. Please try again.');
-      }
-    }
-
-    /**
-     * Fetch single order by UUID (for direct links)
-     */
     async function fetchSingleOrder(orderId) {
       showLoading();
-
+      
       try {
-        // Try all 3 tables
-        const [ordersRes, vipRes, photobooksRes] = await Promise.all([
-          fetch(`${SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderId}&select=*`, {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-          }),
-          fetch(`${SUPABASE_URL}/rest/v1/vip_intake?intake_id=eq.${orderId}&select=*`, {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-          }),
-          fetch(`${SUPABASE_URL}/rest/v1/photobooks?id=eq.${orderId}&select=*`, {
-            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-          })
-        ]);
-
-        const orders = await ordersRes.json();
-        const vip = await vipRes.json();
-        const photobooks = await photobooksRes.json();
-
-        let order = null;
-        if (orders.length) order = { ...orders[0], type: 'keepsake' };
-        else if (vip.length) order = { ...vip[0], type: 'vip', order_id: vip[0].intake_id };
-        else if (photobooks.length) order = { ...photobooks[0], type: 'photobook', order_id: photobooks[0].id };
-
-        if (!order) {
-          showError('Order not found.');
-          return;
-        }
-
-        // Store order in allOrders for back button
-        allOrders = [order];
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?order_id=eq.${orderId}&select=*`, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
         
-        showDetailView(order);
-
+        const orders = await res.json();
+        
+        if (orders && orders.length > 0) {
+          currentOrder = orders[0];
+          showJourney(currentOrder);
+        } else {
+          showSearch();
+          showError('Order not found. Try searching by email.');
+        }
       } catch (error) {
-        console.error('Fetch error:', error);
-        showError('Error loading order. Please try again.');
+        console.error('Error:', error);
+        showSearch();
       }
     }
-    
-    /**
-     * Refresh current order data (when returning from form)
-     */
-    async function refreshCurrentOrder() {
-      if (!currentOrder || !currentOrder.order_id) return;
+
+    async function searchOrders(email) {
+      showLoading();
       
-      console.log('🔄 Refreshing order data...');
-      await fetchSingleOrder(currentOrder.order_id);
-    }
-    
-    // Check if we're returning from form submission
-    window.addEventListener('focus', () => {
-      // When window regains focus, refresh order data
-      if (currentOrder) {
-        setTimeout(refreshCurrentOrder, 500);
-      }
-    });
-
-    function showListView() {
-      hideAll();
-      
-      // RESET HERO TO DEFAULT
-      const heroHeader = document.getElementById('heroHeader');
-      const heroTitle = document.getElementById('heroTitle');
-      heroHeader.classList.remove('personalized');
-      heroTitle.textContent = 'Track Your Orders';
-      
-      // SHOW SEARCH SECTION
-      document.getElementById('searchSection').style.display = 'block';
-      
-      // SHOW LIST VIEW
-      document.getElementById('listView').classList.add('active');
-      document.getElementById('orderCount').textContent = allOrders.length;
-
-      const container = document.getElementById('ordersContainer');
-      container.innerHTML = '';
-
-      allOrders.forEach(order => {
-        container.appendChild(createOrderCard(order));
-      });
-    }
-
-    function createOrderCard(order) {
-      const card = document.createElement('div');
-      card.className = 'order-card';
-      card.onclick = () => showDetailView(order);
-
-      const last4 = order.order_id ? order.order_id.slice(-4) : '0000';
-      const status = order.status || 'Unknown';
-      const total = order.order_total || 0;
-      const date = order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A';
-      
-      let statusClass = 'status-payment';
-      if (status.includes('Form')) statusClass = 'status-form';
-      else if (status.includes('Production')) statusClass = 'status-production';
-      else if (status.includes('Shipped')) statusClass = 'status-shipped';
-      else if (status.includes('Delivered')) statusClass = 'status-delivered';
-
-      const progress = getProgressStep(status);
-
-      card.innerHTML = `
-        <div class="order-card-content">
-          <div class="order-card-header">
-            <div class="order-id">#${last4}</div>
-            <div class="order-type-badge">${order.type.toUpperCase()}</div>
-          </div>
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?customer_email=eq.${encodeURIComponent(email)}&select=*&order=created_at.desc`, {
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+        });
+        
+        const orders = await res.json();
+        
+        if (orders && orders.length > 0) {
+          allOrders = orders;
+          currentOrder = orders[0];
+          showJourney(currentOrder);
           
-          <div class="order-status-badge ${statusClass}">
-            ${status}
-          </div>
-
-          <div class="order-info">
-            <div class="order-info-item">
-              <div class="order-info-label">Date</div>
-              <div class="order-info-value">${date}</div>
-            </div>
-            <div class="order-info-item">
-              <div class="order-info-label">Total</div>
-              <div class="order-info-value">$${total.toFixed(2)}</div>
-            </div>
-            <div class="order-info-item">
-              <div class="order-info-label">Product</div>
-              <div class="order-info-value">${order.product_type || order.type}</div>
-            </div>
-          </div>
-        </div>
-      `;
-
-      return card;
+          if (orders.length > 1) {
+            document.getElementById('backBtn').style.display = 'block';
+          }
+        } else {
+          showSearch();
+          showError('No orders found for this email.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showSearch();
+        showError('Something went wrong. Please try again.');
+      }
     }
 
-    function showDetailView(order) {
-      hideAll();
-      currentOrder = order;
-      
-      const last4 = order.order_id ? order.order_id.slice(-4) : '0000';
-      const status = order.status || 'Unknown';
-      const progress = getProgressStep(status);
-      // ✅ FIXED: Using correct field name from database
-      const formComplete = order.form_completed;
-      const customerName = order.customer_name ? order.customer_name.split(' ')[0] : null;
+    function showLoading() {
+      document.getElementById('loadingState').style.display = 'flex';
+      document.getElementById('searchState').style.display = 'none';
+      document.getElementById('journeyState').style.display = 'none';
+    }
 
-      // UPDATE HERO TO PERSONALIZED VIEW
-      const heroHeader = document.getElementById('heroHeader');
-      const heroTitle = document.getElementById('heroTitle');
-      heroHeader.classList.add('personalized');
+    function showSearch() {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('searchState').style.display = 'block';
+      document.getElementById('journeyState').style.display = 'none';
+      document.getElementById('searchError').style.display = 'none';
+    }
+
+    function showError(message) {
+      document.getElementById('searchError').style.display = 'block';
+      document.getElementById('searchError').textContent = message;
+    }
+
+    function showJourney(order) {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('searchState').style.display = 'none';
+      document.getElementById('journeyState').style.display = 'block';
       
-      const productDisplay = order.product_type || order.type || 'Keepsake';
+      // Set customer name
+      const firstName = order.customer_name ? order.customer_name.split(' ')[0] : 'Friend';
+      document.getElementById('customerName').textContent = firstName;
       
-      // GREETING: "Hey K," or "Hey Believer," if no name
-      const greeting = customerName ? `Hey ${customerName},` : 'Hey Believer,';
+      // Set order badge
+      const orderId = order.order_id ? `#${order.order_id.slice(-4)}` : '#0000';
+      const product = order.product_type || 'Keepsake';
+      document.getElementById('orderBadge').textContent = `${orderId} • ${product}`;
       
-      heroTitle.innerHTML = `
-        <div class="personal-greeting">${greeting}</div>
-        <div style="font-size: 1.5rem; font-weight: 300; margin-bottom: 16px;">
-          Your legacy journ<span style="font-style: italic;">ii</span> begins here.
+      // Set order details
+      document.getElementById('orderDetails').innerHTML = `
+        <div class="info-row">
+          <span class="info-label">Customer</span>
+          <span class="info-value">${order.customer_name || 'N/A'}</span>
         </div>
-        <div style="font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 12px;">
-          ${productDisplay} <strong style="color: #e9ff60;">#${last4}</strong>
+        <div class="info-row">
+          <span class="info-label">Order Date</span>
+          <span class="info-value">${order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A'}</span>
         </div>
-        <div style="font-size: 0.95rem; color: rgba(255,255,255,0.6);">
-          Complete your personalization below
+        ${order.honored_name ? `
+        <div class="info-row">
+          <span class="info-label">Honoring</span>
+          <span class="info-value">${order.honored_name}</span>
+        </div>
+        ` : ''}
+        <div class="info-row">
+          <span class="info-label">Total</span>
+          <span class="info-value" style="color: #e9ff60; font-weight: 600;">$${(order.order_total || 0).toFixed(2)}</span>
         </div>
       `;
-
-      // HIDE SEARCH SECTION
-      document.getElementById('searchSection').style.display = 'none';
-
-      // SHOW DETAIL VIEW
-      document.getElementById('detailView').classList.add('active');
-
-      // CREATE PRE-FILLED FORM LINK
-      const formBaseUrl = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
       
-      // Determine project type from order.type
-      let projectTypeParam = 'keepsake'; // default
-      if (order.type === 'vip') projectTypeParam = 'vip';
-      else if (order.type === 'photobook') projectTypeParam = 'photobook';
+      updateJourneySteps(order);
+    }
+
+    function updateJourneySteps(order) {
+      const status = (order.status || '').toLowerCase();
+      const formComplete = order.form_completed;
+      const fulfillment = order.fulfillment_method || 'shipping';
       
-      const formParams = new URLSearchParams({
+      // Determine current step & status message
+      let currentStep = 1;
+      let statusText = 'Order Received';
+      let statusDesc = 'We have your order and payment is confirmed.';
+      let actionBtn = null;
+      
+      if (status.includes('delivered') || status.includes('picked up')) {
+        currentStep = 5;
+        statusText = '🎉 Delivered!';
+        statusDesc = 'Your legacy keepsake has arrived. Enjoy!';
+      } else if (status.includes('shipped')) {
+        currentStep = 4;
+        statusText = '📦 Shipped!';
+        statusDesc = 'Your keepsake is on its way to you.';
+      } else if (status.includes('ready')) {
+        currentStep = 4;
+        statusText = '✅ Ready for Pickup!';
+        statusDesc = 'Your keepsake is ready. Come get it!';
+      } else if (status.includes('production')) {
+        currentStep = 3;
+        statusText = '🔨 In Production';
+        statusDesc = 'Your keepsake is being handcrafted with care.';
+      } else if (formComplete || status.includes('form')) {
+        currentStep = 3;
+        statusText = '🔨 In Production';
+        statusDesc = 'Your keepsake is being handcrafted with care.';
+      } else {
+        currentStep = 2;
+        statusText = '📝 Action Needed';
+        statusDesc = 'Please complete your personalization form.';
+        actionBtn = { text: 'Complete Form Now', url: buildFormUrl(order) };
+      }
+      
+      // Update status hero
+      document.getElementById('currentStatus').textContent = statusText;
+      document.getElementById('statusDescription').textContent = statusDesc;
+      
+      const actionBtnEl = document.getElementById('statusActionBtn');
+      if (actionBtn) {
+        actionBtnEl.textContent = actionBtn.text;
+        actionBtnEl.href = actionBtn.url;
+        actionBtnEl.style.display = 'inline-block';
+      } else {
+        actionBtnEl.style.display = 'none';
+      }
+      
+      // Update step 1 - always complete
+      setStepStatus(1, 'complete');
+      
+      // Update step 2 - Personalization
+      if (formComplete || currentStep > 2) {
+        setStepStatus(2, 'complete');
+        document.getElementById('personalizationAction').innerHTML = `
+          <div style="background: rgba(15, 240, 184, 0.1); border-radius: 10px; padding: 14px; text-align: center;">
+            <span style="color: #0ff0b8; font-weight: 600;">✓ Personalization Complete</span>
+          </div>
+        `;
+      } else {
+        setStepStatus(2, 'active');
+        document.getElementById('step2').classList.add('highlight');
+        toggleSection(2, true);
+        const formUrl = buildFormUrl(order);
+        document.getElementById('personalizationAction').innerHTML = `
+          <p style="color: rgba(255,255,255,0.65); line-height: 1.6; font-size: 0.9rem; margin-bottom: 14px;">Share the details that make your keepsake uniquely yours.</p>
+          <a href="${formUrl}" target="_blank" rel="noopener noreferrer" class="action-btn" onclick="window.open('${formUrl}', '_blank'); return false;">Complete Personalization</a>
+        `;
+      }
+      
+      // Update step 3 - Crafting
+      if (currentStep === 3) {
+        setStepStatus(3, 'active');
+        document.getElementById('step3').classList.add('highlight');
+        toggleSection(3, true);
+      } else if (currentStep > 3) {
+        setStepStatus(3, 'complete');
+      } else {
+        setStepStatus(3, 'pending');
+      }
+      
+      // Update step 4 - Delivery/Pickup
+      if (fulfillment === 'pickup') {
+        document.getElementById('step4Title').textContent = 'Ready for Pickup';
+        document.getElementById('step4Subtitle').textContent = 'Come get your keepsake';
+      }
+      
+      if (currentStep === 4) {
+        setStepStatus(4, 'active');
+        document.getElementById('step4').classList.add('highlight');
+        toggleSection(4, true);
+        
+        if (fulfillment === 'pickup') {
+          const pickupUrl = `https://dopeleeprezzed-oss.github.io/dopelee-form/Confirm%20pickup.html?order=${order.order_id}`;
+          const qrUrl = order.pickup_qr_code || `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(pickupUrl)}`;
+          
+          document.getElementById('deliveryContent').innerHTML = `
+            <div class="qr-box">
+              <div class="qr-title">Your Pickup QR Code</div>
+              <div class="qr-image"><img src="${qrUrl}" alt="Pickup QR Code"></div>
+              <p class="qr-instructions">Show this code when you arrive</p>
+            </div>
+            <div class="location-card">
+              <div class="location-title">📍 Pickup Location</div>
+              <div class="location-text">
+                Fort Leavenworth PX<br>
+                Suite ${order.pickup_suite || 'TBD'}<br>
+                330 Kansas Ave, Fort Leavenworth, KS 66027<br><br>
+                <strong>Hours:</strong> Mon-Sat 10am - 6pm
+              </div>
+            </div>
+          `;
+        } else if (order.tracking_number) {
+          document.getElementById('deliveryContent').innerHTML = `
+            <div class="tracking-box">
+              <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Your tracking number:</p>
+              <div class="tracking-number">${order.tracking_number}</div>
+              <a href="${order.tracking_url || `https://tools.usps.com/go/TrackConfirmAction?tLabels=${order.tracking_number}`}" target="_blank" class="tracking-btn">Track Package →</a>
+            </div>
+          `;
+        } else {
+          document.getElementById('deliveryContent').innerHTML = `
+            <p style="color: rgba(255,255,255,0.65); font-size: 0.9rem;">Your order is being prepared for shipment. Tracking info will appear here soon.</p>
+          `;
+        }
+      } else if (currentStep > 4) {
+        setStepStatus(4, 'complete');
+      } else {
+        setStepStatus(4, 'pending');
+        document.getElementById('deliveryContent').innerHTML = `
+          <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">Delivery details will appear here when your order ships.</p>
+        `;
+      }
+      
+      // Update step 5 - Complete
+      if (currentStep === 5) {
+        setStepStatus(5, 'complete');
+        document.getElementById('step5').classList.add('highlight');
+        toggleSection(5, true);
+      } else {
+        setStepStatus(5, 'pending');
+      }
+    }
+
+    function setStepStatus(step, status) {
+      const number = document.getElementById(`step${step}Number`);
+      const statusEl = document.getElementById(`step${step}Status`);
+      
+      number.className = 'section-number ' + status;
+      
+      if (status === 'complete') {
+        number.innerHTML = '✓';
+        statusEl.className = 'section-status status-complete';
+        statusEl.textContent = 'Done';
+      } else if (status === 'active') {
+        statusEl.className = 'section-status status-action';
+        statusEl.textContent = 'Current';
+      } else {
+        statusEl.className = 'section-status status-pending';
+        statusEl.textContent = 'Upcoming';
+      }
+    }
+
+    function toggleSection(step, forceOpen = false) {
+      const content = document.getElementById(`step${step}Content`);
+      
+      if (forceOpen || !content.classList.contains('expanded')) {
+        document.querySelectorAll('.section-content').forEach(c => c.classList.remove('expanded'));
+        content.classList.add('expanded');
+      } else {
+        content.classList.remove('expanded');
+      }
+    }
+
+    function buildFormUrl(order) {
+      const baseUrl = 'https://dopeleeprezzedbys-oss.github.io/dopelee-form/';
+      const params = new URLSearchParams({
         orderId: order.order_id || '',
         email: order.customer_email || '',
         name: order.customer_name || '',
@@ -1308,165 +917,15 @@
         product: order.product_type || '',
         honoredName: order.honored_name || '',
         dates: order.dates || '',
-        projectType: projectTypeParam
+        projectType: order.type || 'keepsake'
       });
-      
-      const preFilledFormUrl = `${formBaseUrl}?${formParams.toString()}`;
-      
-      console.log('📝 Form URL:', preFilledFormUrl);
-      console.log('📋 Form Complete Status:', formComplete);
-
-      // ✅ UPDATE ACTION BUTTONS BASED ON FORM STATUS
-      const actionButtonsContainer = document.querySelector('.action-buttons');
-      
-      if (!formComplete || formComplete === false) {
-        // FORM NOT COMPLETE - Show "Complete Personalization" button
-        actionButtonsContainer.innerHTML = `
-          <a href="${preFilledFormUrl}" target="_blank" class="action-btn action-btn-primary" style="grid-column: 1 / -1;">
-            ⚡ Complete Personalization Now
-          </a>
-          <button class="action-btn action-btn-secondary" onclick="sharePortal()">
-            🔗 Share Portal
-          </button>
-        `;
-      } else {
-        // ✅ FORM COMPLETE - Show completion message and share button
-        actionButtonsContainer.innerHTML = `
-          <div class="completion-status">
-            <p class="completion-status-title">✓ Personalization Complete!</p>
-            <p class="completion-status-message">Your keepsake is now in production. We'll notify you when it ships!</p>
-          </div>
-          <button class="action-btn action-btn-secondary" onclick="sharePortal()" style="grid-column: 1 / -1;">
-            🔗 Share Portal
-          </button>
-        `;
-      }
-
-      updateProgressTracker(progress);
-
-      if (order.tracking_number) {
-        document.getElementById('trackingBox').style.display = 'block';
-        document.getElementById('trackingNumber').textContent = order.tracking_number;
-        document.getElementById('trackingLink').href = order.tracking_url || `https://tools.usps.com/go/TrackConfirmAction?tLabels=${order.tracking_number}`;
-      } else {
-        document.getElementById('trackingBox').style.display = 'none';
-      }
-
-      updateDetailsGrid(order);
+      return `${baseUrl}?${params.toString()}`;
     }
 
-    function updateProgressTracker(currentStep) {
-      const steps = document.querySelectorAll('.progress-step');
-      const progressFill = document.getElementById('progressFill');
-
-      steps.forEach((step, index) => {
-        const stepNum = index + 1;
-        step.classList.remove('completed', 'active');
-        
-        if (stepNum < currentStep) {
-          step.classList.add('completed');
-        } else if (stepNum === currentStep) {
-          step.classList.add('active');
-        }
-      });
-
-      const fillWidth = ((currentStep - 1) / 4) * 100;
-      progressFill.style.width = `${fillWidth}%`;
-    }
-
-    function updateDetailsGrid(order) {
-      const grid = document.getElementById('detailsGrid');
-      grid.innerHTML = '';
-
-      const details = [
-        {
-          title: 'Product',
-          content: order.product_type || order.type || 'Keepsake'
-        },
-        {
-          title: 'Order Total',
-          content: `$${(order.order_total || 0).toFixed(2)}`
-        },
-        {
-          title: 'Order Date',
-          content: order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A'
-        }
-      ];
-
-      if (order.honored_name) {
-        details.push({
-          title: 'Honoring',
-          content: order.honored_name
-        });
-      }
-
-      if (order.dates) {
-        details.push({
-          title: 'Dates',
-          content: order.dates
-        });
-      }
-
-      if (order.template_chosen) {
-        details.push({
-          title: 'Template',
-          content: order.template_chosen
-        });
-      }
-
-      details.forEach(detail => {
-        const section = document.createElement('div');
-        section.className = 'detail-section';
-        section.innerHTML = `
-          <div class="detail-section-title">${detail.title}</div>
-          <div class="detail-section-content"><strong>${detail.content}</strong></div>
-        `;
-        grid.appendChild(section);
-      });
-    }
-
-    function getProgressStep(status) {
-      if (!status) return 1;
-      if (status.includes('Delivered')) return 5;
-      if (status.includes('Shipped')) return 4;
-      if (status.includes('Production')) return 3;
-      if (status.includes('Form')) return 2;
-      return 1;
-    }
-
-    function sharePortal() {
-      if (currentOrder && currentOrder.portal_link) {
-        if (navigator.share) {
-          navigator.share({
-            title: 'Dopelee Order Portal',
-            url: currentOrder.portal_link
-          });
-        } else {
-          navigator.clipboard.writeText(currentOrder.portal_link);
-          alert('Portal link copied to clipboard!');
-        }
-      }
-    }
-
-    function showLoading() {
-      hideAll();
-      document.getElementById('loadingState').style.display = 'block';
-    }
-
-    function showError(message) {
-      hideAll();
-      document.getElementById('errorState').style.display = 'block';
-      document.getElementById('errorMessage').textContent = message;
-    }
-
-    function hideAll() {
-      document.getElementById('loadingState').style.display = 'none';
-      document.getElementById('errorState').style.display = 'none';
-      document.getElementById('listView').classList.remove('active');
-      document.getElementById('detailView').classList.remove('active');
-    }
+    document.getElementById('backBtn').addEventListener('click', () => {
+      showSearch();
+    });
   </script>
 
 </body>
 </html>
-
