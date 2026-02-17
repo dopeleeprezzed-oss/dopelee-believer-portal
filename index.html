@@ -651,6 +651,7 @@
     // CONFIGURATION
     // ═══════════════════════════════════════════════════════════
     const SUPABASE_PROJECT_ID = 'dyehxtiozfwlexkbalvn';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR5ZWh4dGlvemZ3bGV4a2JhbHZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4NDYxMzMsImV4cCI6MjA4MTQyMjEzM30.dxd7otsV6WzD6dt41sWkYdseW94BRn0WI8MtFCqnAIs';
     const EDGE_FUNCTION_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/verify-portal-pin`;
     const FORM_BASE_URL = 'https://dopeleeprezzed-oss.github.io/dopelee-form/';
 
@@ -711,7 +712,11 @@
       try {
         const response = await fetch(EDGE_FUNCTION_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'apikey': SUPABASE_ANON_KEY
+          },
           body: JSON.stringify({ email, pin })
         });
         
