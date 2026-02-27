@@ -499,13 +499,19 @@ function renderDashboard(partner, orders) {
   // CALCULATE REAL COMMISSIONS FROM ORDERS
   let totalEarned = 0;
   let thisMonthOrders = 0;
+  let totalSales = 0;
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   
+  // Get commission rate from partner (default 13%)
+  const commissionRate = parseFloat(partner.commission_rate) || 0.13;
+  
   orders.forEach(order => {
     const orderTotal = parseFloat(order.order_total) || 0;
-    const commission = orderTotal * 0.10; // 10% commission
+    // Use partner_commission from database if available, otherwise calculate
+    const commission = parseFloat(order.partner_commission) || (orderTotal * commissionRate);
     totalEarned += commission;
+    totalSales += orderTotal;
     
     const orderDate = new Date(order.created_at);
     if (orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear) {
@@ -552,7 +558,7 @@ function renderDashboard(partner, orders) {
   html += `
     <div class="card">
       <h2>💰 Commission Dashboard</h2>
-      <p style="margin-bottom:15px;">You earn 10% commission on every order. Commissions are paid monthly by the 10th via check.</p>
+      <p style="margin-bottom:15px;">You earn ${Math.round(commissionRate * 100)}% commission on every order. Commissions are paid monthly by the 10th via check.</p>
       <div class="stats-row">
         <div class="stat-box">
           <h3>Total Earned</h3>
@@ -596,7 +602,7 @@ function renderDashboard(partner, orders) {
           <li>Include in emails or newsletters</li>
           <li>Share on social media</li>
         </ul>
-        <p style="margin:10px 0 0;font-size:13px;color:#b8bac0;"><strong>Every order placed = 10% commission for you!</strong></p>
+        <p style="margin:10px 0 0;font-size:13px;color:#b8bac0;"><strong>Every order placed = ${Math.round(commissionRate * 100)}% commission for you!</strong></p>
       </div>
     </div>
   `;
@@ -624,7 +630,8 @@ function renderDashboard(partner, orders) {
       const last4 = order.order_id ? order.order_id.slice(-4) : 'N/A';
       const date = order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A';
       const total = parseFloat(order.order_total) || 0;
-      const commission = total * 0.10;
+      // Use partner_commission from database
+      const commission = parseFloat(order.partner_commission) || (total * commissionRate);
       const status = order.status || 'Processing';
       
       html += `
