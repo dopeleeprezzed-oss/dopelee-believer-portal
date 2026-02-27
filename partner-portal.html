@@ -508,10 +508,13 @@ function renderDashboard(partner, orders) {
   
   orders.forEach(order => {
     const orderTotal = parseFloat(order.order_total) || 0;
-    // Use partner_commission from database if available, otherwise calculate
-    const commission = parseFloat(order.partner_commission) || (orderTotal * commissionRate);
+    const taxAmount = parseFloat(order.tax_amount) || 0;
+    // Calculate pre-tax amount (what partner sees)
+    const preTaxAmount = orderTotal - taxAmount;
+    // Use partner_commission from database if available
+    const commission = parseFloat(order.partner_commission) || (preTaxAmount * commissionRate);
     totalEarned += commission;
-    totalSales += orderTotal;
+    totalSales += preTaxAmount;  // Show pre-tax sales only
     
     const orderDate = new Date(order.created_at);
     if (orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear) {
@@ -629,16 +632,19 @@ function renderDashboard(partner, orders) {
     orders.forEach(order => {
       const last4 = order.order_id ? order.order_id.slice(-4) : 'N/A';
       const date = order.created_at ? new Date(order.created_at).toLocaleDateString() : 'N/A';
-      const total = parseFloat(order.order_total) || 0;
+      const orderTotal = parseFloat(order.order_total) || 0;
+      const taxAmount = parseFloat(order.tax_amount) || 0;
+      // Show pre-tax amount to partner
+      const preTaxAmount = orderTotal - taxAmount;
       // Use partner_commission from database
-      const commission = parseFloat(order.partner_commission) || (total * commissionRate);
+      const commission = parseFloat(order.partner_commission) || (preTaxAmount * commissionRate);
       const status = order.status || 'Processing';
       
       html += `
         <tr>
           <td>#${last4}</td>
           <td>${date}</td>
-          <td style="font-weight:700">$${total.toFixed(2)}</td>
+          <td style="font-weight:700">$${preTaxAmount.toFixed(2)}</td>
           <td style="color:#0ff0b8;font-weight:700">$${commission.toFixed(2)}</td>
           <td>${status}</td>
         </tr>
