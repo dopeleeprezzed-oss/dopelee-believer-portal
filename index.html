@@ -634,6 +634,20 @@
         <!-- Dynamically populated -->
       </div>
 
+      <!-- MESSAGES FROM ADMIN -->
+      <div id="portalMessages" style="display:none; margin-top: 20px;">
+        <div style="background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.25); border-radius: 14px; overflow: hidden;">
+          <div style="padding: 16px 20px; border-bottom: 1px solid rgba(212,175,55,0.15); display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.1rem;">💬</span>
+            <span style="color: #d4af37; font-weight: 600; font-size: 0.95rem;">Messages from Our Team</span>
+            <span id="unreadBadge" style="display:none; background:#d4af37; color:#000; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:auto;">NEW</span>
+          </div>
+          <div id="portalMessagesList" style="padding: 16px 20px; display: flex; flex-direction: column; gap: 12px;">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
       <!-- LOGOUT -->
       <button class="btn btn-secondary" onclick="logout()" style="margin-top: 20px;">← Sign Out</button>
     </div>
@@ -725,6 +739,7 @@
         if (data.success && data.orders && data.orders.length > 0) {
           currentOrders = data.orders;
           displayOrders(data.customer_name, data.orders);
+          loadPortalMessages(data.orders[0].order_id);
           showState('orders');
         } else {
           showState('login');
@@ -977,6 +992,95 @@
       document.querySelectorAll('.pin-input').forEach(i => i.value = '');
       showState('login');
       document.getElementById('emailInput').focus();
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // PORTAL MESSAGES
+    // ═══════════════════════════════════════════════════════════
+    async function loadPortalMessages(orderId) {
+      const SUPABASE_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co`;
+      
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/order_messages?order_id=eq.${orderId}&order=created_at.desc`,
+          {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            }
+          }
+        );
+        
+        if (!response.ok) return;
+        const messages = await response.json();
+        
+        const container = document.getElementById('portalMessages');
+        const list = document.getElementById('portalMessagesList');
+        const badge = document.getElementById('unreadBadge');
+        
+        if (!messages || messages.length === 0) {
+          container.style.display = 'none';
+          return;
+        }
+        
+        container.style.display = 'block';
+        
+        const unreadCount = messages.filter(m => !m.read).length;
+        if (unreadCount > 0) {
+          badge.style.display = 'inline';
+          badge.textContent = unreadCount === 1 ? 'NEW' : `${unreadCount} NEW`;
+        }
+        
+        list.innerHTML = messages.map(m => {
+          const date = new Date(m.created_at);
+          const timeAgo = getTimeAgo(date);
+          
+          return `
+            <div style="background: rgba(255,255,255,0.04); border-radius: 10px; padding: 14px 16px; ${!m.read ? 'border-left: 3px solid #d4af37;' : 'border-left: 3px solid transparent;'}">
+              <p style="margin: 0 0 6px; color: #e8e8ec; font-size: 0.95rem; line-height: 1.5;">${m.message}</p>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: #666; font-size: 0.75rem;">${timeAgo}</span>
+                ${!m.read ? '<span style="color:#d4af37;font-size:0.7rem;font-weight:600;">● New</span>' : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        // Mark messages as read
+        const unreadIds = messages.filter(m => !m.read).map(m => m.id);
+        if (unreadIds.length > 0) {
+          // Mark as read after a short delay so customer sees the "new" indicator
+          setTimeout(async () => {
+            for (const id of unreadIds) {
+              try {
+                await fetch(`${SUPABASE_URL}/rest/v1/order_messages?id=eq.${id}`, {
+                  method: 'PATCH',
+                  headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ read: true })
+                });
+              } catch (e) { /* silent */ }
+            }
+          }, 3000);
+        }
+        
+      } catch (err) {
+        console.warn('Could not load messages:', err);
+      }
+    }
+    
+    function getTimeAgo(date) {
+      const now = new Date();
+      const diff = Math.floor((now - date) / 1000);
+      
+      if (diff < 60) return 'Just now';
+      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+      if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+      return date.toLocaleDateString();
     }
 
     // Check URL for order parameter (for direct links)
