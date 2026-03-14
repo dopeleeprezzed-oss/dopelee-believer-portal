@@ -634,16 +634,24 @@
         <!-- Dynamically populated -->
       </div>
 
-      <!-- MESSAGES FROM ADMIN -->
+      <!-- MESSAGES -->
       <div id="portalMessages" style="display:none; margin-top: 20px;">
         <div style="background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.25); border-radius: 14px; overflow: hidden;">
           <div style="padding: 16px 20px; border-bottom: 1px solid rgba(212,175,55,0.15); display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 1.1rem;">💬</span>
-            <span style="color: #d4af37; font-weight: 600; font-size: 0.95rem;">Messages from Our Team</span>
+            <span style="color: #d4af37; font-weight: 600; font-size: 0.95rem;">Messages</span>
             <span id="unreadBadge" style="display:none; background:#d4af37; color:#000; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:10px; margin-left:auto;">NEW</span>
           </div>
-          <div id="portalMessagesList" style="padding: 16px 20px; display: flex; flex-direction: column; gap: 12px;">
+          <div id="portalMessagesList" style="padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto;">
             <!-- Populated by JS -->
+          </div>
+          
+          <!-- REPLY BOX -->
+          <div style="padding: 16px 20px; border-top: 1px solid rgba(212,175,55,0.15);">
+            <div style="display: flex; gap: 10px;">
+              <input id="portalReplyInput" type="text" placeholder="Type a reply..." style="flex:1; padding: 12px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.2); border-radius: 10px; color: #fff; font-size: 0.9rem; font-family: inherit; outline: none;" onkeydown="if(event.key==='Enter')sendPortalReply()" />
+              <button id="portalReplyBtn" onclick="sendPortalReply()" style="padding: 12px 20px; background: linear-gradient(135deg, #d4af37, #f5d76e); border: none; border-radius: 10px; color: #000; font-weight: 700; font-size: 0.85rem; cursor: pointer; white-space: nowrap;">Send</button>
+            </div>
           </div>
         </div>
       </div>
@@ -997,12 +1005,15 @@
     // ═══════════════════════════════════════════════════════════
     // PORTAL MESSAGES
     // ═══════════════════════════════════════════════════════════
+    let currentPortalOrderId = null;
+    
     async function loadPortalMessages(orderId) {
+      currentPortalOrderId = orderId;
       const SUPABASE_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co`;
       
       try {
         const response = await fetch(
-          `${SUPABASE_URL}/rest/v1/order_messages?order_id=eq.${orderId}&order=created_at.desc`,
+          `${SUPABASE_URL}/rest/v1/order_messages?order_id=eq.${orderId}&order=created_at.asc`,
           {
             headers: {
               'apikey': SUPABASE_ANON_KEY,
@@ -1018,38 +1029,62 @@
         const list = document.getElementById('portalMessagesList');
         const badge = document.getElementById('unreadBadge');
         
+        // Always show the messages section so they can start a conversation
+        container.style.display = 'block';
+        
         if (!messages || messages.length === 0) {
-          container.style.display = 'none';
+          list.innerHTML = '<p style="text-align:center; color:#666; font-size:0.85rem; font-style:italic; padding: 10px 0;">No messages yet. Have a question? Send us a message below!</p>';
+          badge.style.display = 'none';
           return;
         }
         
-        container.style.display = 'block';
-        
-        const unreadCount = messages.filter(m => !m.read).length;
+        // Count unread admin messages (customer doesn't need to "read" their own)
+        const unreadCount = messages.filter(m => !m.read && m.sender === 'admin').length;
         if (unreadCount > 0) {
           badge.style.display = 'inline';
           badge.textContent = unreadCount === 1 ? 'NEW' : `${unreadCount} NEW`;
+        } else {
+          badge.style.display = 'none';
         }
         
         list.innerHTML = messages.map(m => {
           const date = new Date(m.created_at);
           const timeAgo = getTimeAgo(date);
+          const isAdmin = m.sender === 'admin';
+          const isUnread = !m.read && isAdmin;
           
-          return `
-            <div style="background: rgba(255,255,255,0.04); border-radius: 10px; padding: 14px 16px; ${!m.read ? 'border-left: 3px solid #d4af37;' : 'border-left: 3px solid transparent;'}">
-              <p style="margin: 0 0 6px; color: #e8e8ec; font-size: 0.95rem; line-height: 1.5;">${m.message}</p>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="color: #666; font-size: 0.75rem;">${timeAgo}</span>
-                ${!m.read ? '<span style="color:#d4af37;font-size:0.7rem;font-weight:600;">● New</span>' : ''}
+          if (isAdmin) {
+            // Admin message - left aligned with gold accent
+            return `
+              <div style="background: rgba(212,175,55,0.06); border-radius: 10px; padding: 14px 16px; ${isUnread ? 'border-left: 3px solid #d4af37;' : 'border-left: 3px solid transparent;'} max-width: 85%;">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                  <span style="font-size: 0.7rem; font-weight: 600; color: #d4af37;">Dopelee Prezzed by S™</span>
+                  ${isUnread ? '<span style="color:#d4af37;font-size:0.65rem;font-weight:700;">● New</span>' : ''}
+                </div>
+                <p style="margin: 0 0 6px; color: #e8e8ec; font-size: 0.95rem; line-height: 1.5;">${m.message}</p>
+                <span style="color: #555; font-size: 0.72rem;">${timeAgo}</span>
               </div>
-            </div>
-          `;
+            `;
+          } else {
+            // Customer message - right aligned
+            return `
+              <div style="background: rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px; max-width: 85%; margin-left: auto; text-align: right;">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px; justify-content: flex-end;">
+                  <span style="font-size: 0.7rem; font-weight: 600; color: #888;">You</span>
+                </div>
+                <p style="margin: 0 0 6px; color: #e8e8ec; font-size: 0.95rem; line-height: 1.5; text-align: left;">${m.message}</p>
+                <span style="color: #555; font-size: 0.72rem;">${timeAgo}</span>
+              </div>
+            `;
+          }
         }).join('');
         
-        // Mark messages as read
-        const unreadIds = messages.filter(m => !m.read).map(m => m.id);
+        // Scroll to bottom of messages
+        list.scrollTop = list.scrollHeight;
+        
+        // Mark admin messages as read after delay
+        const unreadIds = messages.filter(m => !m.read && m.sender === 'admin').map(m => m.id);
         if (unreadIds.length > 0) {
-          // Mark as read after a short delay so customer sees the "new" indicator
           setTimeout(async () => {
             for (const id of unreadIds) {
               try {
@@ -1069,6 +1104,50 @@
         
       } catch (err) {
         console.warn('Could not load messages:', err);
+      }
+    }
+    
+    async function sendPortalReply() {
+      const input = document.getElementById('portalReplyInput');
+      const btn = document.getElementById('portalReplyBtn');
+      const message = input?.value?.trim();
+      
+      if (!message || !currentPortalOrderId) return;
+      
+      const SUPABASE_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co`;
+      
+      btn.disabled = true;
+      btn.textContent = '...';
+      
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/order_messages`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({
+            order_id: currentPortalOrderId,
+            sender: 'customer',
+            message: message,
+            read: false
+          })
+        });
+        
+        if (!response.ok) throw new Error('Failed to send');
+        
+        // Clear input and reload messages
+        input.value = '';
+        await loadPortalMessages(currentPortalOrderId);
+        
+      } catch (err) {
+        console.warn('Reply failed:', err);
+        alert('Could not send your message. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send';
       }
     }
     
